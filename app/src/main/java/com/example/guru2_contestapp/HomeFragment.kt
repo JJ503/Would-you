@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class HomeFragment : Fragment() {
+
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
@@ -23,12 +23,14 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
+
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
         var context: Context = requireContext()
         val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
 
-        //val sharedPreferences : SharedPreferences? = activity?.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
@@ -53,10 +55,13 @@ class HomeFragment : Fragment() {
                 userName.setText(name)
             }
         } catch(e: Exception){
-            Log.e("Error", e.message.toString())
+            //Log.e("Error", e.message)
         } finally{
             sqlitedb.close()
         }
+        // Inflate the layout for this fragment
         return view
     }
+
+
 }

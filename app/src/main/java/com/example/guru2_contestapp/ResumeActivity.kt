@@ -36,16 +36,16 @@ class ResumeActivity : AppCompatActivity() {
         selfIntroET=findViewById<EditText>(R.id.WselfIntroEditText)
         etcET=findViewById<EditText>(R.id.WetcEditText)
 
-        // 상단 텍스트 뷰(공모전과 팀 이름)
+        // 상단 텍스트 뷰(공모전과 팀 이름) 내용을 이전 페이지에서 온 intent 값으로 설정
         val intent=intent
-        var ic_name=intent.getStringExtra("intent_c_name")
-        var it_name=intent.getStringExtra("intent_t_name")
+        val ic_name=intent.getStringExtra("intent_c_name")
+        val it_name=intent.getStringExtra("intent_t_name")
         info.text=it_name+"("+ic_name+")"
 
-
+        // DB에서 팀 이름 가지고 팀 번호를 찾아 t_num에 저장
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
-        var cursor: Cursor
+        val cursor: Cursor
         cursor=sqlitedb.rawQuery("SELECT t_num FROM team WHERE t_name = '"+it_name+"';", null)
         if(cursor.moveToNext()){
             t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
@@ -55,6 +55,8 @@ class ResumeActivity : AppCompatActivity() {
         sqlitedb.close()
         dbManager.close()
 
+        // 제출 버튼 클릭하면 입력 폼에 빈칸이 있는지 확인하고 있는 경우 대화상자로 알림
+        // 빈칸 없는 경우 입력한 정보를 DB에 값을 입력하고 액티비티 종료
         submitBtn.setOnClickListener {
             val builder= AlertDialog.Builder(this)
 

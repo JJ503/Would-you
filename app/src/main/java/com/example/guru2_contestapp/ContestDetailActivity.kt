@@ -44,15 +44,16 @@ class ContestDetailActivity : AppCompatActivity() {
         end=findViewById(R.id.WdetailEndDayTextView)
         detail=findViewById(R.id.WdetailTextView)
         homepage=findViewById(R.id.WcontestLinkTextView)
-
         teamAddBtn=findViewById(R.id.WsearchTeamButton)
 
+        // 팀 목록에서 팀을 선택하면 그 팀이 참가하는 공모전 번호가 intent로 넘어온다.
+        // 그 값으로 DB에서 공모전 이름, 주최기관 등 자세한 정보를 가져온다.
         val intent=intent
-        var c_num=intent.getIntExtra("intent_c_num", 0)
+        val c_num=intent.getIntExtra("intent_c_num", 0)
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
-        var cursor: Cursor
+        val cursor: Cursor
         cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '"+c_num+"';", null)
 
         if(cursor.moveToNext()){
@@ -77,13 +78,15 @@ class ContestDetailActivity : AppCompatActivity() {
         end.text = str_end
         detail.text= str_detail
 
-        // 홈페이지 바로가기 클릭
+
+        // 홈페이지 바로가기 클릭하면 DB에서 가져온 홈페이지 주소로 웹 브라우저를 이용해 이동한다.
         homepage.setOnClickListener {
-            Toast.makeText(this, "Aaaaaa", Toast.LENGTH_SHORT).show()
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(str_address)))
         }
 
-        // 팀 추가 버튼
+
+        // 팀 추가 버튼(FloatingActionButton) 클릭하면 팀 생성 페이지로 이동
+        // 이동 시 현재 공모전 이름을 intent로 넘김 --> 다음 페이지에서 공모전이 자동으로 선택되게 함
         teamAddBtn.setOnClickListener {
             val intent= Intent(this, BuildTeamActivity::class.java)
             intent.putExtra("intent_c_name", str_name)

@@ -5,15 +5,17 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+
 
 class SearchIdFragment : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -40,7 +42,7 @@ class SearchIdFragment : Fragment() {
                     cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE name = '${input_name}' AND tel = '${input_tel}';", null)
                     cursor.moveToFirst()
 
-                    if (cursor.getCount() == 1){
+                    if (cursor != null){
                         builder.setTitle("아이디 찾기")
                         builder.setMessage(cursor.getString(cursor.getColumnIndex("id")))
                         builder.setPositiveButton("확인", null)

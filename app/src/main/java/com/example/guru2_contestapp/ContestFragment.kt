@@ -23,6 +23,8 @@ class ContestFragment : Fragment() {
     lateinit var searchNum: TextView
     lateinit var searchET: EditText
     lateinit var searchBtn: ImageButton
+    lateinit var contestListArray: ArrayList<ContestListViewItem>
+    lateinit var contestItem: ContestListViewItem
 
     var str_search=""
     var c_num=0
@@ -31,15 +33,6 @@ class ContestFragment : Fragment() {
     lateinit var c_startDay: String
     lateinit var c_endDay: String
 
-    lateinit var contestListArray: ArrayList<ContestListViewItem>
-    lateinit var contestItem: ContestListViewItem
-
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }*/
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,23 +40,22 @@ class ContestFragment : Fragment() {
 
         contestListArray= arrayListOf<ContestListViewItem>()
 
-
-        var v_contest = inflater.inflate(R.layout.fragment_contest, null)
+        val v_contest = inflater.inflate(R.layout.fragment_contest, null)
 
         // 공모전 검색
         searchBtn=v_contest.findViewById(R.id.WsearchButton)
         searchET=v_contest.findViewById(R.id.WsearchEditText)
 
+        // 검색 버튼 클릭 시, 현재 Fragment를 새로고침하여 변경된 contestListArray이 적용되게 함
         searchBtn.setOnClickListener {
             str_search=searchET.text.toString()
-
             val contestListAdapter= activity?.let { ContestListViewAdapter(it, contestListArray) }
             if (contestListAdapter != null) {
                 contestListAdapter.notifyDataSetChanged()
             }
             contestListView.adapter=contestListAdapter
 
-            var ft: FragmentTransaction =fragmentManager!!.beginTransaction()
+            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
             ft.attach(this)
             ft.commit()
@@ -72,15 +64,15 @@ class ContestFragment : Fragment() {
         //DB
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
+        val cursor: Cursor
 
-        var cursor: Cursor
-
+        // 검색창에 아무것도 입력하지 않은 경우, 모든 공모전을 보여줌
+        // 검색창에 문자열을 입력하면 해당 공모전만 해당되는 공모전만 contestListArray에 추가
         if(str_search!=""){
             cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_name = '"+str_search+"';", null)
         }else{
             cursor=sqlitedb.rawQuery("SELECT * FROM contest;", null)
         }
-        var num: Int=0
 
         while(cursor.moveToNext()){
             //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
@@ -98,9 +90,9 @@ class ContestFragment : Fragment() {
         sqlitedb.close()
 
 
-        // 공모전 리스트뷰
+        // 공모전 목록에서 공모전을 선택하면 해당 공모전의 번호를 intent로 다음 페이지로 보냄
+        //         -->  다음 페이지에서 intent 정보로 해당 공모전에 대한 것만 DB에서 가져오도록 함
         contestListView=v_contest.findViewById<ListView>(R.id.WcontestListView)
-
         contestListView.setOnItemClickListener { parent, view, position, id ->
             activity?.let {
                 val intent= Intent(activity, ContestDetailActivity::class.java)
@@ -109,11 +101,10 @@ class ContestFragment : Fragment() {
             }
         }
 
+        // 검색 결과 수 TextView 값 = Item 수
         searchNum=v_contest.findViewById(R.id.WsearchNumTextView)
-
         val contestListAdapter= activity?.let { ContestListViewAdapter(it, contestListArray) }
         contestListView.adapter=contestListAdapter
-
         if (contestListAdapter != null) {
             searchNum.text= contestListAdapter.count.toString()
         }else{

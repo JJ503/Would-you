@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUp">
+    tools:context="com.example.guru2_contestapp.SignUp">
+
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/JnameEditText"
@@ -23,7 +24,6 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#ff5151"
         android:hint="비밀번호 확인"
         android:inputType="textWebPassword"
         android:padding="10dp"
