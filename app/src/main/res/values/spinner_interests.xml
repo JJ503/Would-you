@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="interests_list">
+        <item>기획/아이디어</item>
+        <item>광고/마케팅</item>
+        <item>사진/영상/UCC</item>
+        <item>디자인/순수미술/공예</item>
+        <item>네이밍/슬로건</item>
+        <item>캐릭터/만화/게임</item>
+        <item>건축/건설/인테리어</item>
+        <item>과학/공학</item>
+        <item>예체능/패션</item>
+        <item>전시/패스티벌</item>
+        <item>문학/시나리오</item>
+        <item>학술</item>
+        <item>기타</item>
+    </string-array>
+</resources>

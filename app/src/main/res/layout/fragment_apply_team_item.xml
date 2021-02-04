@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/adverImageView"
+        android:layout_width="65sp"
+        android:layout_height="65sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+
+    <TextView
+        android:id="@+id/adverTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="홍보글 제목"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/adverImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/needPartTextivew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:text="필요 분야"
+        app:layout_constraintStart_toEndOf="@+id/adverImageView"
+        app:layout_constraintTop_toBottomOf="@+id/endDateTextView" />
+
+    <TextView
+        android:id="@+id/nowNumTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="3dp"
+        android:text="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adverImageView" />
+
+    <TextView
+        android:id="@+id/endDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:text="2020.02.01 마감"
+        app:layout_constraintStart_toEndOf="@+id/adverImageView"
+        app:layout_constraintTop_toBottomOf="@+id/contestNameTextView" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:text="/"
+        app:layout_constraintStart_toEndOf="@+id/nowNumTextView"
+        app:layout_constraintTop_toBottomOf="@+id/adverImageView" />
+
+    <TextView
+        android:id="@+id/totalNumTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:text="5"
+        app:layout_constraintStart_toEndOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/adverImageView" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="5sp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="2dp"
+        android:text="pa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        tools:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/contestNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:text="공모전 이름"
+        app:layout_constraintStart_toEndOf="@+id/adverImageView"
+        app:layout_constraintTop_toBottomOf="@+id/adverTitleTextView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
