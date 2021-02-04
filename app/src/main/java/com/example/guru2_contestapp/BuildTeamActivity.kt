@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
@@ -38,9 +39,12 @@ class BuildTeamActivity : AppCompatActivity() {
     var c_num=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_build_team)
+
+        // 로그인한 계정 아이디
+        val sharedPreferences : SharedPreferences = this.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
         contestSpinner=findViewById<Spinner>(R.id.WcontestSpinner)
         calenderView=findViewById<CalendarView>(R.id.WcalendarView)
@@ -200,7 +204,7 @@ class BuildTeamActivity : AppCompatActivity() {
 
                 // DB에 정보 넣기
                 sqlitedb = dbManager.writableDatabase
-                sqlitedb.execSQL("INSERT INTO team (c_num, t_name, t_total_num, t_now_num, t_end_date, t_need_part, t_detail) VALUES ("+c_num+", '"+str_t_name+"', '"+t_total_num+"', "+1+", '"+str_t_end_date+"', '"+str_t_need_part+"', '"+str_t_detail+"')")
+                sqlitedb.execSQL("INSERT INTO team (c_num, t_name, t_host, t_total_num, t_now_num, t_end_date, t_need_part, t_detail) VALUES ("+c_num+", '"+str_t_name+"', '"+ USER_ID + "'," +t_total_num+", "+1+", '"+str_t_end_date+"', '"+str_t_need_part+"', '"+str_t_detail+"')")
                 sqlitedb.close()
                 dbManager.close()
 
