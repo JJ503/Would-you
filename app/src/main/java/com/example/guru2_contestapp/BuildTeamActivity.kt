@@ -59,6 +59,7 @@ class BuildTeamActivity : AppCompatActivity() {
         contestArray.add("공모전을 선택하세요")
 
         //공모전 목록 스피너
+        //DB의 contest 테이블에서 공모전 이름 가져와 스피너 목록에 추가
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
@@ -75,21 +76,23 @@ class BuildTeamActivity : AppCompatActivity() {
 
         contestSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, contestArray)
 
+        // 이전 페이지에서 공모전 이름을 intent로 받으면, 스피너에서 해당 공모전을 선택
         val intent=intent
-        var i_name=intent.getStringExtra("intent_c_name")
-        var name_index=contestArray.indexOf(i_name)
+        val i_name=intent.getStringExtra("intent_c_name")
+        val name_index=contestArray.indexOf(i_name)
         contestSpinner.setSelection(name_index)
 
         contestSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                contestSpinner.setSelection(1)
+                contestSpinner.setSelection(1) //"공모전을 선택하세요"
             }
-
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
             }
         }
 
         //마감일 달력
+        //마감일 TextView를 선택하면 숨김(gone) 상태였던 CalendarView가 보임
+        //CalendarView에서 날짜를 선택하면 TextView가 해당 날짜로 변경
         yearTextView.setOnClickListener {
             calenderView.visibility= View.VISIBLE
         }
@@ -109,9 +112,10 @@ class BuildTeamActivity : AppCompatActivity() {
             calenderView.visibility= View.GONE
         }
 
-        // 팀 생성 완료 버튼
+        // 팀 생성 완료 버튼 클릭하면 누락된 정보 없는지 확인하고 없으면 DB에 정보 넣고, 액티비티 종료
         reg_finishBtn.setOnClickListener {
-            // 오늘 날짜, 캘린더 선택 날짜 차이 계산
+
+            // 오늘 날짜, 캘린더에서 선택한 날짜 차이 계산
             val today= Calendar.getInstance().apply{
                 set(Calendar.HOUR_OF_DAY, 0)
                 set(Calendar.MINUTE, 0)
@@ -134,8 +138,9 @@ class BuildTeamActivity : AppCompatActivity() {
 
             val calcDate=(deadline-today) / (24*60*60*1000)
 
-            // 빈칸이 있는 경우 대화상자
-            var builder= AlertDialog.Builder(this)
+
+            // 입력 폼에 빈칸이 있는 경우 & 선택 날짜가 현재보다 이전인 경우 ==>  대화상자로 알림
+            val builder= AlertDialog.Builder(this)
 
             if(contestSpinner.selectedItem=="공모전을 선택하세요"){
                 builder.setMessage("공모전을 선택해주세요.")
@@ -150,7 +155,6 @@ class BuildTeamActivity : AppCompatActivity() {
             } else if(yearTextView.text.toString()=="" || monthTextView.text.toString()=="" || dateTextView.text.toString()==""){
                 builder.setMessage("마감일을 입력해 주세요.")
                 //builder.setIcon(R.)
-                //마감일이 '오늘'보다 앞인 경우 잘못입력했다는 메시지!
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else if(personNumET.text.toString()==""){
@@ -174,16 +178,18 @@ class BuildTeamActivity : AppCompatActivity() {
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else{
+                // 입력 폼이 다 채워짐 ==> DB에 정보 삽입
+
                 // 각 위젯 정보 가져오기
                 str_t_name=contestNameET.text.toString()
                 str_t_end_date=yearTextView.text.toString()+"."+monthTextView.text.toString()+"."+dateTextView.text.toString()
                 str_t_total_num=personNumET.text.toString()
-                var t_total_num=str_t_total_num
+                val t_total_num=str_t_total_num
                 str_t_need_part=needPartET.text.toString()
                 str_t_detail=teamIntroET.text.toString()
                 str_c_name=contestSpinner.selectedItem.toString()
 
-                // c_num 찾기
+                // 공모전 이름으로 c_num 찾기
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.readableDatabase
                 cursor=sqlitedb.rawQuery("SELECT c_num FROM contest WHERE c_name = '"+str_c_name+"';", null)
