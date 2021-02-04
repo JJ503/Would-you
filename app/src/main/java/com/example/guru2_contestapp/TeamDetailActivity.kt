@@ -32,6 +32,13 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var slash: TextView
     lateinit var detail: TextView
     lateinit var applyBtn: Button
+    // 댓글 리스트
+    lateinit var commentListArray: ArrayList<CommentListViewItem>
+    lateinit var commentItem: CommentListViewItem
+    lateinit var commentListView: ListView
+    //댓글 작성
+    lateinit var commentRegET: EditText
+    lateinit var commentRegBtn: Button
 
     lateinit var str_teamName: String
     lateinit var str_contestNum: String
@@ -43,10 +50,7 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var c_name: String
     lateinit var c_section: String
 
-    // 댓글 리스트
-    lateinit var commentListArray: ArrayList<CommentListViewItem>
-    lateinit var commentItem: CommentListViewItem
-    lateinit var commentListView: ListView
+
     //lateinit var 사진?
     lateinit var cm_name: TextView
     lateinit var cm_date: TextView
@@ -55,10 +59,6 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_cm_id: String
     lateinit var str_cm_date: String
     lateinit var str_cm_detail: String
-
-    //댓글 작성
-    lateinit var commentRegET: EditText
-    lateinit var commentRegBtn: Button
 
     lateinit var str_cm_reg_id: String
     lateinit var str_cm_reg_date: String
@@ -83,14 +83,15 @@ class TeamDetailActivity : AppCompatActivity() {
         commentRegBtn=findViewById(R.id.commentRegisterButton)
         commentRegET=findViewById(R.id.commentRegEditText)
 
-        // 상세 페이지
+        // 이전 페이지에서 넘긴 팀 번호를 intent로 받아 t_num에 저장
         val intent=intent
-        var t_num=intent.getIntExtra("intent_t_num", 0)
+        val t_num=intent.getIntExtra("intent_t_num", 0)
 
+        // t_num으로 DB에서 팀 정보를 가져와 출력
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        var cursor2: Cursor
+        val cursor2: Cursor
         cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = '" + t_num + "';", null)
 
         if (cursor.moveToNext()){
@@ -103,6 +104,7 @@ class TeamDetailActivity : AppCompatActivity() {
             str_totalNum=cursor.getInt(cursor.getColumnIndex("t_total_num")).toString()
             str_detail=cursor.getString(cursor.getColumnIndex("t_detail")).toString()
 
+            //team 테이블이 가진 c_num 값으로 contest 테이블에서 헤당 공모전 정보를 가져옴
             cursor2=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '" + str_contestNum + "';", null)
             if(cursor2.moveToNext()){
                 c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
@@ -121,14 +123,14 @@ class TeamDetailActivity : AppCompatActivity() {
         detail.text=str_detail
 
         // 남은 인원이 1명 -> 글자색 변경
-        var possible_num = str_totalNum.toInt() - str_nowNum.toInt()
+        val possible_num = str_totalNum.toInt() - str_nowNum.toInt()
         if(possible_num==1){
             nowNum.setTextColor(ContextCompat.getColor(this, R.color.impend))
             slash.setTextColor(ContextCompat.getColor(this, R.color.impend))
             totalNum.setTextColor(ContextCompat.getColor(this, R.color.impend))
         }
 
-        // 마감일이 1일 남음 -> 글자색 변경
+        // 현재날짜와 마감일의 날짜 차이 계산
         val today= Calendar.getInstance().apply{
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -136,7 +138,7 @@ class TeamDetailActivity : AppCompatActivity() {
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
 
-        var token=str_endDate.split(".")
+        val token=str_endDate.split(".")
         val deadline= Calendar.getInstance().apply {
             set(Calendar.YEAR, token[0].toInt())
             set(Calendar.MONTH, (token[1].toInt()) - 1)
@@ -147,19 +149,20 @@ class TeamDetailActivity : AppCompatActivity() {
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
 
+        // 마감일이 1일 남음 -> 글자색 변경
         val calcDate=(deadline-today) / (24*60*60*1000)
         if(calcDate.toInt()<=1){
             endDate.setTextColor(ContextCompat.getColor(this, R.color.impend))
         }
 
-
-        // 댓글 리스트
+        //댓글
         commentListArray= arrayListOf<CommentListViewItem>()
         val cm_contest: View = layoutInflater.inflate(R.layout.comment_list, null, false)
         cm_name= cm_contest.findViewById<TextView>(R.id.WnameTextView)
         cm_date= cm_contest.findViewById<TextView>(R.id.WdateTextView)
         cm_detail= cm_contest.findViewById<TextView>(R.id.WcommentTextView)
 
+        // comment 테이블에서 t_num으로 해당 팀에 대한 댓글에 대한 정보를 가져와 출력
         cursor=sqlitedb.rawQuery("SELECT * FROM comment WHERE t_num = " + t_num + ";", null)
         str_cm_id=""
         str_cm_date=""
@@ -181,10 +184,12 @@ class TeamDetailActivity : AppCompatActivity() {
         cm_date.text=str_cm_date
         cm_detail.text=str_cm_detail
 
-        // 댓글 작성 버튼 클릭
+
+        // 댓글 작성 버튼 클릭 시, 댓글 내용이 없으면 대화상자로 입력하라는 메시지를 전달
+        // 내용이 있는 경우, 입력 내용을 DB에 입력
         commentRegBtn.setOnClickListener {
             if(commentRegET.text.toString()==""){
-                var builder= AlertDialog.Builder(this)
+                val builder= AlertDialog.Builder(this)
                 builder.setMessage("댓글 내용을 입력해 주세요.")
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
@@ -205,6 +210,7 @@ class TeamDetailActivity : AppCompatActivity() {
                 sqlitedb.close()
                 dbManager.close()
 
+                // 입력한 댓글이 바로 보일 수 있게 새로고침
                 val intent = getIntent()
                 finish()
                 startActivity(intent)
@@ -214,10 +220,12 @@ class TeamDetailActivity : AppCompatActivity() {
         val commentListAdapter=CommentListViewAdapter(this, commentListArray)
         commentListView.adapter=commentListAdapter
 
+
+        // 댓글 listView 길이에 따라 화면 길이 조정 --> Scroll 안에 ListView가 있는 것이라 이렇게 해주지 않으면 스크롤이 안 됨
         var totalHeight=0
 
         for(i in 0 until commentListAdapter.getCount()){
-            var listItem: View =commentListAdapter.getView(i, null, commentListView)
+            val listItem: View =commentListAdapter.getView(i, null, commentListView)
             listItem.measure(0, 0)
             totalHeight+=listItem.measuredHeight
         }
@@ -227,7 +235,7 @@ class TeamDetailActivity : AppCompatActivity() {
         commentListView.setLayoutParams(params)
         commentListView.setAdapter(commentListAdapter)
 
-        // 신청 버튼 클릭
+        // 신청 버튼 클릭 시, 팀 지원 페이지로 공모전 이름과, 팀 이름을 intent로 넘기며 이동함
         applyBtn.setOnClickListener {
             val intent= Intent(this, ResumeActivity::class.java)
             intent.putExtra("intent_c_name", c_name)

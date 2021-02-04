@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         searchText.setOnClickListener {
-            val intent = Intent(this, SearchInfo::class.java)
+            val intent = Intent(this, SearchIdPw::class.java)
             startActivity(intent)
         }
 
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                         editor.putString("USER_ID", USER_ID)
                         editor.commit()
 
-                        val intent = Intent(this, HomeFragment::class.java)
+                        val intent = Intent(this, NavigationActivity::class.java)
                         //intent.putExtra("id", idEditText.text.toString())
                         startActivity(intent)
                     } else{
