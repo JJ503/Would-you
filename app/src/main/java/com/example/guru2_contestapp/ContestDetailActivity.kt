@@ -3,13 +3,17 @@ package com.example.guru2_contestapp
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.ColorFilter
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 
 class ContestDetailActivity : AppCompatActivity() {
 
@@ -24,6 +28,7 @@ class ContestDetailActivity : AppCompatActivity() {
     lateinit var end: TextView
     lateinit var detail: TextView
     lateinit var homepage: TextView
+    lateinit var wishBtn: ImageButton
 
     lateinit var str_name: String
     lateinit var str_host: String
@@ -32,6 +37,7 @@ class ContestDetailActivity : AppCompatActivity() {
     lateinit var str_section: String
     lateinit var str_detail: String
     lateinit var str_address: String
+    var colorSwitch=0 //white
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +51,7 @@ class ContestDetailActivity : AppCompatActivity() {
         detail=findViewById(R.id.WdetailTextView)
         homepage=findViewById(R.id.WcontestLinkTextView)
         teamAddBtn=findViewById(R.id.WsearchTeamButton)
+        wishBtn=findViewById(R.id.wishButton)
 
         // 팀 목록에서 팀을 선택하면 그 팀이 참가하는 공모전 번호가 intent로 넘어온다.
         // 그 값으로 DB에서 공모전 이름, 주최기관 등 자세한 정보를 가져온다.
@@ -91,6 +98,19 @@ class ContestDetailActivity : AppCompatActivity() {
             val intent= Intent(this, BuildTeamActivity::class.java)
             intent.putExtra("intent_c_name", str_name)
             startActivity(intent)
+        }
+
+        wishBtn.setOnClickListener {
+            when(colorSwitch){
+                0 -> { //현재 white
+                    wishBtn.setTint(ContextCompat.getColor(this, R.color.impend))
+                    colorSwitch=1
+                }
+                1 -> { //현재 yellow
+                    wishBtn.setBackgroundColor(ContextCompat.getColor(this, R.color.normal))
+                    colorSwitch=0
+                }
+            }
         }
     }
 

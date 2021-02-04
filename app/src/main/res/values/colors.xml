@@ -10,8 +10,8 @@
     <color name="indigo_700">#003B6F</color>
     <color name="indigo_900">#00305A</color>
     <color name="impend">#F15F5F</color>
-    <color name="star_off">#C6C4C4</color>
-    <color name="star_on">#C6C4C4</color>
+    <color name="star_off">#FFFFFF</color>
+    <color name="star_on">#FAE100</color>
     <color name="error">#ff5151</color>
     <color name="normal">#757575</color>
     <color name="black_little">#302A2A</color>

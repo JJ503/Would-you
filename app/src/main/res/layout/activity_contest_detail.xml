@@ -102,16 +102,16 @@
             app:layout_constraintTop_toBottomOf="@+id/WDetailHostNameTextView" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/wishButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
-            android:backgroundTint="#FFFFFF"
-            android:tint="#FAE100"
+            android:backgroundTint="@color/star_off"
+            android:tint="@color/normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/btn_star" />
+            app:srcCompat="@drawable/ic_baseline_star_24" />
 
         <TextView
             android:id="@+id/WcontestLinkTextView"
@@ -173,7 +173,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WtextView3"
-        tools:listitem="@layout/recruit_list" />
+        tools:listitem="@layout/recruit_list_item" />
 
     <ImageButton
         android:id="@+id/WsearchTeamButton"
