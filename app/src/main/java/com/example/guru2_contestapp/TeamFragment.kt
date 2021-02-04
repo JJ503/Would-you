@@ -37,7 +37,6 @@ class TeamFragment : Fragment() {
     var t_total_num=0
     var t_now_num=0
     var search_num=0
-
     var select_num=0
 
     lateinit var teamListArray: ArrayList<TeamListViewItem>
@@ -49,7 +48,7 @@ class TeamFragment : Fragment() {
     ): View? {
         teamListArray= arrayListOf<TeamListViewItem>()
 
-        var v_team = inflater.inflate(R.layout.fragment_team, null)
+        val v_team = inflater.inflate(R.layout.fragment_team, null)
         teamListView=v_team.findViewById(R.id.WteamListView)
         searchNum=v_team.findViewById(R.id.WsearchNumTextView)
         addTeamFAb=v_team.findViewById(R.id.WteamAddFab)
@@ -69,7 +68,7 @@ class TeamFragment : Fragment() {
             // c_num 찾기
             dbManager= DBManager(activity, "ContestAppDB", null, 1)
             sqlitedb=dbManager.readableDatabase
-            var cursor: Cursor
+            val cursor: Cursor
 
             cursor=sqlitedb.rawQuery("SELECT c_num FROM contest WHERE c_name = '"+str_search+"';", null)
             if(cursor.moveToNext()){
@@ -85,16 +84,17 @@ class TeamFragment : Fragment() {
             sqlitedb.close()
             dbManager.close()
 
-            var ft: FragmentTransaction =fragmentManager!!.beginTransaction()
+            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
             ft.attach(this)
             ft.commit()
         }
 
-        //DB
+        // 검색창에 아무것도 입력하지 않으면 DB에서 모든 팀 정보를 가져오고
+        // 검색창에 문자열이 있으면 해당 팀만 가져온다.
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
-        var cursor: Cursor
+        val cursor: Cursor
 
         if(str_search!=""){
             cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
@@ -103,7 +103,6 @@ class TeamFragment : Fragment() {
         }
 
         var cursor2: Cursor
-
         while(cursor.moveToNext()){
             //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
             t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
@@ -114,7 +113,8 @@ class TeamFragment : Fragment() {
             t_now_num=cursor.getInt(cursor.getColumnIndex("t_now_num"))
             tc_num=cursor.getInt(cursor.getColumnIndex("c_num"))
 
-            cursor2=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '"+tc_num+"';", null)
+            // team 테이블의 tc_num(공모전 번호)를 가져와 contest 테이블에서 해당 공모전 이름을 가져온다.
+            cursor2=sqlitedb.rawQuery("SELECT c_name FROM contest WHERE c_num = '"+tc_num+"';", null)
             if(cursor2.moveToNext()){
                 c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
             }
@@ -142,6 +142,7 @@ class TeamFragment : Fragment() {
             searchNum.text="0"
         }
 
+        // 팀 목록에서 팀을 선택하면 intent로 팀 번호를 팀 상세 페이지로 넘긴다.
         teamListView.setOnItemClickListener { parent, view, position, id ->
             activity?.let {
                 val intent= Intent(activity, TeamDetailActivity::class.java)
@@ -150,6 +151,7 @@ class TeamFragment : Fragment() {
             }
         }
 
+        // 팀 추가 버튼(FloatingActionButton)을 누르면 팀 생성페이지로 이동
         addTeamFAb.setOnClickListener {
             val intent= Intent(activity, BuildTeamActivity::class.java)
             startActivity(intent)
@@ -160,9 +162,11 @@ class TeamFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        // 팀 추가 버튼으로 팀을 생성하고 다시 돌아왔을 때, 추가한 팀에 대한 정보가 바로 리스트에 적용되도록
+        // DB에 있는 레코드 수와 현재 리스트 Item 수를 비교해 레코드 수가 많으면 현재 Fragment를 새로고침 하도록 한다.
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
-        var cursor: Cursor
+        val cursor: Cursor
         if(str_search!=""){
             cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
         }else{
@@ -177,7 +181,7 @@ class TeamFragment : Fragment() {
         Log.i("-----------search_num -------", search_num.toString())
         Log.i("-----------select_num -------", select_num.toString())
         if((search_num+1)<=select_num){
-            var ft: FragmentTransaction =fragmentManager!!.beginTransaction()
+            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
             ft.attach(this)
             ft.commit()
