@@ -12,7 +12,7 @@ class NavigationActivity : AppCompatActivity() {
     private val fragmentHome by lazy { HomeFragment() }
     private val fragmentContest by lazy { ContestFragment() }
     private val fragmentTeam by lazy { TeamFragment() }
-    //private val fragmentPersonal by lazy { PersonalFragment() }
+    private val fragmentPersonal by lazy { PersonalFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +37,9 @@ class NavigationActivity : AppCompatActivity() {
                     R.id.searchMenu -> {
                         changeFragment(fragmentTeam)
                     }
-                    /*R.id.personalMenu -> {
+                    R.id.personalMenu -> {
                         changeFragment(fragmentPersonal)
-                    }*/
+                    }
                 }
                 true
             }
