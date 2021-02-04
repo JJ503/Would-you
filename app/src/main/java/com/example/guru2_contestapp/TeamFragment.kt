@@ -163,8 +163,16 @@ class TeamFragment : Fragment() {
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
         var cursor: Cursor
-        cursor=sqlitedb.rawQuery("SELECT t_num FROM team;", null)
+        if(str_search!=""){
+            cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
+        }else{
+            cursor=sqlitedb.rawQuery("SELECT * FROM team;", null)
+        }
         select_num=cursor.count
+
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
 
         Log.i("-----------search_num -------", search_num.toString())
         Log.i("-----------select_num -------", select_num.toString())
