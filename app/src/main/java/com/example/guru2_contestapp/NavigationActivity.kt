@@ -9,7 +9,7 @@ class NavigationActivity : AppCompatActivity() {
 
     lateinit var bottomNavigation: BottomNavigationView
 
-    //private val fragmentHome by lazy { HomeFragment() }
+    private val fragmentHome by lazy { HomeFragment() }
     private val fragmentContest by lazy { ContestFragment() }
     private val fragmentTeam by lazy { TeamFragment() }
     //private val fragmentPersonal by lazy { PersonalFragment() }
@@ -28,9 +28,9 @@ class NavigationActivity : AppCompatActivity() {
             setOnNavigationItemSelectedListener {
 
                 when(it.itemId){
-                    /*R.id.homeMenu -> {
+                    R.id.homeMenu -> {
                         changeFragment(fragmentHome)
-                    }*/
+                    }
                     R.id.groupMenu -> {
                         changeFragment(fragmentContest)
                     }
