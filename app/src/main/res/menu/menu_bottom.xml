@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/homeMenu"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:enabled="true"
+        android:checked="true"
+        android:title="리스트" />
+
+    <item
+        android:id="@+id/groupMenu"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_groups_24"
+        android:enabled="true"
+        android:title="기록"/>
+
+    <item
+        android:id="@+id/searchMenu"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:enabled="true"
+        android:title="더보기"/>
+
+    <item
+        android:id="@+id/personalMenu"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_perm_contact_calendar_24"
+        android:enabled="true"
+        android:title="더보기"/>
+
+</menu>

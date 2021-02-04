@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/border_line"
+        app:layout_constraintBottom_toTopOf="@+id/WdetailTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/WdetailStartDayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="2021"
+            app:layout_constraintBaseline_toBaselineOf="@+id/WtextView"
+            app:layout_constraintStart_toEndOf="@+id/WtextView" />
+
+        <TextView
+            android:id="@+id/WdetailEndDayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="2021"
+            app:layout_constraintBaseline_toBaselineOf="@+id/WdetailStartDayTextView"
+            app:layout_constraintStart_toEndOf="@+id/WtextView7" />
+
+        <TextView
+            android:id="@+id/WtextView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="~"
+            app:layout_constraintBaseline_toBaselineOf="@+id/WtextView"
+            app:layout_constraintStart_toEndOf="@+id/WdetailStartDayTextView" />
+
+        <ImageView
+            android:id="@+id/WposterImageView"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/rent" />
+
+        <TextView
+            android:id="@+id/WDetailContextNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:text="공모전 이름"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/WposterImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/WDetailHostNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:text="주최기관"
+            app:layout_constraintStart_toEndOf="@+id/WposterImageView"
+            app:layout_constraintTop_toBottomOf="@+id/WDetailContextNameTextView" />
+
+        <TextView
+            android:id="@+id/WtextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:text="분야"
+            app:layout_constraintStart_toEndOf="@+id/WposterImageView"
+            app:layout_constraintTop_toBottomOf="@+id/WDetailHostNameTextView" />
+
+        <TextView
+            android:id="@+id/WSectionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:text="분야1"
+            app:layout_constraintStart_toEndOf="@+id/WtextView2"
+            app:layout_constraintTop_toBottomOf="@+id/WDetailHostNameTextView" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:backgroundTint="#FFFFFF"
+            android:tint="#FAE100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/btn_star" />
+
+        <TextView
+            android:id="@+id/WcontestLinkTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:text="홈페이지 바로가기"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/WposterImageView"
+            app:layout_constraintTop_toBottomOf="@+id/WtextView" />
+
+        <TextView
+            android:id="@+id/WtextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:text="기간"
+            app:layout_constraintStart_toEndOf="@+id/WposterImageView"
+            app:layout_constraintTop_toBottomOf="@+id/WtextView2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/WdetailTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:text="가나다라마바사아자차카타파하\n가나다라마바사아자차카타파하\n가나다라마바사아자차카타파하\n가나다라마바사아자차카타파하\n가나다라마바사아자차카타파하\n가나다라마바사아자차카타파하"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <TextView
+        android:id="@+id/WtextView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="45dp"
+        android:text="현재 모집중인 팀"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WdetailTextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/WcontestRecyclerList"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WtextView3"
+        tools:listitem="@layout/contest_recycler_list" />
+
+    <ImageButton
+        android:id="@+id/WsearchTeamButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="42dp"
+        android:backgroundTint="@color/indigo_700"
+        android:tint="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/WtextView3"
+        app:layout_constraintTop_toBottomOf="@+id/WdetailTextView"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
