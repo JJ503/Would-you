@@ -36,7 +36,7 @@ class TeamListViewAdapter (val context: Context, val teamList: ArrayList<TeamLis
         totalNum.text = teamlist.totalNum.toString()
 
         // 남은 인원이 1명 -> 글자색 변경
-        var possible_num = teamlist.totalNum - teamlist.nowNum
+        val possible_num = teamlist.totalNum - teamlist.nowNum
         if(possible_num==1){
             nowNum.setTextColor(ContextCompat.getColor(context,R.color.impend))
             slash.setTextColor(ContextCompat.getColor(context,R.color.impend))
@@ -51,8 +51,8 @@ class TeamListViewAdapter (val context: Context, val teamList: ArrayList<TeamLis
             set(Calendar.MILLISECOND, 0)
         }.timeInMillis
 
-        var dateString=teamlist.endDate
-        var token=dateString.split(".")
+        val dateString=teamlist.endDate
+        val token=dateString.split(".")
         val deadline= Calendar.getInstance().apply {
             set(Calendar.YEAR, token[0].toInt())
             set(Calendar.MONTH, (token[1].toInt())-1)
@@ -69,6 +69,12 @@ class TeamListViewAdapter (val context: Context, val teamList: ArrayList<TeamLis
             magam.setTextColor(ContextCompat.getColor(context, R.color.impend))
         }
 
+        // 마감일이 지난 경우 -> 날짜 TextView 숨김
+        if(calcDate.toInt()<0){
+            endDate.setTextColor(ContextCompat.getColor(context, R.color.impend))
+            endDate.text="마감"
+            magam.visibility=View.GONE
+        }
         return view
     }
 
