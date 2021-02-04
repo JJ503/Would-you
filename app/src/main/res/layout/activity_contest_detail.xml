@@ -121,7 +121,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:backgroundTint="@color/star_off"
-            android:tint="@color/star_off"
+            android:tint="@color/normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_star_24" />

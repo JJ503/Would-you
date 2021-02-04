@@ -1,6 +1,7 @@
 package com.example.guru2_contestapp
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
@@ -103,11 +104,12 @@ class ContestDetailActivity : AppCompatActivity() {
             wishOnBtn.visibility= View.INVISIBLE
             wishOffBtn.visibility= View.VISIBLE
 
-            val id="id later"
+            val sharedPreferences : SharedPreferences = this.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+            var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            sqlitedb.execSQL("INSERT INTO wish VALUES ('" + id + "'," + c_num+ ")")
+            sqlitedb.execSQL("INSERT INTO wishlist VALUES ('" + id + "'," + c_num+ ")")
             sqlitedb.close()
             dbManager.close()
 

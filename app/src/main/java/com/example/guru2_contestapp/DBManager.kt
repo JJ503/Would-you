@@ -27,6 +27,7 @@ class DBManager(
         db!!.execSQL("CREATE TABLE wishlist (" +
                 "id TEXT NOT NULL," +
                 "t_num INTEGER," +
+                "state	INTEGER," +
                 "FOREIGN KEY(id) REFERENCES member(id) ON DELETE CASCADE," +
                 "FOREIGN KEY(t_num) REFERENCES team(t_num) ON UPDATE CASCADE" +
                 ");")
