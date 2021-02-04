@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +24,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
 
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -55,11 +54,11 @@ class HomeFragment : Fragment() {
                 userName.setText(name)
             }
         } catch(e: Exception){
-            //Log.e("Error", e.message)
+            Log.e("Error", e.message.toString())
         } finally{
             sqlitedb.close()
         }
-        // Inflate the layout for this fragment
+
         return view
     }
 

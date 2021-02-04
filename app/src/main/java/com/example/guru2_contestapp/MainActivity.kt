@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
                         editor.commit()
 
                         val intent = Intent(this, NavigationActivity::class.java)
-                        //intent.putExtra("id", idEditText.text.toString())
                         startActivity(intent)
                     } else{
                         Toast.makeText(this, "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show()
