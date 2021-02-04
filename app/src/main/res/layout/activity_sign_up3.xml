@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.guru2_contestapp.SignUp3">
+    tools:context=".SignUp3">
 
     <Spinner
         android:id="@+id/JjobSpinner"

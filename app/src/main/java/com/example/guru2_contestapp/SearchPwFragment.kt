@@ -6,16 +6,15 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 
-
-class SearchPasswordFragment : Fragment() {
+class SearchPwFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +43,7 @@ class SearchPasswordFragment : Fragment() {
                         null)
                     cursor.moveToFirst()
 
-                    if (cursor != null){
+                    if (cursor.getCount() == 1){
                         var USER_EMAIL = cursor.getString(cursor.getColumnIndex("email"))
                         var USER_PW = cursor.getString(cursor.getColumnIndex("pw"))
                         var USER_NAME = cursor.getString(cursor.getColumnIndex("name"))

@@ -9,14 +9,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class SearchInfo : AppCompatActivity() {
+class SearchIdPw : AppCompatActivity() {
     lateinit var searchTabLaout: TabLayout
     lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_info)
-
+        setContentView(R.layout.activity_search_id_pw)
         searchTabLaout = findViewById(R.id.searchTabLayout)
         viewPager = findViewById(R.id.viewPager)
 
@@ -37,7 +36,7 @@ class SearchInfo : AppCompatActivity() {
             return when(position){
                 //0 -> createTeamFragment()
                 0 -> SearchIdFragment()
-                1 -> SearchPasswordFragment()
+                1 -> SearchPwFragment()
                 else -> ErrorFragment()
             }
         }
