@@ -42,6 +42,10 @@ class ContestDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contest_detail)
 
+        // 로그인한 계정 아이디
+        val sharedPreferences : SharedPreferences = this.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
         contestName=findViewById(R.id.WDetailContextNameTextView)
         hostName=findViewById(R.id.WDetailHostNameTextView)
         section=findViewById(R.id.WSectionTextView)
@@ -60,7 +64,7 @@ class ContestDetailActivity : AppCompatActivity() {
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
-        val cursor: Cursor
+        var cursor: Cursor
         cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '"+c_num+"';", null)
 
         if(cursor.moveToNext()){
@@ -86,7 +90,33 @@ class ContestDetailActivity : AppCompatActivity() {
         detail.text= str_detail
 
 
-        // 홈페이지 바로가기 클릭하면 DB에서 가져온 홈페이지 주소로 웹 브라우저를 이용해 이동한다.
+        // 현재 로그인 된 계정에 대한 wishlist 정보를 가져와 해당 공모전에 state가 1이면 노란별,
+        // 0이면 빈 별을 보여준다.
+        dbManager = DBManager(this, "ContestAppDB", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        cursor=sqlitedb.rawQuery("SELECT state FROM wishlist WHERE id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
+
+        var state=-1
+        if(cursor.moveToNext()){
+            state=cursor.getInt(cursor.getColumnIndex("state"))
+        }
+
+        when(state){
+            0 -> {
+                wishOnBtn.visibility= View.INVISIBLE
+                wishOffBtn.visibility= View.VISIBLE
+            }
+            1 -> {
+                wishOnBtn.visibility= View.VISIBLE
+                wishOffBtn.visibility= View.INVISIBLE
+            }
+        }
+
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
+
+        // 홈페이지 바로가기 클릭하면 DB에서 가져온 홈페이지 주소로 웹 브라우저를 이용해 이동
         homepage.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(str_address)))
         }
@@ -100,24 +130,37 @@ class ContestDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+        //빈 별을 클릭한 경우 DB에서 로그인 계정의 현재 공모전에 대한 state를 1로 바꿔주고, 빈 별을 숨기고 노란 별을 보여준다.
+        wishOffBtn.setOnClickListener {
+            wishOnBtn.visibility= View.VISIBLE
+            wishOffBtn.visibility= View.INVISIBLE
+
+            var cursor: Cursor
+            dbManager = DBManager(this, "ContestAppDB", null, 1)
+            sqlitedb = dbManager.readableDatabase
+            cursor=sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
+            if(cursor.count==0){
+                sqlitedb.execSQL("INSERT INTO wishlist VALUES ('"+USER_ID+"', "+c_num+", 1)")
+            }else{
+                sqlitedb.execSQL("UPDATE wishlist SET state = 1 WHERE id ='"+ USER_ID+"' AND c_num =" +c_num+";")
+            }
+            cursor.close()
+            sqlitedb.close()
+            dbManager.close()
+        }
+
+        //노란별 별을 클릭한 경우 DB에서 로그인 계정의 현재 공모전에 대한 state를 0로 바꿔주고, 노란 별을 숨기고 빈 별을 보여준다.
         wishOnBtn.setOnClickListener {
             wishOnBtn.visibility= View.INVISIBLE
             wishOffBtn.visibility= View.VISIBLE
 
-            val sharedPreferences : SharedPreferences = this.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
-            var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
-
+            var cursor: Cursor
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            sqlitedb.execSQL("INSERT INTO wishlist VALUES ('" + id + "'," + c_num+ ")")
+            sqlitedb.execSQL("UPDATE wishlist SET state = 0 WHERE id ='"+ USER_ID+"' AND c_num =" +c_num+";")
             sqlitedb.close()
             dbManager.close()
-
-        }
-
-        wishOffBtn.setOnClickListener {
-            wishOnBtn.visibility= View.VISIBLE
-            wishOffBtn.visibility= View.INVISIBLE
         }
     }
 
