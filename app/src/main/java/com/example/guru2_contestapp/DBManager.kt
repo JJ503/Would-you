@@ -23,6 +23,7 @@ class DBManager(
                 "FOREIGN KEY(id) REFERENCES member(id) ON DELETE CASCADE," +
                 "FOREIGN KEY(t_num) REFERENCES team(t_num) ON UPDATE CASCADE" +
                 ");")
+
         db!!.execSQL("CREATE TABLE wishlist (" +
                 "id TEXT NOT NULL," +
                 "t_num INTEGER," +
@@ -36,9 +37,9 @@ class DBManager(
                 "pw TEXT NOT NULL," +
                 "profile BLOB," +
                 "tel TEXT NOT NULL," +
-                "year INTEGER NOT NULL," +
-                "month INTEGER NOT NULL," +
-                "date INTEGER NOT NULL," +
+                "year TEXT NOT NULL," +
+                "month TEXT NOT NULL," +
+                "date TEXT NOT NULL," +
                 "email TEXT NOT NULL," +
                 "job TEXT NOT NULL," +
                 "univ TEXT," +

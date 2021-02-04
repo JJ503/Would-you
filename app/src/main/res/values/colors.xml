@@ -12,4 +12,6 @@
     <color name="impend">#F15F5F</color>
     <color name="star_off">#C6C4C4</color>
     <color name="star_on">#C6C4C4</color>
+    <color name="error">#ff5151</color>
+    <color name="normal">#757575</color>
 </resources>

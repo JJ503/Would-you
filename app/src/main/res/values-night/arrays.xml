@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name = "job">
+        <item>직업을 선택해주세요</item>
+        <item>청소년</item>
+        <item>대학생</item>
+        <item>일반인</item>
+        <item>직장인</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name = "area">
+        <item>지역을 선택해주세요</item>
+        <item>서울</item>
+        <item>경기</item>
+        <item>인청</item>
+        <item>부산</item>
+        <item>울산</item>
+        <item>대구</item>
+        <item>대전</item>
+        <item>광주</item>
+        <item>강원</item>
+        <item>경북</item>
+        <item>강남</item>
+        <item>충북</item>
+        <item>충남</item>
+        <item>전북</item>
+        <item>전남</item>
+        <item>제주</item>
+    </string-array>
+
+    <string-array name = "interests">
+        <item>관심사를 선택해주세요</item>
+        <item>기획/아이디어</item>
+        <item>광고/마케팅</item>
+        <item>사진/영상/UCC</item>
+        <item>디자인/순수미술/공예</item>
+        <item>네이밍/슬로건</item>
+        <item>캐릭터/만화/게임</item>
+        <item>건축/건설/인테리어</item>
+        <item>과학/공학</item>
+        <item>예체능/패션</item>
+        <item>전시/패스티벌</item>
+        <item>문학/시나리오</item>
+        <item>학술</item>
+        <item>기타</item>
+    </string-array>
+
+    <string-array name = "mail">
+        <item>선택해주세요</item>
+        <item>gmail.com</item>
+        <item>namver.com</item>
+        <item>daum.net</item>
+        <item>기타</item>
+    </string-array>
+</resources>

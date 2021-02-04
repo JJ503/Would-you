@@ -24,6 +24,8 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
+        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
+
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
         var context: Context = requireContext()
@@ -39,7 +41,7 @@ class HomeFragment : Fragment() {
             cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '${USER_ID}';", null)
             cursor.moveToFirst()
 
-            if (cursor == null){
+            if (cursor.getCount() != 1){
                 Toast.makeText(activity, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             } else{
                 var cursor : Cursor
