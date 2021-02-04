@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/WadverImageView"
+        android:layout_width="42dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/WnowNumTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+
+    <TextView
+        android:id="@+id/WadverTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:text="홍보글 제목"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/WcontestNameTextView"
+        app:layout_constraintStart_toEndOf="@+id/WadverImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39" />
+
+    <TextView
+        android:id="@+id/WendDateTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="2021"
+        app:layout_constraintBaseline_toBaselineOf="@+id/WslashTextView"
+        app:layout_constraintStart_toEndOf="@+id/WadverImageView" />
+
+    <TextView
+        android:id="@+id/WneedPartTextivew"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:text="필요 분야"
+        app:layout_constraintBottom_toTopOf="@+id/WendDateTextView2"
+        app:layout_constraintStart_toEndOf="@+id/WadverImageView"
+        app:layout_constraintTop_toBottomOf="@+id/WcontestNameTextView" />
+
+    <TextView
+        android:id="@+id/WnowNumTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="8dp"
+        android:text="3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WadverImageView" />
+
+    <TextView
+        android:id="@+id/WslashTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
+        android:text="/"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/WnowNumTextView"
+        app:layout_constraintTop_toBottomOf="@+id/WadverImageView" />
+
+    <TextView
+        android:id="@+id/WtotalNumTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="8dp"
+        android:text="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/WslashTextView"
+        app:layout_constraintTop_toBottomOf="@+id/WadverImageView" />
+
+    <TextView
+        android:id="@+id/WcontestNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="3dp"
+        android:text="공모전 이름"
+        app:layout_constraintBottom_toTopOf="@+id/WneedPartTextivew"
+        app:layout_constraintStart_toEndOf="@+id/WadverImageView"
+        app:layout_constraintTop_toBottomOf="@+id/WadverTitleTextView" />
+
+    <TextView
+        android:id="@+id/WtextView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="마감"
+        app:layout_constraintBaseline_toBaselineOf="@+id/WendDateTextView2"
+        app:layout_constraintStart_toEndOf="@+id/WendDateTextView2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

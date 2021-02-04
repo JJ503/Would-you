@@ -10,8 +10,8 @@ class NavigationActivity : AppCompatActivity() {
     lateinit var bottomNavigation: BottomNavigationView
 
     private val fragmentHome by lazy { HomeFragment() }
-    //private val fragmentContest by lazy { ContestFragment() }
-    //private val fragmentTeam by lazy { TeamFragment() }
+    private val fragmentContest by lazy { ContestFragment() }
+    private val fragmentTeam by lazy { TeamFragment() }
     //private val fragmentPersonal by lazy { PersonalFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,12 +31,12 @@ class NavigationActivity : AppCompatActivity() {
                     R.id.homeMenu -> {
                         changeFragment(fragmentHome)
                     }
-                    /*R.id.groupMenu -> {
+                    R.id.groupMenu -> {
                         changeFragment(fragmentContest)
                     }
                     R.id.searchMenu -> {
                         changeFragment(fragmentTeam)
-                    }*/
+                    }
                     /*R.id.personalMenu -> {
                         changeFragment(fragmentPersonal)
                     }*/

@@ -9,7 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Guru2_ContestApp">
-        <activity android:name=".NavigationActivity"></activity>
+        <activity
+            android:name=".ResumeActivity"
+            android:parentActivityName=".NavigationActivity"/>
+        <activity
+            android:name=".TeamDetailActivity"
+            android:parentActivityName=".NavigationActivity"/>
+        <activity
+            android:name=".BuildTeamActivity"
+            android:parentActivityName=".NavigationActivity"/>
+        <activity
+            android:name=".ContestDetailActivity"
+            android:parentActivityName=".NavigationActivity"/>
+        <activity
+            android:name=".NavigationActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
