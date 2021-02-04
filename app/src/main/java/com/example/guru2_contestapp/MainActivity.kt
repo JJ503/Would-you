@@ -26,16 +26,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //idEditText = findViewById(R.id.JidEditText)
-        //pwEditText = findViewById(R.id.JpwEditText)
-        //searchText = findViewById<TextView>(R.id.JsearchText)
-        //signUpText = findViewById<TextView>(R.id.JsignUpText)
+        idEditText = findViewById(R.id.JidEditText)
+        pwEditText = findViewById(R.id.JpwEditText)
+        searchText = findViewById<TextView>(R.id.JsearchText)
+        signUpText = findViewById<TextView>(R.id.JsignUpText)
         loginButton = findViewById<Button>(R.id.JloginButton)
-        loginButton.setOnClickListener {
-            val intent= Intent(this, NavigationActivity::class.java)
-            startActivity(intent)
-        }
-        /*dbManager = DBManager(this, "ContestAppDB", null, 1)
+
+        dbManager = DBManager(this, "ContestAppDB", null, 1)
 
         signUpText.setOnClickListener {
             val intent = Intent(this, SignUp::class.java)
@@ -81,10 +78,10 @@ class MainActivity : AppCompatActivity() {
             } finally{
                 sqlitedb.close()
             }
-        }*/
+        }
     }
 
-    /*private fun saveData(user_id: String){
+    private fun saveData(user_id: String){
         var pref = this.getPreferences(0)
         var editor = pref.edit()
 
@@ -94,5 +91,5 @@ class MainActivity : AppCompatActivity() {
     private fun loadData(){
         var pref = this.getPreferences(0)
         var user_id = pref.getString("KEY_USERID", "")
-    }*/
+    }
 }
