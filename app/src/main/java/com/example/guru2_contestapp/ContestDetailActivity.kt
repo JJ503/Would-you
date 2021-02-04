@@ -109,7 +109,7 @@ class ContestDetailActivity : AppCompatActivity() {
 
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            sqlitedb.execSQL("INSERT INTO wishlist VALUES ('" + USER_ID + "'," + c_num+ ")")
+            sqlitedb.execSQL("INSERT INTO wishlist VALUES ('" + id + "'," + c_num+ ")")
             sqlitedb.close()
             dbManager.close()
 

@@ -1,6 +1,7 @@
 package com.example.guru2_contestapp
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +61,6 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_cm_date: String
     lateinit var str_cm_detail: String
 
-    lateinit var str_cm_reg_id: String
     lateinit var str_cm_reg_date: String
     lateinit var str_cm_reg_detail: String
 
@@ -68,6 +68,10 @@ class TeamDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_detail)
+
+        // 로그인한 계정 아이디
+        val sharedPreferences : SharedPreferences = this.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
         teamName=findViewById(R.id.Wtdetail_teamNameTextView)
         contestName=findViewById(R.id.Wtdetail_contestNameTextView)
@@ -195,9 +199,6 @@ class TeamDetailActivity : AppCompatActivity() {
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else {
-                // str_cm_reg_id 나중에 세션과 연결
-                str_cm_reg_id="later add"
-
                 val currentDateTime= Calendar.getInstance().time
                 val dateFormat= SimpleDateFormat("yyyy.MM.dd  HH:mm", Locale.KOREA).format(currentDateTime)
                 str_cm_reg_date=dateFormat
@@ -205,7 +206,7 @@ class TeamDetailActivity : AppCompatActivity() {
 
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                sqlitedb.execSQL("INSERT INTO comment (t_num, s_id, cm_date, cm_detail) VALUES(" + t_num + ", '" + str_cm_reg_id + "', '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
+                sqlitedb.execSQL("INSERT INTO comment (t_num, s_id, cm_date, cm_detail) VALUES(" + t_num + ", '" + USER_ID + "', '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
 
                 sqlitedb.close()
                 dbManager.close()
