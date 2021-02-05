@@ -1,5 +1,7 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -7,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -36,8 +39,11 @@ class ApplyTeamListFragment : Fragment() {
         lateinit var teamList : ArrayList<Team>
         teamList=ArrayList()
 
-        var USER_ID:String="sPPong123"  // 현재 사용자라 가정 (이건 나중에 SESSION 작업 필요)
-        dbManager = DBManager(requireContext(), "ContestAppDB", null, 1)
+        var context: Context = requireContext()
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+        dbManager = DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb =dbManager.readableDatabase
 
         var cursor1 : Cursor // 쿼리1
@@ -86,7 +92,7 @@ class ApplyTeamListFragment : Fragment() {
         var rv_applyTeam :RecyclerView = preView.findViewById<RecyclerView>(R.id.rv_team)
 
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
-        rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, false)
+        rv_applyTeam.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
         rv_applyTeam.adapter = TeamAdapter(teamList)
 
