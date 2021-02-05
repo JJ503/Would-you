@@ -52,15 +52,14 @@ class CareerListFragment : Fragment() {
         )  //  쿼리1
 
 
-        lateinit var cursor2: Cursor // 쿼리2
-        var team_num: Int = 0    // 쿼리1로 얻은 t_num 저장하는 임시변수 (쿼리2의 인자값으로 사용됨)
 
-        lateinit var cursor3: Cursor // 쿼리3
+        var t_num: Int = 0    // 쿼리1로 얻은 t_num 저장하는 임시변수 (쿼리2의 인자값으로 사용됨)
+        var cursor2 : Cursor? = null// 쿼리2
+        var cursor3: Cursor? = null // 쿼리3
         while (cursor1.moveToNext()) {
 
-            team_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
-            cursor2 =
-                sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = " + team_num + ";", null) //쿼리2
+            t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
+            cursor2 = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = " + t_num + ";", null) //쿼리2
 
             if (cursor2.moveToNext()) {
                 // 사진 추가도 해야됨 .
@@ -92,8 +91,8 @@ class CareerListFragment : Fragment() {
         }
 
         cursor1.close()
-        cursor2.close()
-        cursor3.close()
+        cursor2?.close()
+        cursor3?.close()
         sqlitedb.close()
         dbManager.close()
 

@@ -105,14 +105,13 @@ class PersonalFragment : Fragment() {
         }
 
 
-/*      // 추후 변경해야됨. (Setting은 원래 액티비티였는데, 이를 프래그먼트로 바꿔야함. 신난다 ㅎㅎㅎㅎ
+
         // 설정 화면으로  전환
         settingBtn = v_personal.findViewById(R.id.settingBtn)
         settingBtn.setOnClickListener {
             val intent =  Intent(activity, Setting::class.java)
             startActivity(intent)
         }
-*/
 
 
         // TabLayoutMediator : tablayout과 viewPager 연결

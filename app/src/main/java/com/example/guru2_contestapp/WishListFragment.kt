@@ -27,9 +27,9 @@ class WishListFragment : Fragment() {
         var preView = inflater.inflate(R.layout.fragment_wish_list, container, false)
 
 
-        var t_num: Int = -1
-        lateinit var t_name: String
-        lateinit var t_end_date: String
+        var c_num: Int = -1
+        lateinit var c_name: String
+        lateinit var c_end: String
 
 
         lateinit var wishlist: ArrayList<Wish>
@@ -48,40 +48,47 @@ class WishListFragment : Fragment() {
         var cursor1: Cursor // 쿼리1
         cursor1 =
             sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '" + USER_ID + "';", null)  //
-        lateinit var cursor2: Cursor // 쿼리2
+        var cursor2: Cursor ?=null // 쿼리2
 
         var deadline: Int = -1
 
-
+        var deadlineTxt: String=""
         while (cursor1.moveToNext()) {
 
-            t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
+            c_num = cursor1.getInt(cursor1.getColumnIndex("c_num"))
 
-            cursor2 =
-                sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = " + t_num + ";", null) //쿼리2
+            cursor2 = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = " + c_num + ";", null) //쿼리2
             if (cursor2.moveToNext()) {
                 // team에서 해당 팀 정보 가져오기
                 // 공모전 사진도 가져와야됨
-                t_name = cursor2.getString(cursor2.getColumnIndex("t_name"))
-                t_end_date = cursor2.getString(cursor2.getColumnIndex("t_end_date"))
+                c_name = cursor2.getString(cursor2.getColumnIndex("c_name"))
+                c_end = cursor2.getString(cursor2.getColumnIndex("c_end"))
 
-                deadline = checkDays(t_end_date)
+                deadline = checkDays(c_end)
 
+                // 마감 -인 것은 따로 전처리 필요함
+                if( deadline <0)
+                {
+                    deadlineTxt = "모집 종료"
+                }
+                else{
+                    deadlineTxt = "모집" + deadline.toString() + "일 전"
+                }
 
             }
 
             wishlist.add(
                 Wish(
-                    "마감 " + deadline.toString() + "일 전",
+                    deadlineTxt,
                     R.drawable.ic_baseline_add_photo_alternate_24,
-                    t_name
+                    c_name
                 )
             )
 
         }
 
         cursor1.close()
-        cursor2.close()
+        cursor2?.close()
         sqlitedb.close()
         dbManager.close()
 
@@ -121,6 +128,8 @@ class WishListFragment : Fragment() {
 
         val calcDate = (deadline - today) / (24 * 60 * 60 * 1000)
         return calcDate.toInt()
+
+
     }
 
 }

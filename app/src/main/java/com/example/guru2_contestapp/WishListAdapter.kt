@@ -1,10 +1,13 @@
 package com.example.guru2_contestapp
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class WishListAdapter (val wishlist:ArrayList<Wish>): RecyclerView.Adapter <WishListAdapter.CustomViewHolder>()
@@ -17,10 +20,16 @@ class WishListAdapter (val wishlist:ArrayList<Wish>): RecyclerView.Adapter <Wish
     }
 
     // 뷰의 데이터 매치 (스크롤 등 때 계속 지원)
+
     override fun onBindViewHolder(holder: WishListAdapter.CustomViewHolder, position: Int) {
         holder.contestImg.setImageResource(wishlist.get(position).contestImg)
         holder.deadLine.text = wishlist.get(position).deadLine
         holder.contestName.text = wishlist.get(position).contestName
+
+
+        if (wishlist.get(position).deadLine =="모집 종료"){
+            holder.deadLine.setTextColor(Color.parseColor("#FF0000"))
+        }
     }
 
     //리스트 총 개수
