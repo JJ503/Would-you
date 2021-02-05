@@ -72,7 +72,7 @@ class TeamListViewAdapter (val context: Context, val teamList: ArrayList<TeamLis
         // 마감일이 지난 경우 -> 날짜 TextView 숨김
         if(calcDate.toInt()<0){
             endDate.setTextColor(ContextCompat.getColor(context, R.color.impend))
-            endDate.text="마감"
+            endDate.text="모집 종료"
             magam.visibility=View.GONE
         }
         return view
