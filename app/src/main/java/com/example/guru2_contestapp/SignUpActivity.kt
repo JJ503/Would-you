@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
 @Suppress("DEPRECATION")
-class SignUp : AppCompatActivity() {
+class SignUpActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
@@ -74,7 +74,7 @@ class SignUp : AppCompatActivity() {
                         }
                     } else{
                         Toast.makeText(this, "이미 사용 중인 아이디입니다.", Toast.LENGTH_SHORT).show()
-                        idEditText.setTextColor(ContextCompat.getColor(this@SignUp, R.color.error))
+                        idEditText.setTextColor(ContextCompat.getColor(this@SignUpActivity, R.color.error))
                     }
                 }
             } catch(e: Exception){
@@ -92,7 +92,7 @@ class SignUp : AppCompatActivity() {
 
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                idEditText.setTextColor(ContextCompat.getColor(this@SignUp, R.color.normal))
+                idEditText.setTextColor(ContextCompat.getColor(this@SignUpActivity, R.color.normal))
             }
         })
 
@@ -101,13 +101,13 @@ class SignUp : AppCompatActivity() {
 
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                passCheckEditText.setTextColor(ContextCompat.getColor(this@SignUp, R.color.error))
+                passCheckEditText.setTextColor(ContextCompat.getColor(this@SignUpActivity, R.color.error))
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (passwordEditText.text.toString() != passCheckEditText.text.toString()){
-                    passCheckEditText.setTextColor(ContextCompat.getColor(this@SignUp, R.color.error))
+                    passCheckEditText.setTextColor(ContextCompat.getColor(this@SignUpActivity, R.color.error))
                 } else{
-                    passCheckEditText.setTextColor(ContextCompat.getColor(this@SignUp, R.color.normal))
+                    passCheckEditText.setTextColor(ContextCompat.getColor(this@SignUpActivity, R.color.normal))
                 }
             }
         })
@@ -128,7 +128,7 @@ class SignUp : AppCompatActivity() {
                     idEditText.text.toString(),
                     passwordEditText.text.toString())
 
-                val intent = Intent(this, SignUp2::class.java)
+                val intent = Intent(this, SignUp2Activity::class.java)
                 startActivity(intent)
             }
         }

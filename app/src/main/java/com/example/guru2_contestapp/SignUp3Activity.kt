@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 
-class SignUp3 : AppCompatActivity() {
+class SignUp3Activity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 

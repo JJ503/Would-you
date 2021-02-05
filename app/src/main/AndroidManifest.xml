@@ -9,21 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Guru2_ContestApp">
-        <activity android:name=".Setting"
-            android:parentActivityName=".NavigationActivity"></activity>
         <activity
             android:name=".ResumeActivity"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"/>
         <activity
             android:name=".TeamDetailActivity"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"/>
         <activity
             android:name=".BuildTeamActivity"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"/>
         <activity
             android:name=".ContestDetailActivity"
-            android:parentActivityName=".NavigationActivity" />
-        <activity android:name=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"/>
+        <activity
+            android:name=".NavigationActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,18 +30,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="SearchInfo" />
         <activity
-            android:name=".SignUp3"
+            android:name="SignUp3"
             android:label="회원가입"
-            android:parentActivityName=".SignUp2" />
+            android:parentActivityName="SignUp2" />
         <activity
-            android:name=".SignUp2"
+            android:name="SignUp2"
             android:label="회원가입"
-            android:parentActivityName=".SignUp" />
+            android:parentActivityName="SignUp" />
         <activity
-            android:name=".SignUp"
+            android:name="SignUp"
             android:label="회원가입"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName="MainActivity" />
     </application>
 
 </manifest>
