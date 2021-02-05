@@ -35,12 +35,12 @@ class MainActivity : AppCompatActivity() {
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
         signUpText.setOnClickListener {
-            val intent = Intent(this, SignUp::class.java)
+            val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
 
         searchText.setOnClickListener {
-            val intent = Intent(this, SearchIdPw::class.java)
+            val intent = Intent(this, SearchIdPwActivity::class.java)
             startActivity(intent)
         }
 

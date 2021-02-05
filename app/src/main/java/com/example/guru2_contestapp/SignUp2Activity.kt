@@ -11,7 +11,7 @@ import android.util.Log
 import android.widget.*
 import androidx.core.content.ContextCompat
 
-class SignUp2 : AppCompatActivity() {
+class SignUp2Activity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
@@ -44,17 +44,17 @@ class SignUp2 : AppCompatActivity() {
         phoneEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (phoneEditText.text.toString().length <= 11) {
-                    phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.normal))
+                    phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
                 } else {
                     //Toast.makeText(this, "전화번호를 다시 확인해 주세요.", Toast.LENGTH_SHORT).show()
-                    phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.error))
+                    phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.normal))
+                phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
             }
         })
 
@@ -74,7 +74,7 @@ class SignUp2 : AppCompatActivity() {
                         Toast.makeText(this, "사용할 수 있는 전화번호입니다.", Toast.LENGTH_SHORT).show()
                     } else{
                         Toast.makeText(this, "이미 가입한 전화번호입니다.", Toast.LENGTH_SHORT).show()
-                        phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.error))
+                        phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
                     }
                 }
             } catch(e: Exception){
@@ -87,17 +87,17 @@ class SignUp2 : AppCompatActivity() {
         birthEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (birthEditText.text.toString().length <= 6) {
-                    birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.normal))
+                    birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
                 } else {
                     //Toast.makeText(this, "이메일을 다시 확인해 주세요.", Toast.LENGTH_SHORT).show()
-                    birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.error))
+                    birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.normal))
+                birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
             }
         })
 
@@ -136,7 +136,7 @@ class SignUp2 : AppCompatActivity() {
                     emailEditText.text.toString(),
                     emailSpinner.selectedItem.toString())
 
-                val intent = Intent(this, SignUp3::class.java)
+                val intent = Intent(this, SignUp3Activity::class.java)
                 startActivity(intent)
             }
         }
@@ -149,7 +149,7 @@ class SignUp2 : AppCompatActivity() {
 
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.normal))
+                phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
             }
         })
     }

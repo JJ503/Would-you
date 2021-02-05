@@ -31,6 +31,19 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="SearchInfo" />
+        <activity
+            android:name="SignUp3Activity"
+            android:label="회원가입"
+            android:parentActivityName="SignUp2Activity" />
+        <activity
+            android:name="SignUp2Activity"
+            android:label="회원가입"
+            android:parentActivityName="SignUpActivity" />
+        <activity
+            android:name="SignUpActivity"
+            android:label="회원가입"
+            android:parentActivityName="MainActivity" />
     </application>
 
 </manifest>
