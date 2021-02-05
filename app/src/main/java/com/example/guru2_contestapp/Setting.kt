@@ -2,6 +2,7 @@ package com.example.guru2_contestapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -9,8 +10,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class Setting {
-/*
+class Setting : AppCompatActivity() {
+
     lateinit var tablayout : TabLayout
     lateinit var  viewPager2_1 : ViewPager2
 
@@ -41,12 +42,21 @@ class Setting {
     private inner class ViewPagerAdapter_setting(fa: FragmentActivity): FragmentStateAdapter(fa){
         override fun createFragment(position: Int): Fragment {
             return when(position){
-                0 -> myInfo()
-                1 -> changePw()
+                0 -> MyInfoFragment()
+                1 -> ChangePwFragment()
                 else -> ErrorFragment()
             }
         }
         override fun getItemCount():Int = PAGE_CNT
     }
-*/
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==android.R.id.home){
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }

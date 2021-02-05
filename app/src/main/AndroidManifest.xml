@@ -33,15 +33,15 @@
 
         <activity android:name="SearchInfo" />
         <activity
-            android:name="SignUp3Activity"
+            android:name="SignUp3"
             android:label="회원가입"
-            android:parentActivityName="SignUp2Activity" />
+            android:parentActivityName="SignUp2" />
         <activity
-            android:name="SignUp2Activity"
+            android:name="SignUp2"
             android:label="회원가입"
-            android:parentActivityName="SignUpActivity" />
+            android:parentActivityName="SignUp" />
         <activity
-            android:name="SignUpActivity"
+            android:name="SignUp"
             android:label="회원가입"
             android:parentActivityName="MainActivity" />
     </application>
