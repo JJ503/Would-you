@@ -9,20 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Guru2_ContestApp">
+        <activity android:name=".ApplicantListActivity"></activity>
         <activity
             android:name=".ResumeActivity"
-            android:parentActivityName=".NavigationActivity"/>
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name=".TeamDetailActivity"
-            android:parentActivityName=".NavigationActivity"/>
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name=".BuildTeamActivity"
-            android:parentActivityName=".NavigationActivity"/>
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name=".ContestDetailActivity"
-            android:parentActivityName=".NavigationActivity"/>
-        <activity
-            android:name=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity" />
+        <activity android:name=".NavigationActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SignUp3Activity"
             android:label="회원가입"
@@ -42,7 +41,7 @@
         <activity
             android:name=".SignUpActivity"
             android:label="회원가입"
-            android:parentActivityName="MainActivity" />
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
