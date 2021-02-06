@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,6 +20,11 @@ class ApplicantListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_applicant_list)
+
+        //BuildTeamListFragment에서 t_num을 전달받는다.
+        val t_num :Int = intent.getIntExtra("t_num",-1)
+        //Toast.makeText(this,"t_num : "+t_num,Toast.LENGTH_SHORT).show()
+        Log.d("/--------t_num=--------/",t_num.toString())
 
         listArray = ArrayList()
 

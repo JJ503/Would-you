@@ -3,6 +3,7 @@ package com.example.guru2_contestapp
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Bitmap
@@ -18,6 +19,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -44,7 +46,7 @@ class PersonalFragment : Fragment() {
     lateinit var str_name :String
     lateinit var str_id :String
     lateinit var str_job :String
-    lateinit var str_univ :String
+    var str_univ :String =""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,11 +67,17 @@ class PersonalFragment : Fragment() {
         user_job =v_personal.findViewById(R.id.user_job)
 
 
+
         //DB 연결
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
-
-        var USER_ID:String="sPPong123"  // 현재 사용자라 가정 (이건 나중에 SESSION 작업 필요)
         sqlitedb = dbManager.readableDatabase
+
+
+        //현재 로그인 중인 사용자 지정
+        var context: Context = requireContext()
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
 
         var cursor: Cursor
         cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '" + USER_ID + "';", null)
@@ -78,8 +86,11 @@ class PersonalFragment : Fragment() {
         if (cursor.moveToNext()) {
             str_name = cursor.getString(cursor.getColumnIndex("name"))
             str_id = cursor.getString(cursor.getColumnIndex("id"))
-            str_job = cursor.getString(cursor.getColumnIndex("job"))
-            str_univ = cursor.getString(cursor.getColumnIndex("univ")) //이거 NULL 일때는 오류임 (이거 수정 필요)
+            str_job = "("+cursor.getString(cursor.getColumnIndex("job"))+")"
+            if(cursor.getString(cursor.getColumnIndex("univ"))!=null){
+                str_univ = cursor.getString(cursor.getColumnIndex("univ"))
+            }
+
         }
 
         cursor.close()
@@ -88,7 +99,7 @@ class PersonalFragment : Fragment() {
 
         user_name.text = str_name
         user_id.text = str_id
-        user_job.text = str_job  +"(" +str_univ +")" //univ NULL 일때는 오류임 (이거 수정 필요)
+        user_job.text = str_job  +str_univ //univ NULL 일때는 오류임 (이거 수정 필요)
 
 
 
@@ -147,9 +158,10 @@ class PersonalFragment : Fragment() {
 
 
                         //DB 연결
-                        dbManager = DBManager(activity, "ContestAppDB", null, 1)
+                        var context: Context = requireContext()
+                        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+                        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
-                        var USER_ID:String="sPPong123"  // 현재 사용자라 가정 (이건 나중에 SESSION 작업 필요)
                         sqlitedb = dbManager.writableDatabase
                         sqlitedb.execSQL("UPDATE member SET profile = '" + bitmap + "' WHERE id = '"
                                 + USER_ID+ "';")
@@ -175,52 +187,52 @@ class PersonalFragment : Fragment() {
         val tab_num =view.findViewById<TextView>(R.id.tab_num)
         val tab_title=view.findViewById<TextView>(R.id.tab_title)
 
-        var createTeam_num: Int = 0
-        var applyTeam_num: Int = 0
-        var carreer_num: Int = 0
-        var wishlist_num: Int = 0
+        var BuildTeam_num: Int = 0
+        var ApplyTeam_num: Int = 0
+        var Carreer_num: Int = 0
+        var Wish_num: Int = 0
 
         // DB에서 정보 불러오기(리사이클러뷰)
-        lateinit var dbManager : DBManager
-        lateinit var sqlitedb : SQLiteDatabase
 
-        var USER_ID:String="sPPong123"  // 현재 사용자라 가정 (이건 나중에 SESSION 작업 필요)
-        dbManager = DBManager(activity, "ContestAppDB", null, 1)
+        var context: Context = requireContext()
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
         sqlitedb =dbManager.readableDatabase
 
         // 각 tab 별로 item의 개수를 DB로 부터 가져옴
         var cursor : Cursor
-        cursor = sqlitedb.rawQuery("SELECT COUNT(*) FROM teamManage WHERE id = '" + USER_ID + "' AND state == 2;", null)
-        createTeam_num = cursor.getCount()
+        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state == 2;", null)
+        BuildTeam_num = cursor.getCount()
 
         cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state >= -1  AND state < 2;", null)
-        applyTeam_num = cursor.getCount()
+        ApplyTeam_num = cursor.getCount()
 
         cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state == 5;", null)  //  쿼리1
-        carreer_num = cursor.getCount()
+        Carreer_num = cursor.getCount()
 
         cursor = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '" + USER_ID + "';", null)
+        Wish_num = cursor.getCount()
 
-        wishlist_num = cursor.getCount()
         cursor.close()
 
 
         // tab에 숫자랑 텍스트 연결함
         when(position){
             0 -> {
-                tab_num.text = createTeam_num.toString()
+                tab_num.text = BuildTeam_num.toString()
                 tab_title.text = "만든 팀"
             }
             1 -> {
-                tab_num.text = applyTeam_num.toString()
+                tab_num.text = ApplyTeam_num.toString()
                 tab_title.text = "신청 목록"
             }
             2 -> {
-                tab_num.text = carreer_num.toString()
+                tab_num.text = Carreer_num.toString()
                 tab_title.text = "경력"
             }
             3 -> {
-                tab_num.text = wishlist_num.toString()
+                tab_num.text = Wish_num.toString()
                 tab_title.text = "관심 목록"
             }
         }
