@@ -139,9 +139,6 @@ class PersonalFragment : Fragment() {
         return v_personal
 
 
-
-
-
     }
 
     // 사진 비트맵으로 imageview에 띄움
@@ -252,7 +249,6 @@ class PersonalFragment : Fragment() {
     private inner class ViewPagerAdapter_Main(fa: FragmentActivity): FragmentStateAdapter(fa){
         override fun createFragment(position: Int): Fragment {
             return when(position){
-                //0 -> ItemFragment()
                 0 -> BuildTeamListFragment()
                 1 -> ApplyTeamListFragment()
                 2 -> CareerListFragment()
@@ -263,6 +259,7 @@ class PersonalFragment : Fragment() {
         override fun getItemCount():Int = PAGE_CNT
     }
 
+
     // 뒤로 가기 설정
     private fun loadImage(){
         val intent= Intent()
@@ -270,6 +267,4 @@ class PersonalFragment : Fragment() {
         intent.action = Intent.ACTION_GET_CONTENT
 
     }
-
-
 }

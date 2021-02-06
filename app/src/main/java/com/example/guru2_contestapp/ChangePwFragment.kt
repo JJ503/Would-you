@@ -2,9 +2,11 @@ package com.example.guru2_contestapp
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
 
 
@@ -29,28 +32,38 @@ class ChangePwFragment : Fragment() {
         var newPw1: EditText = preView.findViewById(R.id.newPw1)
         var newPw2: EditText = preView.findViewById(R.id.newPw2)
         var changePwBtn: Button = preView.findViewById(R.id.changePwBtn)
-        lateinit var userPw: String
+        lateinit var USER_Pw: String
 
         lateinit var dbManager: DBManager
         lateinit var sqlitedb: SQLiteDatabase
 
-        //DB 연결
-        dbManager = DBManager(getContext(), "ContestAppDB", null, 1)
 
-        var USER_ID: String = "sPPong123"  // 현재 사용자라 가정 (이건 나중에 SESSION 작업 필요)
-        sqlitedb = dbManager.readableDatabase
-
-        var cursor: Cursor
-        cursor = sqlitedb.rawQuery("SELECT pw FROM member WHERE id = '" + USER_ID + "';", null)
+        //현재 로그인 중인 사용자 지정
+        var context: Context = requireContext()
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
-        if (cursor.moveToNext()) {
-            userPw = cursor.getString(cursor.getColumnIndex("pw"))
+        //DB연결
+        dbManager = DBManager(activity, "ContestAppDB", null, 1)
+        sqlitedb =dbManager.readableDatabase
+        try {
+            if (sqlitedb != null) {
+                var cursor: Cursor
+                cursor = sqlitedb.rawQuery("SELECT pw FROM member WHERE id = '" + USER_ID + "';", null)
+                if (cursor.getCount() != 0) {
+                    if (cursor.moveToNext()) {
+                        USER_Pw = cursor.getString(cursor.getColumnIndex("pw"))
+                    }
+                }
+                cursor.close()
+            }
+        }catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         // 버튼 클릭시 팝업창 열기
         changePwBtn.setOnClickListener {
@@ -58,18 +71,15 @@ class ChangePwFragment : Fragment() {
             builder.setTitle("비밀번호 변경")
 
             // '현재 비밀번호' 입력 안 했을 때
-            if (currentPw.getText().toString().equals("") || currentPw.getText()
-                    .toString() == null
+            if (currentPw.getText().toString().equals("") || currentPw.getText().toString() == null
             ) {
                 builder.setMessage("현재 비밀번호를 입력하세요.")
             } else {
                 // '현재 비밀번호'가 아닐 때
-                if (userPw != currentPw.getText().toString()) {
+                if (USER_Pw != currentPw.getText().toString()) {
                     builder.setMessage("현재 비밀번호가 아닙니다.")
                 } else {
-                    if (newPw1.getText().toString().equals("") || newPw1.getText()
-                            .toString() == null || newPw2.getText().toString()
-                            .equals("") || newPw2.getText().toString() == null
+                    if (newPw1.getText().toString().equals("") || newPw1.getText().toString() == null || newPw2.getText().toString().equals("") || newPw2.getText().toString() == null
                     ) {
                         builder.setMessage("변경할 비밀번호를 입력하세요. (확인란도 작성)")
                         //Toast.makeText(getContext(), "'" + newPw1.getText().toString() + "'", Toast.LENGTH_LONG).show()
@@ -84,7 +94,7 @@ class ChangePwFragment : Fragment() {
                                         + USER_ID + "';"
                             )
                             sqlitedb.close()
-                            userPw = newPw1.getText().toString()
+                            USER_Pw = newPw1.getText().toString()
                             Toast.makeText(
                                 getContext(),
                                 "'" + newPw1.getText().toString() + "'",
@@ -101,7 +111,6 @@ class ChangePwFragment : Fragment() {
                 }
             }
 
-
             // editText 에  입력한 값 지우기
             currentPw.setText(null);
             newPw1.setText(null);
@@ -110,7 +119,6 @@ class ChangePwFragment : Fragment() {
             //팝업창
             builder.setNeutralButton("확인", null)
             builder.show()
-
 
         }
 
