@@ -18,7 +18,6 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -109,7 +108,7 @@ class PersonalFragment : Fragment() {
         // 설정 화면으로  전환
         settingBtn = v_personal.findViewById(R.id.settingBtn)
         settingBtn.setOnClickListener {
-            val intent =  Intent(activity, Setting::class.java)
+            val intent =  Intent(activity, SettingActivity::class.java)
             startActivity(intent)
         }
 
@@ -246,11 +245,11 @@ class PersonalFragment : Fragment() {
         override fun getItemCount():Int = PAGE_CNT
     }
 
+    // 뒤로 가기 설정
     private fun loadImage(){
         val intent= Intent()
         intent.type="image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-
 
     }
 

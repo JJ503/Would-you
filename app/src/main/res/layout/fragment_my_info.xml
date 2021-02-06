@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         android:text="내 정보"
         android:textColor="@color/indigo_700"
         android:textSize="20sp"
@@ -121,12 +121,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="30dp"
         android:text="선택사항"
         android:textColor="@color/indigo_700"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <TableLayout
         android:id="@+id/tableLayout3"
@@ -158,11 +158,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:hint="'-' 없이 전화번호를 입력하세요."
                 android:inputType="number|phone"
-                android:maxLength="13"
+                android:maxLength="11"
                 android:paddingLeft="15dp"
                 android:singleLine="true"
-                android:text="010-1234-5647"
                 android:textSize="18sp" />
         </TableRow>
 
@@ -214,6 +214,33 @@
                 android:entries="@array/job"
                 android:paddingLeft="15dp" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="5dp"
+                android:text="대학교"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/univerNameEdt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:paddingLeft="15dp"
+                android:singleLine="true"
+                android:text="서울여자대학교"
+                android:textSize="18sp" />
+        </TableRow>
+
 
         <TableRow
             android:layout_width="match_parent"
@@ -278,7 +305,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:background="#39000000"
         app:layout_constraintEnd_toEndOf="parent"

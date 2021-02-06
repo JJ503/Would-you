@@ -1,6 +1,7 @@
 package com.example.guru2_contestapp
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -97,8 +98,10 @@ class ApplyTeamListFragment : Fragment() {
         rv_applyTeam.adapter = TeamAdapter(teamList)
 
 
+
         return preView
     }
+
 
 
 }

@@ -10,7 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class Setting : AppCompatActivity() {
+class SettingActivity : AppCompatActivity() {
 
     lateinit var tablayout : TabLayout
     lateinit var  viewPager2_1 : ViewPager2

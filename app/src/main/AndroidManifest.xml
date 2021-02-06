@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Guru2_ContestApp">
-        <activity android:name=".ApplicantListActivity"></activity>
+        <activity android:name=".ApplicantListActivity"
+            android:parentActivityName=".NavigationActivity"></activity>
         <activity
             android:name=".ResumeActivity"
             android:parentActivityName=".NavigationActivity" />
@@ -30,6 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SettingActivity"
+            android:parentActivityName=".NavigationActivity"/>
         <activity
             android:name=".SignUp3Activity"
             android:label="회원가입"

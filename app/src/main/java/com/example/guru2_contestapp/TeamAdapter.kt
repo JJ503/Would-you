@@ -1,11 +1,14 @@
 package com.example.guru2_contestapp
 
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class TeamAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <TeamAdapter.CustomViewHolder>() {
@@ -30,6 +33,14 @@ class TeamAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <TeamAdapt
         holder.endDateTextView.text = teamList.get(position).t_end_date
         holder.needPartTextivew.text = teamList.get(position).t_need_part
 
+        // item(Team)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
+            intent.putExtra("t_num",1234)
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
+        }
+
+
 
     }
 
@@ -49,6 +60,13 @@ class TeamAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <TeamAdapt
         val needPartTextivew = itemView.findViewById<TextView>(R.id.needPartTextivew)
 
 
+    }
+
+    // 뒤로 가기 설정
+    private fun loadImage(){
+        val intent= Intent()
+        intent.type="image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
     }
 }
 
