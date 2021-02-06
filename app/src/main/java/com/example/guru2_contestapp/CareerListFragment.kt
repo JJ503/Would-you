@@ -21,7 +21,7 @@ class CareerListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var preView = inflater.inflate(R.layout.fragment_team_list, container, false)
+        var v_careerList = inflater.inflate(R.layout.fragment_team_list, container, false)
 
         // DB에서 정보 불러오기(리사이클러뷰)
         lateinit var dbManager: DBManager
@@ -55,7 +55,7 @@ class CareerListFragment : Fragment() {
                 var t_num: Int = 0    // 쿼리1로 얻은 t_num 저장하는 임시변수 (쿼리2의 인자값으로 사용됨)
                 lateinit var cursor2: Cursor// 쿼리2
                 lateinit var cursor3: Cursor// 쿼리3
-                if (cursor1.getCount() != 1) {
+                if (cursor1.getCount() != 0) {
                     while (cursor1.moveToNext()) {
 
                         t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
@@ -100,7 +100,7 @@ class CareerListFragment : Fragment() {
             }
 
 
-        var rv_createTeam: RecyclerView = preView.findViewById<RecyclerView>(R.id.rv_team)
+        var rv_createTeam: RecyclerView = v_careerList.findViewById<RecyclerView>(R.id.rv_team)
         rv_createTeam.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_createTeam.setHasFixedSize(true)
@@ -108,6 +108,6 @@ class CareerListFragment : Fragment() {
         rv_createTeam.adapter = TeamAdapter(teamList)
 
 
-        return preView
+        return v_careerList
     }
 }

@@ -1,7 +1,6 @@
 package com.example.guru2_contestapp
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -23,7 +22,7 @@ class ApplyTeamListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var preView = inflater.inflate(R.layout.fragment_team_list, container, false)
+        var v_applyTeamListFragment = inflater.inflate(R.layout.fragment_team_list, container, false)
 
         // DB에서 정보 불러오기(리사이클러뷰)
         lateinit var dbManager : DBManager
@@ -55,12 +54,11 @@ class ApplyTeamListFragment : Fragment() {
                 lateinit var cursor1: Cursor // 쿼리1
                 cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state >= -1  AND state < 2;", null)  //  쿼리1
 
-
                 lateinit var cursor2 :Cursor // 쿼리2
                 var t_num :Int = 0    // 쿼리1로 얻은 t_num 저장하는 임시변수 (쿼리2의 인자값으로 사용됨)
 
                 lateinit var cursor3 :Cursor // 쿼리3
-                if (cursor1.getCount() != 1) {
+                if (cursor1.getCount() != 0) {
                     while (cursor1.moveToNext()) {
 
                         t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
@@ -103,7 +101,7 @@ class ApplyTeamListFragment : Fragment() {
 
 
 
-        var rv_applyTeam :RecyclerView = preView.findViewById<RecyclerView>(R.id.rv_team)
+        var rv_applyTeam :RecyclerView = v_applyTeamListFragment.findViewById<RecyclerView>(R.id.rv_team)
 
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         rv_applyTeam.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL, false)
@@ -112,7 +110,7 @@ class ApplyTeamListFragment : Fragment() {
 
 
 
-        return preView
+        return v_applyTeamListFragment
     }
 
 

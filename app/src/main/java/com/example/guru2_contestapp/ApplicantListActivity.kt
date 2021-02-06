@@ -23,8 +23,8 @@ class ApplicantListActivity : AppCompatActivity() {
 
         //BuildTeamListFragment에서 t_num을 전달받는다.
         val t_num :Int = intent.getIntExtra("t_num",-1)
-        //Toast.makeText(this,"t_num : "+t_num,Toast.LENGTH_SHORT).show()
-        Log.d("/--------t_num=--------/",t_num.toString())
+        Toast.makeText(this,"t_num : "+t_num,Toast.LENGTH_SHORT).show()
+
 
         listArray = ArrayList()
 

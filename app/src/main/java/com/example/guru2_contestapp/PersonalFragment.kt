@@ -59,7 +59,7 @@ class PersonalFragment : Fragment() {
         profileBtn =v_personal.findViewById<Button>(R.id.profileBtn)
         tablayout=v_personal.findViewById<TabLayout>(R.id.tabLayout1)
         viewpager2=v_personal.findViewById<ViewPager2>(R.id.viewpager)
-        viewpager2.adapter =ViewPagerAdapter_Main(requireActivity())  // 어댑터 지정해주자.. 이거 안하면 오류남 ㅋㅋ
+        viewpager2.adapter =ViewPagerAdapter_Main(requireActivity())  // 뷰페이저 어댑터 지정
 
 
         user_name =v_personal.findViewById(R.id.user_name)
@@ -68,10 +68,6 @@ class PersonalFragment : Fragment() {
 
 
 
-        //DB 연결
-        dbManager = DBManager(activity, "ContestAppDB", null, 1)
-        sqlitedb = dbManager.readableDatabase
-
 
         //현재 로그인 중인 사용자 지정
         var context: Context = requireContext()
@@ -79,27 +75,37 @@ class PersonalFragment : Fragment() {
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
-        var cursor: Cursor
-        cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '" + USER_ID + "';", null)
+        //DB연결
+        dbManager = DBManager(activity, "ContestAppDB", null, 1)
+        sqlitedb =dbManager.readableDatabase
+        try {
+            if (sqlitedb != null) {
+                var cursor: Cursor
+                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '" + USER_ID + "';", null)
 
+                if (cursor.getCount() != 0) {
+                    while (cursor.moveToNext()) {
+                        str_name = cursor.getString(cursor.getColumnIndex("name")) + " 님"
+                        str_id = cursor.getString(cursor.getColumnIndex("id"))
+                        str_job = cursor.getString(cursor.getColumnIndex("job"))
+                        if (cursor.getString(cursor.getColumnIndex("univ")) != null) {
+                            str_univ = "(" + cursor.getString(cursor.getColumnIndex("univ")) + ")"
+                        }
 
-        if (cursor.moveToNext()) {
-            str_name = cursor.getString(cursor.getColumnIndex("name"))
-            str_id = cursor.getString(cursor.getColumnIndex("id"))
-            str_job = "("+cursor.getString(cursor.getColumnIndex("job"))+")"
-            if(cursor.getString(cursor.getColumnIndex("univ"))!=null){
-                str_univ = cursor.getString(cursor.getColumnIndex("univ"))
+                    }
+                }
+                cursor.close()
             }
-
+        }catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         user_name.text = str_name
         user_id.text = str_id
-        user_job.text = str_job  +str_univ //univ NULL 일때는 오류임 (이거 수정 필요)
+        user_job.text = str_job  +str_univ
 
 
 

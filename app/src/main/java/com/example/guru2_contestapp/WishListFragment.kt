@@ -27,7 +27,7 @@ class WishListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var preView = inflater.inflate(R.layout.fragment_wish_list, container, false)
+        var v_wishList = inflater.inflate(R.layout.fragment_wish_list, container, false)
 
 
         var c_num: Int = -1
@@ -64,7 +64,7 @@ class WishListFragment : Fragment() {
                 var deadline: Int = -1
 
                 var deadlineTxt: String = ""
-                if (cursor1.getCount() != 1) {
+                if (cursor1.getCount() != 0) {
                     while (cursor1.moveToNext()) {
 
                         c_num = cursor1.getInt(cursor1.getColumnIndex("c_num"))
@@ -104,7 +104,7 @@ class WishListFragment : Fragment() {
 
 
 
-        var rv_wishlist: RecyclerView = preView.findViewById<RecyclerView>(R.id.rv_wishlist)
+        var rv_wishlist: RecyclerView = v_wishList.findViewById<RecyclerView>(R.id.rv_wishlist)
         rv_wishlist.layoutManager = GridLayoutManager(requireContext(), 3)
         //rv_wishlist.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, false)
         rv_wishlist.setHasFixedSize(true)
@@ -112,7 +112,7 @@ class WishListFragment : Fragment() {
         rv_wishlist.adapter = WishListAdapter(wishlist)
 
 
-        return preView
+        return v_wishList
     }
 
     // 날짜 차이 구하기

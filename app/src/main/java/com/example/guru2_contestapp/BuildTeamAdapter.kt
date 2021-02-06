@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,19 +10,19 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class TeamAdapter (val teamList :ArrayList<Team>): RecyclerView.Adapter <TeamAdapter.CustomViewHolder>() {
+class BuildTeamAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <BuildTeamAdapter.CustomViewHolder>() {
 
     // 뷰 연동
     override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-    ): TeamAdapter.CustomViewHolder {
+        parent: ViewGroup,
+        viewType: Int
+    ): BuildTeamAdapter.CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_team_item, parent, false)
         return CustomViewHolder(view)
     }
 
     // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
-    override fun onBindViewHolder(holder: TeamAdapter.CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BuildTeamAdapter.CustomViewHolder, position: Int) {
         holder.adverImageView.setImageResource(teamList.get(position).c_photo)
         holder.adverTitleTextView.text = teamList.get(position).t_name
         holder.contestNameTextView.text = teamList.get(position).c_name
@@ -29,6 +30,15 @@ class TeamAdapter (val teamList :ArrayList<Team>): RecyclerView.Adapter <TeamAda
         holder.totalNumTextView.text = teamList.get(position).t_total_num.toString()
         holder.endDateTextView.text = teamList.get(position).t_end_date
         holder.needPartTextivew.text = teamList.get(position).t_need_part
+
+        // item(Team)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
+            intent.putExtra("t_num",teamList.get(position).t_num)
+
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
+        }
+
 
 
     }

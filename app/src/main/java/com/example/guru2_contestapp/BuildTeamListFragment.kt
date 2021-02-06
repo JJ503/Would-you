@@ -22,7 +22,7 @@ class BuildTeamListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var preView = inflater.inflate(R.layout.fragment_team_list, container, false)
+        var v_buildTeamList = inflater.inflate(R.layout.fragment_team_list, container, false)
 
         // DB에서 정보 불러오기(리사이클러뷰)
         lateinit var dbManager: DBManager
@@ -60,7 +60,7 @@ class BuildTeamListFragment : Fragment() {
 
                 lateinit var cursor3: Cursor // 쿼리3
 
-                if (cursor1.getCount() != 1) {
+                if (cursor1.getCount() != 0) {
                     while (cursor1.moveToNext()) {
                         t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
                         cursor2 = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = " + t_num + ";", null) //쿼리2
@@ -101,15 +101,15 @@ class BuildTeamListFragment : Fragment() {
 
 
 
-        var rv_applyTeam: RecyclerView = preView.findViewById<RecyclerView>(R.id.rv_team)
+        var rv_applyTeam: RecyclerView = v_buildTeamList.findViewById<RecyclerView>(R.id.rv_team)
 
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
-        rv_applyTeam.adapter = TeamAdapter(teamList)
+        rv_applyTeam.adapter = BuildTeamAdapter(teamList)
 
 
-        return preView
+        return v_buildTeamList
     }
 
 }
