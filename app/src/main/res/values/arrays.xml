@@ -13,7 +13,7 @@
         <item>지역을 선택해주세요</item>
         <item>서울</item>
         <item>경기</item>
-        <item>인청</item>
+        <item>인천</item>
         <item>부산</item>
         <item>울산</item>
         <item>대구</item>
@@ -49,7 +49,7 @@
     <string-array name = "mail">
         <item>선택해주세요</item>
         <item>gmail.com</item>
-        <item>namver.com</item>
+        <item>naver.com</item>
         <item>daum.net</item>
         <item>swu.ac.kr</item>
         <item>kakao.com</item>

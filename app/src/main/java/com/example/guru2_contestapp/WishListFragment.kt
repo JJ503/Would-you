@@ -1,5 +1,7 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +27,7 @@ class WishListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        var preView = inflater.inflate(R.layout.fragment_wish_list, container, false)
+        var v_wishList = inflater.inflate(R.layout.fragment_wish_list, container, false)
 
 
         var c_num: Int = -1
@@ -40,60 +43,68 @@ class WishListFragment : Fragment() {
         lateinit var sqlitedb: SQLiteDatabase
 
 
-        var USER_ID: String = "sPPong123"  // 현재 사용자라 가정 (이건 나중에 SESSION 작업 필요)
+
+        //현재 로그인 중인 사용자 지정
+        var context: Context = requireContext()
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
+        //DB 연결
         dbManager = DBManager(requireContext(), "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
+        try {
+            if (sqlitedb != null) {
+                lateinit var cursor1: Cursor // 쿼리1
+                cursor1 = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '" + USER_ID + "';", null)
 
-        var cursor1: Cursor // 쿼리1
-        cursor1 =
-            sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '" + USER_ID + "';", null)  //
-        var cursor2: Cursor ?=null // 쿼리2
 
-        var deadline: Int = -1
+                lateinit var cursor2: Cursor// 쿼리2
 
-        var deadlineTxt: String=""
-        while (cursor1.moveToNext()) {
+                var deadline: Int = -1
 
-            c_num = cursor1.getInt(cursor1.getColumnIndex("c_num"))
+                var deadlineTxt: String = ""
+                if (cursor1.getCount() != 0) {
+                    while (cursor1.moveToNext()) {
 
-            cursor2 = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = " + c_num + ";", null) //쿼리2
-            if (cursor2.moveToNext()) {
-                // team에서 해당 팀 정보 가져오기
-                // 공모전 사진도 가져와야됨
-                c_name = cursor2.getString(cursor2.getColumnIndex("c_name"))
-                c_end = cursor2.getString(cursor2.getColumnIndex("c_end"))
+                        c_num = cursor1.getInt(cursor1.getColumnIndex("c_num"))
 
-                deadline = checkDays(c_end)
+                        cursor2 = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = " + c_num + ";", null) //쿼리2
+                        if (cursor2.moveToNext()) {
+                            // team에서 해당 팀 정보 가져오기
+                            // 공모전 사진도 가져와야됨
+                            c_name = cursor2.getString(cursor2.getColumnIndex("c_name"))
+                            c_end = cursor2.getString(cursor2.getColumnIndex("c_end"))
 
-                // 마감 -인 것은 따로 전처리 필요함
-                if( deadline <0)
-                {
-                    deadlineTxt = "모집 종료"
+                            deadline = checkDays(c_end)
+
+                            // 마감 -인 것은 따로 전처리 필요함
+                            if (deadline < 0) {
+                                deadlineTxt = "모집 종료"
+                            } else {
+                                deadlineTxt = "모집" + deadline.toString() + "일 전"
+                            }
+
+                        }
+                        wishlist.add(
+                                Wish(deadlineTxt, R.drawable.ic_baseline_add_photo_alternate_24, c_name)
+                        )
+                    }
                 }
-                else{
-                    deadlineTxt = "모집" + deadline.toString() + "일 전"
-                }
-
+                cursor1.close()
+                cursor2.close()
             }
-
-            wishlist.add(
-                Wish(
-                    deadlineTxt,
-                    R.drawable.ic_baseline_add_photo_alternate_24,
-                    c_name
-                )
-            )
-
-        }
-
-        cursor1.close()
-        cursor2?.close()
+        }catch(e: Exception){
+        Log.e("Error", e.message.toString())
+    } finally{
         sqlitedb.close()
         dbManager.close()
+    }
 
 
-        var rv_wishlist: RecyclerView = preView.findViewById<RecyclerView>(R.id.rv_wishlist)
+
+
+        var rv_wishlist: RecyclerView = v_wishList.findViewById<RecyclerView>(R.id.rv_wishlist)
         rv_wishlist.layoutManager = GridLayoutManager(requireContext(), 3)
         //rv_wishlist.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, false)
         rv_wishlist.setHasFixedSize(true)
@@ -101,7 +112,7 @@ class WishListFragment : Fragment() {
         rv_wishlist.adapter = WishListAdapter(wishlist)
 
 
-        return preView
+        return v_wishList
     }
 
     // 날짜 차이 구하기
