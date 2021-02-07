@@ -81,8 +81,10 @@ class MyInfoFragment : Fragment() {
                         str_email_site = cursor.getString(cursor.getColumnIndex("email")).split("@")[1]
                         str_job = cursor.getString(cursor.getColumnIndex("job"))
                         if (cursor.getString(cursor.getColumnIndex("univ")) != null) {
+                            if (cursor.getString(cursor.getColumnIndex("univ")) !=""){
                             univerTableRow.visibility=View.VISIBLE
                             str_univ = cursor.getString(cursor.getColumnIndex("univ"))
+                        }
                         }
                         str_area = cursor.getString(cursor.getColumnIndex("area"))
                         str_interest = cursor.getString(cursor.getColumnIndex("interest"))
@@ -120,8 +122,17 @@ class MyInfoFragment : Fragment() {
         spinner_area.setSelection(setAreaSpinner(str_area))
         spinner_interest.setSelection(setInterestSpinner(str_interest))
 
-
+/*
         // '직업' 스피너에서 대학생이 아닐때 -> 대학생 tableRow 없애줘야 함
+        spinner_job.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+            }
+        }
+
+        // '직업' 스피너가 대학생으로 변경되면 -> 대학생 tableRow 보여주기
+
+
 
 
         // '수정' 버튼 눌렀을 때
@@ -131,7 +142,7 @@ class MyInfoFragment : Fragment() {
 
 
         }
-
+*/
 
         return v_myInfo
     }
@@ -144,7 +155,10 @@ class MyInfoFragment : Fragment() {
             "gmail.com" -> job_index=1
             "naver.com" -> job_index=2
             "daum.net" -> job_index=3
-            "기타" -> job_index=4
+            "swu.ac.kr" -> job_index=4
+            "kakao.com" -> job_index=5
+            "hanmail.net" -> job_index=6
+            "기타" -> job_index=7
             else -> -1
         }
         return job_index

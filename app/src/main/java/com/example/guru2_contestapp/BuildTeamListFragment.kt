@@ -106,7 +106,7 @@ class BuildTeamListFragment : Fragment() {
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
-        rv_applyTeam.adapter = BuildTeamAdapter(teamList)
+        rv_applyTeam.adapter = BuildTeamListAdapter(teamList)
 
 
         return v_buildTeamList

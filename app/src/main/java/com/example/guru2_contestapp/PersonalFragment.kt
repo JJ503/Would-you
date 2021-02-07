@@ -88,7 +88,8 @@ class PersonalFragment : Fragment() {
                         str_name = cursor.getString(cursor.getColumnIndex("name")) + " 님"
                         str_id = cursor.getString(cursor.getColumnIndex("id"))
                         str_job = cursor.getString(cursor.getColumnIndex("job"))
-                        if (cursor.getString(cursor.getColumnIndex("univ")) != null) {
+                        if (cursor.getString(cursor.getColumnIndex("univ")) != null ) {
+                            if (cursor.getString(cursor.getColumnIndex("univ")) !="")
                             str_univ = "(" + cursor.getString(cursor.getColumnIndex("univ")) + ")"
                         }
 
@@ -141,7 +142,7 @@ class PersonalFragment : Fragment() {
 
     }
 
-    // 사진 비트맵으로 imageview에 띄움
+    // 사진 비트맵으로 imageview에 띄움 (수정필요)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //출처 : https://taekwang.tistory.com/2
