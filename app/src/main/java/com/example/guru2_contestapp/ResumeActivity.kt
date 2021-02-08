@@ -65,11 +65,11 @@ class ResumeActivity : AppCompatActivity() {
             t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
         }
 
-        cursor=sqlitedb.rawQuery("SELECT name, year, job FROM member WHERE m_id = '"+USER_ID+"';", null)
+        cursor=sqlitedb.rawQuery("SELECT m_name, m_year, m_job FROM member WHERE m_id = '"+USER_ID+"';", null)
         if(cursor.moveToNext()){
-            str_name=cursor.getString(cursor.getColumnIndex("name"))
-            str_age=cursor.getString(cursor.getColumnIndex("year"))
-            str_job=cursor.getString(cursor.getColumnIndex("job"))
+            str_name=cursor.getString(cursor.getColumnIndex("m_name"))
+            str_age=cursor.getString(cursor.getColumnIndex("m_year"))
+            str_job=cursor.getString(cursor.getColumnIndex("m_job"))
         }
         cursor.close()
         sqlitedb.close()
@@ -101,7 +101,7 @@ class ResumeActivity : AppCompatActivity() {
 
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                sqlitedb.execSQL("INSERT INTO resume (m_id, t_num, r_hope, r_self_intro, r_etc) VALUES('"+USER_ID+"', "+t_num+", '"+str_hope+"', '"+str_self_intro+"', '"+str_etc+"')")
+                sqlitedb.execSQL("INSERT INTO resume (m_id, t_num, r_hope, r_self_intro, r_etc) VALUES ('"+USER_ID+"', "+t_num+", '"+str_hope+"', '"+str_self_intro+"', '"+str_etc+"')")
 
                 sqlitedb.close()
                 dbManager.close()
