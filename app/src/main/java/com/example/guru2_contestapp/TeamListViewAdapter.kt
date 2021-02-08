@@ -36,14 +36,21 @@ class TeamListViewAdapter (val context: Context, val teamList: ArrayList<TeamLis
         totalNum.text = teamlist.totalNum.toString()
 
         // 남은 인원이 1명 -> 글자색 변경
+        // 남은 인원이 0명 -> 모집 종료, 글자색 변경, 클릭할 수 없음
         val possible_num = teamlist.totalNum - teamlist.nowNum
         if(possible_num==1){
             nowNum.setTextColor(ContextCompat.getColor(context,R.color.impend))
             slash.setTextColor(ContextCompat.getColor(context,R.color.impend))
             totalNum.setTextColor(ContextCompat.getColor(context,R.color.impend))
+        }else if (possible_num==0){
+            endDate.setTextColor(ContextCompat.getColor(context,R.color.impend))
+            endDate.text="모집 종료"
+            magam.visibility=View.GONE
+            view.isEnabled=false
+            view.setOnClickListener(null)
         }
 
-        // 마감일이 1일 남은 경우 -> 글자색 변경
+        // 마감일과 현재의 날짜차이 계산
         val today= Calendar.getInstance().apply{
             set(Calendar.HOUR_OF_DAY, 0)
             set(Calendar.MINUTE, 0)
@@ -64,16 +71,21 @@ class TeamListViewAdapter (val context: Context, val teamList: ArrayList<TeamLis
         }.timeInMillis
 
         val calcDate=(deadline-today) / (24*60*60*1000)
+
+        // 마감일이 1일 남은 경우 -> 글자색 변경
         if(calcDate.toInt()<=1){
             endDate.setTextColor(ContextCompat.getColor(context, R.color.impend))
             magam.setTextColor(ContextCompat.getColor(context, R.color.impend))
         }
 
-        // 마감일이 지난 경우 -> 날짜 TextView 숨김
+        // 마감일이 지난 경우 -> 날짜 TextView 숨김, 클릭할 수 없음
         if(calcDate.toInt()<0){
             endDate.setTextColor(ContextCompat.getColor(context, R.color.impend))
             endDate.text="모집 종료"
             magam.visibility=View.GONE
+            view.isEnabled=false
+            view.setOnClickListener(null)
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.non_click))
         }
         return view
     }

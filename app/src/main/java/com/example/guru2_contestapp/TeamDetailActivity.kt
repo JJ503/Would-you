@@ -159,6 +159,10 @@ class TeamDetailActivity : AppCompatActivity() {
             endDate.setTextColor(ContextCompat.getColor(this, R.color.impend))
         }
 
+
+
+
+
         //댓글
         commentListArray= arrayListOf<CommentListViewItem>()
         val cm_contest: View = layoutInflater.inflate(R.layout.comment_list, null, false)
