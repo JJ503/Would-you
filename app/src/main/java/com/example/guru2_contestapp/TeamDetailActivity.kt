@@ -173,7 +173,7 @@ class TeamDetailActivity : AppCompatActivity() {
         str_cm_detail=""
 
         while(cursor.moveToNext()){
-            str_cm_id=cursor.getString(cursor.getColumnIndex("s_id")).toString()
+            str_cm_id=cursor.getString(cursor.getColumnIndex("m_id")).toString()
             str_cm_date=cursor.getString(cursor.getColumnIndex("cm_date")).toString()
             str_cm_detail=cursor.getString(cursor.getColumnIndex("cm_detail")).toString()
 
@@ -206,7 +206,7 @@ class TeamDetailActivity : AppCompatActivity() {
 
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                sqlitedb.execSQL("INSERT INTO comment (t_num, s_id, cm_date, cm_detail) VALUES(" + t_num + ", '" + USER_ID + "', '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
+                sqlitedb.execSQL("INSERT INTO comment (t_num, m_id, cm_date, cm_detail) VALUES(" + t_num + ", '" + USER_ID + "', '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
 
                 sqlitedb.close()
                 dbManager.close()
