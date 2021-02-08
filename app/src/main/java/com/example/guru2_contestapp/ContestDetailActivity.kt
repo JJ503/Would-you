@@ -94,19 +94,19 @@ class ContestDetailActivity : AppCompatActivity() {
         // 0이면 빈 별을 보여준다.
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
-        cursor=sqlitedb.rawQuery("SELECT state FROM wishlist WHERE id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
+        cursor=sqlitedb.rawQuery("SELECT state FROM wishlist WHERE m_id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
 
-        var state=-1
+        var state=-1 //아무상태 아님
         if(cursor.moveToNext()){
             state=cursor.getInt(cursor.getColumnIndex("state"))
         }
 
         when(state){
-            0 -> {
+            0 -> {  // 빈 상태
                 wishOnBtn.visibility= View.INVISIBLE
                 wishOffBtn.visibility= View.VISIBLE
             }
-            1 -> {
+            1 -> {  // 좋아요 선택
                 wishOnBtn.visibility= View.VISIBLE
                 wishOffBtn.visibility= View.INVISIBLE
             }
@@ -136,14 +136,14 @@ class ContestDetailActivity : AppCompatActivity() {
             wishOnBtn.visibility= View.VISIBLE
             wishOffBtn.visibility= View.INVISIBLE
 
-            var cursor: Cursor
+            //var cursor: Cursor
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            cursor=sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
+            cursor=sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
             if(cursor.count==0){
-                sqlitedb.execSQL("INSERT INTO wishlist VALUES ('"+USER_ID+"', "+c_num+", 1)")
+                sqlitedb.execSQL("INSERT INTO wishlist (m_id, c_num, state) VALUES ('"+USER_ID+"', "+c_num+", 1)")
             }else{
-                sqlitedb.execSQL("UPDATE wishlist SET state = 1 WHERE id ='"+ USER_ID+"' AND c_num =" +c_num+";")
+                sqlitedb.execSQL("UPDATE wishlist SET state = 1 WHERE m_id ='"+ USER_ID+"' AND c_num =" +c_num+";")
             }
             cursor.close()
             sqlitedb.close()
@@ -155,10 +155,10 @@ class ContestDetailActivity : AppCompatActivity() {
             wishOnBtn.visibility= View.INVISIBLE
             wishOffBtn.visibility= View.VISIBLE
 
-            var cursor: Cursor
+            //var cursor: Cursor
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            sqlitedb.execSQL("UPDATE wishlist SET state = 0 WHERE id ='"+ USER_ID+"' AND c_num =" +c_num+";")
+            sqlitedb.execSQL("UPDATE wishlist SET state = 0 WHERE m_id ='"+ USER_ID+"' AND c_num =" +c_num+";")
             sqlitedb.close()
             dbManager.close()
         }
