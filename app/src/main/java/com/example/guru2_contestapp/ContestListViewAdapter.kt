@@ -32,6 +32,8 @@ class ContestListViewAdapter(val context: Context, val contestList: ArrayList<Co
 
         val contestlist = contestList[position]
 
+
+        //나중에 사진 수정
         contestImg.setImageResource(R.drawable.gentlemans_guide)
         contestTitle.text = contestlist.contestName
         hostName.text = contestlist.hostName
