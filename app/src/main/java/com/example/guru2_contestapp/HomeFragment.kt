@@ -37,17 +37,17 @@ class HomeFragment : Fragment() {
 
         try{
             var cursor : Cursor
-            cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '${USER_ID}';", null)
+            cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${USER_ID}';", null)
             cursor.moveToFirst()
 
             if (cursor.getCount() != 1){
                 Toast.makeText(activity, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             } else{
                 var cursor : Cursor
-                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '${USER_ID}';", null)
+                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${USER_ID}';", null)
                 cursor.moveToFirst()
 
-                var USER_NAME = cursor.getString(cursor.getColumnIndex("name"))
+                var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
 
                 userName = view.findViewById(R.id.userName)
                 name = "안녕하세요 " + USER_NAME + " 님"

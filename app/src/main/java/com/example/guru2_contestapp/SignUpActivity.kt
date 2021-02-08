@@ -62,7 +62,7 @@ class SignUpActivity : AppCompatActivity() {
             try{
                 if (sqlitedb != null){
                     var cursor : Cursor
-                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '${input_id}';", null)
+                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${input_id}';", null)
                     cursor.moveToFirst()
 
                     if (cursor.getCount() != 1){

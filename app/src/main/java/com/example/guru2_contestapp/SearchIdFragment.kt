@@ -39,12 +39,12 @@ class SearchIdFragment : Fragment() {
 
                 if (sqlitedb != null){
                     var cursor : Cursor
-                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE name = '${input_name}' AND tel = '${input_tel}';", null)
+                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_name = '${input_name}' AND m_tel = '${input_tel}';", null)
                     cursor.moveToFirst()
 
                     if (cursor != null){
                         builder.setTitle("아이디 찾기")
-                        builder.setMessage(cursor.getString(cursor.getColumnIndex("id")))
+                        builder.setMessage(cursor.getString(cursor.getColumnIndex("m_id")))
                         builder.setPositiveButton("확인", null)
                         builder.show()
                     } else{

@@ -66,7 +66,7 @@ class SignUp2Activity : AppCompatActivity() {
             try{
                 if (sqlitedb != null){
                     var cursor : Cursor
-                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE tel = '${input_phone}';", null)
+                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_tel = '${input_phone}';", null)
                     cursor.moveToFirst()
 
                     if (cursor.getCount() != 1){

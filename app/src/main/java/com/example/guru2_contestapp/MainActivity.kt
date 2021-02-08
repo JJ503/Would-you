@@ -51,14 +51,14 @@ class MainActivity : AppCompatActivity() {
 
             try{
                 var cursor : Cursor
-                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '${USER_ID}';", null)
+                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${USER_ID}';", null)
 
                 cursor.moveToFirst()
 
                 if (cursor.getCount() != 1){
                     Toast.makeText(this, "존재하지 않는 계정입니다.", Toast.LENGTH_SHORT).show()
                 } else{
-                    if (USER_PW == cursor.getString(cursor.getColumnIndex("pw")).toString()){
+                    if (USER_PW == cursor.getString(cursor.getColumnIndex("m_pw")).toString()){
                         saveData(idEditText.text.toString())
 
                         val sharedPreferences : SharedPreferences = getSharedPreferences("userid", MODE_PRIVATE)

@@ -39,8 +39,8 @@ class ApplicantListActivity : AppCompatActivity() {
             cursor = sqlitedb.rawQuery("SELECT * FROM member;", null)
 
             while (cursor.moveToNext()){
-                var a_name = cursor.getString(cursor.getColumnIndex("name")).toString()
-                listArray.add(ApplicantListData(a_name))
+                var m_name = cursor.getString(cursor.getColumnIndex("m_name")).toString()
+                listArray.add(ApplicantListData(m_name))
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())

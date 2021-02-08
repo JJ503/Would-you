@@ -39,14 +39,14 @@ class SearchPwFragment : Fragment() {
 
                 if (sqlitedb != null){
                     var cursor : Cursor
-                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE name = '${input_name}' AND id = '${input_id}';",
+                    cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_name = '${input_name}' AND m_id = '${input_id}';",
                         null)
                     cursor.moveToFirst()
 
                     if (cursor.getCount() == 1){
-                        var USER_EMAIL = cursor.getString(cursor.getColumnIndex("email"))
-                        var USER_PW = cursor.getString(cursor.getColumnIndex("pw"))
-                        var USER_NAME = cursor.getString(cursor.getColumnIndex("name"))
+                        var USER_EMAIL = cursor.getString(cursor.getColumnIndex("m_email"))
+                        var USER_PW = cursor.getString(cursor.getColumnIndex("m_pw"))
+                        var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
                         var mailTitle = "[ 앱 이름 ] 비밀번호 확인"
                         var mailBody = USER_NAME + "님의 임시 비밀번호는 " + USER_PW + " 입니다.\n" +
                                 "임시 비밀번호로 로그인하시고 비민버호를 변경해주세요."
