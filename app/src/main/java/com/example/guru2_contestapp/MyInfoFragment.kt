@@ -68,26 +68,26 @@ class MyInfoFragment : Fragment() {
             if (sqlitedb != null) {
 
                 var cursor: Cursor
-                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '" + USER_ID + "';", null)
+                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
                 if (cursor.getCount() != 0) {
                     if (cursor.moveToNext()) {
-                        str_name = cursor.getString(cursor.getColumnIndex("name"))
-                        str_id = cursor.getString(cursor.getColumnIndex("id"))
-                        year = cursor.getString(cursor.getColumnIndex("year"))
-                        month = cursor.getString(cursor.getColumnIndex("month"))
-                        date = cursor.getString(cursor.getColumnIndex("date"))
-                        str_tel = cursor.getString(cursor.getColumnIndex("tel"))
-                        str_email_id = cursor.getString(cursor.getColumnIndex("email")).split("@")[0]
-                        str_email_site = cursor.getString(cursor.getColumnIndex("email")).split("@")[1]
-                        str_job = cursor.getString(cursor.getColumnIndex("job"))
-                        if (cursor.getString(cursor.getColumnIndex("univ")) != null) {
-                            if (cursor.getString(cursor.getColumnIndex("univ")) !=""){
+                        str_name = cursor.getString(cursor.getColumnIndex("m_name"))
+                        str_id = cursor.getString(cursor.getColumnIndex("m_id"))
+                        year = cursor.getString(cursor.getColumnIndex("m_year"))
+                        month = cursor.getString(cursor.getColumnIndex("m_month"))
+                        date = cursor.getString(cursor.getColumnIndex("m_date"))
+                        str_tel = cursor.getString(cursor.getColumnIndex("m_tel"))
+                        str_email_id = cursor.getString(cursor.getColumnIndex("m_email")).split("@")[0]
+                        str_email_site = cursor.getString(cursor.getColumnIndex("m_email")).split("@")[1]
+                        str_job = cursor.getString(cursor.getColumnIndex("m_job"))
+                        if (cursor.getString(cursor.getColumnIndex("m_univ")) != null) {
+                            if (cursor.getString(cursor.getColumnIndex("m_univ")) !=""){
                             univerTableRow.visibility=View.VISIBLE
-                            str_univ = cursor.getString(cursor.getColumnIndex("univ"))
+                            str_univ = cursor.getString(cursor.getColumnIndex("m_univ"))
                         }
                         }
-                        str_area = cursor.getString(cursor.getColumnIndex("area"))
-                        str_interest = cursor.getString(cursor.getColumnIndex("interest"))
+                        str_area = cursor.getString(cursor.getColumnIndex("m_area"))
+                        str_interest = cursor.getString(cursor.getColumnIndex("m_interest"))
                     }
                 }
                 cursor.close()

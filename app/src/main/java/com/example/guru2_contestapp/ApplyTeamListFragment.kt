@@ -52,7 +52,7 @@ class ApplyTeamListFragment : Fragment() {
         try {
             if (sqlitedb != null) {
                 lateinit var cursor1: Cursor // 쿼리1
-                cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state >= -1  AND state < 2;", null)  //  쿼리1
+                cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state >= -1  AND state < 2;", null)  //  쿼리1
 
                 lateinit var cursor2 :Cursor // 쿼리2
                 var t_num :Int = 0    // 쿼리1로 얻은 t_num 저장하는 임시변수 (쿼리2의 인자값으로 사용됨)

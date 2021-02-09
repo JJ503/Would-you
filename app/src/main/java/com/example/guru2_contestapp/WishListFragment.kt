@@ -56,7 +56,7 @@ class WishListFragment : Fragment() {
         try {
             if (sqlitedb != null) {
                 lateinit var cursor1: Cursor // 쿼리1
-                cursor1 = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '" + USER_ID + "';", null)
+                cursor1 = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '" + USER_ID + "';", null)
 
 
                 lateinit var cursor2: Cursor// 쿼리2

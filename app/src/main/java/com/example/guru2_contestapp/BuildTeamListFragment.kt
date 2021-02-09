@@ -52,7 +52,7 @@ class BuildTeamListFragment : Fragment() {
         try {
             if (sqlitedb != null) {
                 lateinit var cursor1: Cursor // 쿼리1
-                cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state == 2;", null)  //  쿼리1
+                cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 2;", null)  //  쿼리1
 
 
                 lateinit var cursor2: Cursor // 쿼리2
