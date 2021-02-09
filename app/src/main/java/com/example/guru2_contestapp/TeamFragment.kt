@@ -99,7 +99,7 @@ class TeamFragment : Fragment() {
         if(str_search!=""){
             cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
         }else{
-            cursor=sqlitedb.rawQuery("SELECT * FROM team;", null)
+            cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
         }
 
         var cursor2: Cursor
@@ -170,7 +170,7 @@ class TeamFragment : Fragment() {
         if(str_search!=""){
             cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
         }else{
-            cursor=sqlitedb.rawQuery("SELECT * FROM team;", null)
+            cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
         }
         select_num=cursor.count
 
