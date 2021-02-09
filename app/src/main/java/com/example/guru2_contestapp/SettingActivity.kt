@@ -24,7 +24,7 @@ class SettingActivity : AppCompatActivity() {
         viewPager2_1.adapter =ViewPagerAdapter_setting(this)  // 어댑터 지정해주자.. 이거 안하면 오류남 ㅋㅋ
 
 
-        val tabLayoutTextArray = arrayOf("회원정보 수정","비밀번호 변경")
+        val tabLayoutTextArray = arrayOf("개인정보 수정","비밀번호 변경")
 
 
         // TabLayoutMediator : tablayout과 viewPager 연결

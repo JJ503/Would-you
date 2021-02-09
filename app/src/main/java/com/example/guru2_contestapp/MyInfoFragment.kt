@@ -1,5 +1,7 @@
 package com.example.guru2_contestapp
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
@@ -16,6 +18,8 @@ import android.view.ViewGroup
 import android.widget.*
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import java.io.ByteArrayOutputStream
 
 
@@ -31,14 +35,14 @@ class MyInfoFragment : Fragment() {
         var name : TextView = v_myInfo .findViewById(R.id.name)
         var userId :TextView = v_myInfo.findViewById(R.id.userId)
         var birth :TextView = v_myInfo.findViewById(R.id.birth)
-        var tel : TextView =v_myInfo.findViewById(R.id.telEdt)
-        var email :TextView =v_myInfo.findViewById(R.id.emailEdt)
+        var tel : EditText =v_myInfo.findViewById(R.id.telEdt)
+        var email :EditText =v_myInfo.findViewById(R.id.emailEdt)
         var univerTableRow : TableRow = v_myInfo.findViewById(R.id.univerTableRow)
+        var univer : EditText = v_myInfo.findViewById(R.id.univerNameEdt)
         var updateBtn : Button = v_myInfo.findViewById(R.id.updateBtn)
 
         lateinit var dbManager : DBManager
         lateinit var sqlitedb : SQLiteDatabase
-
 
         lateinit var str_name :String
         lateinit var str_id :String
@@ -51,6 +55,7 @@ class MyInfoFragment : Fragment() {
 
         lateinit var str_job :String
         var str_univ :String  =""
+        var isUniv : Boolean = false
         lateinit var str_area : String
         lateinit var str_interest : String
 
@@ -62,6 +67,7 @@ class MyInfoFragment : Fragment() {
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
+        //DB에서 정보 가져와 화면에 반영
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb =dbManager.readableDatabase
         try {
@@ -82,8 +88,9 @@ class MyInfoFragment : Fragment() {
                         str_job = cursor.getString(cursor.getColumnIndex("m_job"))
                         if (cursor.getString(cursor.getColumnIndex("m_univ")) != null) {
                             if (cursor.getString(cursor.getColumnIndex("m_univ")) !=""){
-                            univerTableRow.visibility=View.VISIBLE
-                            str_univ = cursor.getString(cursor.getColumnIndex("m_univ"))
+                                isUniv=true
+                                univerTableRow.visibility=View.VISIBLE
+                                str_univ = cursor.getString(cursor.getColumnIndex("m_univ"))
                         }
                         }
                         str_area = cursor.getString(cursor.getColumnIndex("m_area"))
@@ -104,10 +111,9 @@ class MyInfoFragment : Fragment() {
         userId.text = str_id
         birth.text = year + "년 " +month+ "월 " + date + "일"
 
-        tel.text= str_tel
-        email.text= str_email_id
-
-        /////////////////////////////////
+        tel.setText(str_tel)
+        email.setText(str_email_id)
+        if(isUniv){   univer.setText(str_univ)   }
 
 
         //스피너 findViewById
@@ -116,36 +122,81 @@ class MyInfoFragment : Fragment() {
         var spinner_interest :Spinner = v_myInfo.findViewById<Spinner>(R.id.spinner_interests)
         var spinner_email :Spinner = v_myInfo.findViewById<Spinner>(R.id.spinner_email)
 
+
         // 스티너 - 초기값 설정
         spinner_email.setSelection(setEmailSpinner(str_email_site))
         spinner_job.setSelection(setJobSpinner(str_job))
         spinner_area.setSelection(setAreaSpinner(str_area))
         spinner_interest.setSelection(setInterestSpinner(str_interest))
 
-/*
-        // '직업' 스피너에서 대학생이 아닐때 -> 대학생 tableRow 없애줘야 함
+
+        // '직업' 스피너에서 대학생 여부에 따라 대학생 tableRow 의 visibility 변경
         spinner_job.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // 아이템 클릭시 position 0번 부터 선택한 item에 맞게 동작
+                when(position) {
+                   2-> {
+                       // 대학생인 경우, '대학교' tableRow를 보이게 설정
+                       isUniv=true
+                       univerTableRow.visibility = View.VISIBLE
+                   }
+                    else->{
+                        // 그 외의 경우는, visibility를 gone으로 설정
+                        isUniv=false
+                        univerTableRow.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
         }
 
-        // '직업' 스피너가 대학생으로 변경되면 -> 대학생 tableRow 보여주기
 
-
-
-
-        // '수정' 버튼 눌렀을 때
+        // '수정' 버튼
         updateBtn.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle("개인정보 수정")
+            builder.setMessage("개인 정보를 수정하시겠습니까?")
 
+            builder.setNeutralButton("취소",null)
+            builder.setPositiveButton("수정") { dialog,which->
+                Toast.makeText(activity,email.getText().toString(),Toast.LENGTH_SHORT).show()
+                if ( tel.getText().toString() != null ||tel.getText().toString().length !=11 ||
+                        email.getText().toString() != null) {
 
+                    sqlitedb = dbManager.writableDatabase
+                    sqlitedb.execSQL("UPDATE member SET m_tel = '" + tel.getText().toString() + "' WHERE m_id = '" + USER_ID + "';")
+                    sqlitedb.execSQL("UPDATE member SET m_email = '" + email.getText().toString() +"@"+spinner_email.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
+                    sqlitedb.execSQL("UPDATE member SET m_job = '" + spinner_job.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
+                    if (isUniv==true) {
+                        sqlitedb.execSQL("UPDATE member SET m_univ = '" + univer.getText().toString() + "' WHERE m_id = '" + USER_ID + "';")
+                    }
+                    sqlitedb.execSQL("UPDATE member SET m_area = '" + spinner_area.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
+                    sqlitedb.execSQL("UPDATE member SET m_interest = '" + spinner_interest.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
 
+                    Log.d("/--------값 확인----------/",tel.getText().toString()+"\n"+email.getText().toString() +"@"+ spinner_email.selectedItem.toString()
+                    +"\n"+spinner_job.selectedItem.toString()+"\n"+ univer.getText().toString() +"\n"+spinner_area.selectedItem.toString() +"\n"+spinner_interest.selectedItem.toString())
 
+                    sqlitedb.close()
+                }
+                else{
+                    Toast.makeText(activity,"형식 오류. 전화번호와 이메일을 다시 확인해주세요.",Toast.LENGTH_SHORT).show()
+                }
+            }
+            builder.show()
         }
-*/
+
 
         return v_myInfo
     }
+
+
+
+
+
+
 
 
     // 스피너1 - 초기값 설정

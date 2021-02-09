@@ -71,8 +71,7 @@ class ChangePwFragment : Fragment() {
             builder.setTitle("비밀번호 변경")
 
             // '현재 비밀번호' 입력 안 했을 때
-            if (currentPw.getText().toString().equals("") || currentPw.getText().toString() == null
-            ) {
+            if (currentPw.getText().toString().equals("") || currentPw.getText().toString() == null) {
                 builder.setMessage("현재 비밀번호를 입력하세요.")
             } else {
                 // '현재 비밀번호'가 아닐 때
@@ -93,10 +92,7 @@ class ChangePwFragment : Fragment() {
                             )
                             sqlitedb.close()
                             USER_PW = newPw1.getText().toString()
-                            Toast.makeText(
-                                getContext(),
-                                "'" + newPw1.getText().toString() + "'",
-                                Toast.LENGTH_LONG
+                            Toast.makeText(getContext(), "'" + newPw1.getText().toString() + "'", Toast.LENGTH_LONG
                             ).show()
 
 
