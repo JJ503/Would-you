@@ -81,7 +81,7 @@ class PersonalFragment : Fragment() {
         try {
             if (sqlitedb != null) {
                 var cursor: Cursor
-                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE id = '" + USER_ID + "';", null)
+                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
 
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {

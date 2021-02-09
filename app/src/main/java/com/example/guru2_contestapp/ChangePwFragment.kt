@@ -53,7 +53,7 @@ class ChangePwFragment : Fragment() {
                 cursor = sqlitedb.rawQuery("SELECT m_pw FROM member WHERE m_id = '" + USER_ID + "';", null)
                 if (cursor.getCount() != 0) {
                     if (cursor.moveToNext()) {
-                        USER_PW = cursor.getString(cursor.getColumnIndex("pw"))
+                        USER_PW = cursor.getString(cursor.getColumnIndex("m_pw"))
                     }
                 }
                 cursor.close()
@@ -89,9 +89,7 @@ class ChangePwFragment : Fragment() {
                             builder.setMessage("비밀번호를 변경합니다.")
                             sqlitedb = dbManager.writableDatabase
                             sqlitedb.execSQL(
-                                "UPDATE member SET pw = '" + newPw1.getText()
-                                    .toString() + "' WHERE id = '"
-                                        + USER_ID + "';"
+                                "UPDATE member SET m_pw = '" + newPw1.getText().toString() + "' WHERE m_id = '" + USER_ID + "';"
                             )
                             sqlitedb.close()
                             USER_PW = newPw1.getText().toString()

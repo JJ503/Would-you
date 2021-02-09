@@ -26,7 +26,7 @@ class ApplicantListAdapter (val list: ArrayList<ApplicantListData>, val itemClic
         var view : View = v
 
         fun bind(item: ApplicantListData){
-            tvName.text = item.name
+            //tvName.text = item.name
 
             view.setOnClickListener{ itemClick(item) }
         }
