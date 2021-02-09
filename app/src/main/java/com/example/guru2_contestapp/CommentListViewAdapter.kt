@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 class  CommentListViewAdapter(val context: Context, val commentList: ArrayList<CommentListViewItem>): BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -23,6 +24,10 @@ class  CommentListViewAdapter(val context: Context, val commentList: ArrayList<C
         name.text = commentlist.name
         comment.text = commentlist.comment
         date.text = commentlist.date
+
+        if(name.text.equals("팀장")){
+            name.setTextColor(ContextCompat.getColor(context, R.color.indigo_700))
+        }
 
         return view
     }
