@@ -48,6 +48,7 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_nowNum: String
     lateinit var str_totalNum: String
     lateinit var str_detail: String
+    lateinit var str_host: String
     lateinit var c_name: String
     lateinit var c_section: String
 
@@ -107,6 +108,7 @@ class TeamDetailActivity : AppCompatActivity() {
             str_nowNum=cursor.getInt(cursor.getColumnIndex("t_now_num")).toString()
             str_totalNum=cursor.getInt(cursor.getColumnIndex("t_total_num")).toString()
             str_detail=cursor.getString(cursor.getColumnIndex("t_detail")).toString()
+            str_host=cursor.getString(cursor.getColumnIndex("t_host")).toString()
 
             //team 테이블이 가진 c_num 값으로 contest 테이블에서 헤당 공모전 정보를 가져옴
             cursor2=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '" + str_contestNum + "';", null)
@@ -160,9 +162,6 @@ class TeamDetailActivity : AppCompatActivity() {
         }
 
 
-
-
-
         //댓글
         commentListArray= arrayListOf<CommentListViewItem>()
         val cm_contest: View = layoutInflater.inflate(R.layout.comment_list, null, false)
@@ -202,7 +201,25 @@ class TeamDetailActivity : AppCompatActivity() {
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
                 builder.show()
-            } else {
+            } else if(USER_ID.equals(str_host)){ // 댓글 작성자가 팀장이면 아이디 대신 '팀장'
+                val currentDateTime= Calendar.getInstance().time
+                val dateFormat= SimpleDateFormat("yyyy.MM.dd  HH:mm", Locale.KOREA).format(currentDateTime)
+                str_cm_reg_date=dateFormat
+                str_cm_reg_detail=commentRegET.text.toString()
+
+                dbManager = DBManager(this, "ContestAppDB", null, 1)
+                sqlitedb = dbManager.writableDatabase
+                sqlitedb.execSQL("INSERT INTO comment (t_num, m_id, cm_date, cm_detail) VALUES(" + t_num + ", '팀장' , '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
+
+                sqlitedb.close()
+                dbManager.close()
+
+                // 입력한 댓글이 바로 보일 수 있게 새로고침
+                val intent = getIntent()
+                finish()
+                startActivity(intent)
+            }
+            else {
                 val currentDateTime= Calendar.getInstance().time
                 val dateFormat= SimpleDateFormat("yyyy.MM.dd  HH:mm", Locale.KOREA).format(currentDateTime)
                 str_cm_reg_date=dateFormat
