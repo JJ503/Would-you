@@ -14,7 +14,7 @@ class ApplicantListAdapter (val list: ArrayList<ApplicantListData>, val itemClic
     }
 
     override fun onBindViewHolder(holder: ApplicantListAdapter.CustomViewHolder, position: Int) {
-        holder.tvName.text = list.get(position).name
+        //holder.tvName.text = list.get(position).name
     }
 
     override fun getItemCount(): Int {
