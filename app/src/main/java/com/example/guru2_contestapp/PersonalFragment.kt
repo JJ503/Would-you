@@ -85,12 +85,12 @@ class PersonalFragment : Fragment() {
 
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
-                        str_name = cursor.getString(cursor.getColumnIndex("name")) + " 님"
-                        str_id = cursor.getString(cursor.getColumnIndex("id"))
-                        str_job = cursor.getString(cursor.getColumnIndex("job"))
-                        if (cursor.getString(cursor.getColumnIndex("univ")) != null ) {
-                            if (cursor.getString(cursor.getColumnIndex("univ")) !="")
-                            str_univ = "(" + cursor.getString(cursor.getColumnIndex("univ")) + ")"
+                        str_name = cursor.getString(cursor.getColumnIndex("m_name")) + " 님"
+                        str_id = cursor.getString(cursor.getColumnIndex("m_id"))
+                        str_job = cursor.getString(cursor.getColumnIndex("m_job"))
+                        if (cursor.getString(cursor.getColumnIndex("m_univ")) != null ) {
+                            if (cursor.getString(cursor.getColumnIndex("m_univ")) !="")
+                            str_univ = "(" + cursor.getString(cursor.getColumnIndex("m_univ")) + ")"
                         }
 
                     }
@@ -167,7 +167,7 @@ class PersonalFragment : Fragment() {
                         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
                         sqlitedb = dbManager.writableDatabase
-                        sqlitedb.execSQL("UPDATE member SET profile = '" + bitmap + "' WHERE id = '"
+                        sqlitedb.execSQL("UPDATE member SET m_profile = '" + bitmap + "' WHERE id = '"
                                 + USER_ID+ "';")
                         sqlitedb.close()
 
@@ -206,16 +206,16 @@ class PersonalFragment : Fragment() {
 
         // 각 tab 별로 item의 개수를 DB로 부터 가져옴
         var cursor : Cursor
-        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state == 2;", null)
+        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 2;", null)
         BuildTeam_num = cursor.getCount()
 
-        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state >= -1  AND state < 2;", null)
+        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state >= -1  AND state < 2;", null)
         ApplyTeam_num = cursor.getCount()
 
-        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE id = '" + USER_ID + "' AND state == 5;", null)  //  쿼리1
+        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 5;", null)  //  쿼리1
         Carreer_num = cursor.getCount()
 
-        cursor = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE id = '" + USER_ID + "';", null)
+        cursor = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '" + USER_ID + "';", null)
         Wish_num = cursor.getCount()
 
         cursor.close()

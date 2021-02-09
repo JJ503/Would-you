@@ -32,7 +32,7 @@ class ChangePwFragment : Fragment() {
         var newPw1: EditText = preView.findViewById(R.id.newPw1)
         var newPw2: EditText = preView.findViewById(R.id.newPw2)
         var changePwBtn: Button = preView.findViewById(R.id.changePwBtn)
-        lateinit var USER_Pw: String
+        lateinit var USER_PW: String
 
         lateinit var dbManager: DBManager
         lateinit var sqlitedb: SQLiteDatabase
@@ -50,10 +50,10 @@ class ChangePwFragment : Fragment() {
         try {
             if (sqlitedb != null) {
                 var cursor: Cursor
-                cursor = sqlitedb.rawQuery("SELECT pw FROM member WHERE id = '" + USER_ID + "';", null)
+                cursor = sqlitedb.rawQuery("SELECT m_pw FROM member WHERE m_id = '" + USER_ID + "';", null)
                 if (cursor.getCount() != 0) {
                     if (cursor.moveToNext()) {
-                        USER_Pw = cursor.getString(cursor.getColumnIndex("pw"))
+                        USER_PW = cursor.getString(cursor.getColumnIndex("pw"))
                     }
                 }
                 cursor.close()
@@ -76,7 +76,7 @@ class ChangePwFragment : Fragment() {
                 builder.setMessage("현재 비밀번호를 입력하세요.")
             } else {
                 // '현재 비밀번호'가 아닐 때
-                if (USER_Pw != currentPw.getText().toString()) {
+                if (USER_PW != currentPw.getText().toString()) {
                     builder.setMessage("현재 비밀번호가 아닙니다.")
                 } else {
                     if (newPw1.getText().toString().equals("") || newPw1.getText().toString() == null || newPw2.getText().toString().equals("") || newPw2.getText().toString() == null
@@ -94,7 +94,7 @@ class ChangePwFragment : Fragment() {
                                         + USER_ID + "';"
                             )
                             sqlitedb.close()
-                            USER_Pw = newPw1.getText().toString()
+                            USER_PW = newPw1.getText().toString()
                             Toast.makeText(
                                 getContext(),
                                 "'" + newPw1.getText().toString() + "'",
