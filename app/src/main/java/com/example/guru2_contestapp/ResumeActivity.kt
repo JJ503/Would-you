@@ -102,7 +102,7 @@ class ResumeActivity : AppCompatActivity() {
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.writableDatabase
                 sqlitedb.execSQL("INSERT INTO resume (m_id, t_num, r_hope, r_self_intro, r_etc) VALUES ('"+USER_ID+"', "+t_num+", '"+str_hope+"', '"+str_self_intro+"', '"+str_etc+"')")
-
+                sqlitedb.execSQL("INSERT INTO teamManage (m_id, t_num, state) VALUES ('"+USER_ID+"', "+t_num+", 0)")
                 sqlitedb.close()
                 dbManager.close()
 
