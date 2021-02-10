@@ -155,7 +155,6 @@ class ContestDetailActivity : AppCompatActivity() {
             wishOnBtn.visibility= View.INVISIBLE
             wishOffBtn.visibility= View.VISIBLE
 
-
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
             sqlitedb.execSQL("UPDATE wishlist SET state = 0 WHERE m_id ='"+ USER_ID+"' AND c_num =" +c_num+";")

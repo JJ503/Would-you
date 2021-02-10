@@ -43,7 +43,7 @@ class ContestFragment : Fragment() {
         val v_contest = inflater.inflate(R.layout.fragment_contest, null)
 
         // 공모전 검색
-        searchBtn=v_contest.findViewById(R.id.WsearchButton)
+        searchBtn=v_contest.findViewById(R.id.WprofileEditButton)
         searchET=v_contest.findViewById(R.id.WsearchEditText)
 
         // 검색 버튼 클릭 시, 현재 Fragment를 새로고침하여 변경된 contestListArray이 적용되게 함

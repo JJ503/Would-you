@@ -65,7 +65,7 @@
                     android:inputType="textPersonName" />
 
                 <ImageButton
-                    android:id="@+id/WsearchButton"
+                    android:id="@+id/WprofileEditButton"
                     android:layout_width="wrap_content"
                     android:layout_height="60dp"
                     android:layout_marginStart="5dp"

@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 
@@ -18,6 +20,7 @@ class ResumeActivity : AppCompatActivity() {
 
     lateinit var info: TextView
     lateinit var submitBtn: Button
+    lateinit var editBtn: ImageButton
     lateinit var hopeET: EditText
     lateinit var selfIntroET: EditText
     lateinit var etcET: EditText
@@ -50,9 +53,9 @@ class ResumeActivity : AppCompatActivity() {
         nameTextView=findViewById(R.id.WnameTextView)
         ageTextView=findViewById(R.id.WageTextView)
         jobTextView=findViewById(R.id.WjobTextView)
+        editBtn=findViewById(R.id.WprofileEditButton)
 
         // 상단 텍스트 뷰(공모전과 팀 이름) 내용을 이전 페이지에서 온 intent 값으로 설정
-        //val intent=intent
         val ic_name=intent.getStringExtra("intent_c_name")
         val it_name=intent.getStringExtra("intent_t_name")
         info.text=it_name+"("+ic_name+")"
@@ -83,12 +86,18 @@ class ResumeActivity : AppCompatActivity() {
         } else{
             birth_year = ("20" + str_year).toInt()
         }
-
         val age = this_year - birth_year + 1
 
         nameTextView.text=str_name
         ageTextView.text=age.toString()
         jobTextView.text=str_job
+
+        // 프로필에서 수정 버튼 클릭 -> 수정 페이지로 이동
+        editBtn.setOnClickListener {
+            val intent= Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+
+        }
 
         // 제출 버튼 클릭하면 입력 폼에 빈칸이 있는지 확인하고 있는 경우 대화상자로 알림
         // 빈칸 없는 경우 입력한 정보를 DB에 값을 입력하고 액티비티 종료

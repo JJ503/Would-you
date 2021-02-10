@@ -151,7 +151,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/WageTextView" />
 
                 <ImageButton
-                    android:id="@+id/WsearchButton"
+                    android:id="@+id/WprofileEditButton"
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#FFFFFF"
