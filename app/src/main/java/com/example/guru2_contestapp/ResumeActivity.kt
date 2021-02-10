@@ -51,7 +51,7 @@ class ResumeActivity : AppCompatActivity() {
         jobTextView=findViewById(R.id.WjobTextView)
 
         // 상단 텍스트 뷰(공모전과 팀 이름) 내용을 이전 페이지에서 온 intent 값으로 설정
-        val intent=intent
+        //val intent=intent
         val ic_name=intent.getStringExtra("intent_c_name")
         val it_name=intent.getStringExtra("intent_t_name")
         info.text=it_name+"("+ic_name+")"

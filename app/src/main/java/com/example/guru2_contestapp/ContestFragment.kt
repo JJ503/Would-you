@@ -71,7 +71,7 @@ class ContestFragment : Fragment() {
         if(str_search!=""){
             cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_name = '"+str_search+"';", null)
         }else{
-            cursor=sqlitedb.rawQuery("SELECT * FROM contest;", null)
+            cursor=sqlitedb.rawQuery("SELECT * FROM contest ORDER BY c_start;", null)
         }
 
         while(cursor.moveToNext()){
