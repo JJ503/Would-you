@@ -64,6 +64,7 @@ class TeamDetailActivity : AppCompatActivity() {
 
     lateinit var str_cm_reg_date: String
     lateinit var str_cm_reg_detail: String
+    var state=-1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -259,10 +260,27 @@ class TeamDetailActivity : AppCompatActivity() {
 
         // 신청 버튼 클릭 시, 팀 지원 페이지로 공모전 이름과, 팀 이름을 intent로 넘기며 이동함
         applyBtn.setOnClickListener {
-            val intent= Intent(this, ResumeActivity::class.java)
-            intent.putExtra("intent_c_name", c_name)
-            intent.putExtra("intent_t_name", str_teamName)
-            startActivity(intent)
+
+            // 지원자가 팀장인 경우 대화상자로 알림
+            dbManager = DBManager(this, "ContestAppDB", null, 1)
+            sqlitedb = dbManager.readableDatabase
+            cursor=sqlitedb.rawQuery("SELECT state FROM teamManage WHERE m_id = '"+USER_ID+"';", null)
+            if(cursor.moveToNext()){
+                state=cursor.getInt(cursor.getColumnIndex("state"))
+            }
+
+            val builder= AlertDialog.Builder(this)
+            if(state==2){
+                builder.setMessage("당신은 이 팀의 팀장입니다.")
+                //builder.setIcon(R.)
+                builder.setPositiveButton("확인", null)
+                builder.show()
+            } else{
+                val intent= Intent(this, ResumeActivity::class.java)
+                intent.putExtra("intent_c_name", c_name)
+                intent.putExtra("intent_t_name", str_teamName)
+                startActivity(intent)
+            }
         }
     }
 
