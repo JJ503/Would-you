@@ -13,7 +13,7 @@ class ApplicantListActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
-    lateinit var recycler : RecyclerView
+    lateinit var applicantRecycler : RecyclerView
 
     lateinit var listArray : ArrayList<ApplicantListData>         // SQLite에서 가져온 원본 데이터 리스트
 
@@ -21,43 +21,45 @@ class ApplicantListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_applicant_list)
 
-        //BuildTeamListFragment에서 t_num을 전달받는다.
-        val t_num :Int = intent.getIntExtra("t_num",-1)
-        Toast.makeText(this,"t_num : "+t_num,Toast.LENGTH_SHORT).show()
-
-
         listArray = ArrayList()
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
-        recycler = findViewById(R.id.JapplicantRecycler)
+        applicantRecycler = findViewById(R.id.JapplicantRecycler)
 
+        var t_num = -1
+
+        if (intent.hasExtra("t_num")) {
+            t_num = intent.getIntExtra("t_num", -1)
+        } else {
+            Toast.makeText(this, "전달된 값이 없습니다", Toast.LENGTH_SHORT).show()
+        }
 
         try {
-            var cursor: Cursor
-            cursor = sqlitedb.rawQuery("SELECT * FROM member;", null)
+            var cursor : Cursor
+            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num}", null)
 
             while (cursor.moveToNext()){
-                var m_name = cursor.getString(cursor.getColumnIndex("m_name")).toString()
-                listArray.add(ApplicantListData(m_name))
+                var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
+
+                var cursor2 : Cursor
+                cursor2 = sqlitedb.rawQuery("SELECT m_name FROM member WHERE m_id = '${m_id}'", null)
+
+                cursor2.moveToFirst()
+                var m_name = cursor2.getString(cursor2.getColumnIndex("m_name")).toString()
+                listArray.add(ApplicantListData(t_num, m_name))
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())
         } finally{
             sqlitedb.close()
+            dbManager.close()
         }
 
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
-        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recycler.setHasFixedSize(true)
-
-
-        val adapter = ApplicantListAdapter(listArray) { item ->
-            //val intent = Intent(this, ApplicantPager::class.java)
-            //startActivity(intent)
-        }
-
-        recycler.adapter = adapter
+        applicantRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        applicantRecycler.setHasFixedSize(true)
+        applicantRecycler.adapter = ApplicantListAdapter(listArray)
     }
 }

@@ -34,13 +34,10 @@ class BuildTeamListAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <
         // item(Team)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
-            intent.putExtra("t_num",teamList.get(position).t_num)
+            intent.putExtra("t_num", teamList.get(position).t_num)
 
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
-
-
-
     }
 
     //리스트 총 개수

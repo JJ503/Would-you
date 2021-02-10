@@ -1,44 +1,51 @@
 package com.example.guru2_contestapp
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class ApplicantListAdapter (val list: ArrayList<ApplicantListData>, val itemClick : (ApplicantListData) -> Unit) : RecyclerView.Adapter<ApplicantListAdapter.CustomViewHolder>(){
+class ApplicantListAdapter(val itemList: ArrayList<ApplicantListData>) : RecyclerView.Adapter<ApplicantListAdapter.CustomViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApplicantListAdapter.CustomViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.applicant_list_item, parent, false)
-        return CustomViewHolder(view, itemClick)
+        return CustomViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ApplicantListAdapter.CustomViewHolder, position: Int) {
-        //holder.tvName.text = list.get(position).name
-    }
+    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+        holder.onBind(itemList.get(position))
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView?.context, ApplicantPagerActivity::class.java)
+            intent.putExtra("pos", position)
+            intent.putExtra("m_id", itemList.get(position).t_num)
 
-    class CustomViewHolder(v: View, private val itemClick: (ApplicantListData) -> Unit) : RecyclerView.ViewHolder(v){
-        val tvName = itemView.findViewById<TextView>(R.id.JtvName)
-        var view : View = v
-
-        fun bind(item: ApplicantListData){
-            //tvName.text = item.name
-
-            view.setOnClickListener{ itemClick(item) }
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
     }
 
-    interface ItemClickListener{
+    override fun getItemCount(): Int {
+        return itemList.size
+    }
+
+    class CustomViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+        val tvName = itemView.findViewById<TextView>(R.id.JtvName)
+
+        fun onBind(item: ApplicantListData) {
+            tvName.text = item.m_name
+        }
+    }
+
+    interface ItemClickListener {
         fun onClick(view: View, position: Int)
     }
 
     private lateinit var itemClickListener: ItemClickListener
 
-    fun setItemClickListener(itemClickListener: ItemClickListener){
+    fun setItemClickListener(itemClickListener: ItemClickListener) {
         this.itemClickListener = itemClickListener
     }
 }
