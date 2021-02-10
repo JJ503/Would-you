@@ -1,7 +1,9 @@
 package com.example.guru2_contestapp
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
@@ -11,10 +13,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -52,6 +52,7 @@ class PersonalFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
 
         var v_personal = inflater.inflate(R.layout.fragment_personal, null)
 
@@ -138,9 +139,73 @@ class PersonalFragment : Fragment() {
 
 
         return v_personal
+        setHasOptionsMenu(true)
 
 
     }
+
+
+    // 메뉴 등록
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_personal, menu)
+    }
+
+    // 메뉴 행동 지정
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            //로그아웃
+           R.id.action_logout ->{
+
+               val builder = AlertDialog.Builder(activity)
+               builder.setTitle("로그아웃")
+               builder.setMessage("지금 로그아웃하시겠어요?")
+               builder.setNeutralButton("취소",null)
+               builder.setPositiveButton("로그아웃" , DialogInterface.OnClickListener { dialog, which ->
+
+                   // 현재 로그인 사용자를 저장해놓은 SharedPreferences 값 clear
+                   var context: Context = requireContext()
+                   val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+                   val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                   editor.putString("USER_ID", "")
+                   editor.commit()
+
+
+                   //로그인 페이지로 이동
+                val intent = Intent (activity, MainActivity::class.java)
+                   startActivity(intent)
+               })
+
+               builder.show()
+               return true
+
+            }
+            // 개발자 문의
+            R.id.action_developerSupport ->{
+                val intent = Intent (activity, DeveloperSupportActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            //버그 신고
+            R.id.action_bugReport-> {
+                val intent = Intent (activity, BugReportActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+            //회원 탈퇴
+            R.id.action_deleteAccount->{
+                val intent = Intent (activity, DeleteAccountActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
+
+
+
 
     // 사진 비트맵으로 imageview에 띄움 (수정필요)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

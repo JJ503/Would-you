@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Guru2_ContestApp">
-        <activity android:name=".ApplicantPagerActivity"></activity>
+        <activity android:name=".DeleteAccountActivity"></activity>
+        <activity android:name=".BugReportActivity" />
+        <activity android:name=".DeveloperSupportActivity" />
+
+        <activity android:name=".ApplicantPagerActivity" />
         <activity
             android:name=".ResumeActivity"
             android:parentActivityName=".NavigationActivity" />
