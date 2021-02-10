@@ -37,6 +37,7 @@ class BuildTeamActivity : AppCompatActivity() {
     lateinit var str_t_need_part: String
     lateinit var str_t_detail: String
     var c_num=0
+    var t_num=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -205,6 +206,13 @@ class BuildTeamActivity : AppCompatActivity() {
                 // DB에 정보 넣기
                 sqlitedb = dbManager.writableDatabase
                 sqlitedb.execSQL("INSERT INTO team (c_num, t_name, t_host, t_total_num, t_now_num, t_end_date, t_need_part, t_detail) VALUES ("+c_num+", '"+str_t_name+"', '"+ USER_ID + "'," +t_total_num+", "+1+", '"+str_t_end_date+"', '"+str_t_need_part+"', '"+str_t_detail+"')")
+                cursor=sqlitedb.rawQuery("SELECT t_num FROM team WHERE t_name = '"+str_t_name+"';", null)
+                if(cursor.moveToNext()){
+                    t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
+                }
+                cursor.close()
+
+                sqlitedb.execSQL("INSERT INTO teamManage (m_id, t_num, state) VALUES ('"+USER_ID+"', "+t_num+", 2)")
                 sqlitedb.close()
                 dbManager.close()
 
