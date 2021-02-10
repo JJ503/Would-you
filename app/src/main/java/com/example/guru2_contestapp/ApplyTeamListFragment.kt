@@ -36,9 +36,10 @@ class ApplyTeamListFragment : Fragment() {
         var t_now_num : Int = -1
         var t_total_num : Int = -1
         var c_num : Int = -1
+        var state : Int = -2
 
-        lateinit var teamList : ArrayList<Team>
-        teamList=ArrayList()
+        lateinit var applyTeamList : ArrayList<ApplyTeam>
+        applyTeamList=ArrayList()
 
 
         //현재 로그인 중인 사용자 지정
@@ -58,9 +59,11 @@ class ApplyTeamListFragment : Fragment() {
                 var t_num :Int = 0    // 쿼리1로 얻은 t_num 저장하는 임시변수 (쿼리2의 인자값으로 사용됨)
 
                 lateinit var cursor3 :Cursor // 쿼리3
+
                 if (cursor1.getCount() != 0) {
                     while (cursor1.moveToNext()) {
 
+                        state = cursor1.getInt(cursor1.getColumnIndex("state"))
                         t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
                         cursor2 = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = " + t_num + ";", null) //쿼리2
 
@@ -82,9 +85,9 @@ class ApplyTeamListFragment : Fragment() {
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
 
                         }
-                        teamList.add(
-                                Team(t_num, R.drawable.poster_img, t_name, c_name,
-                                t_now_num, t_total_num, t_end_date, t_need_part)
+                        applyTeamList.add(
+                                ApplyTeam(t_num, R.drawable.poster_img, t_name, c_name,
+                                t_now_num, t_total_num, t_end_date, t_need_part, state)
                         )
                     }
                 }
@@ -106,7 +109,7 @@ class ApplyTeamListFragment : Fragment() {
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         rv_applyTeam.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
-        rv_applyTeam.adapter = TeamAdapter(teamList)
+        rv_applyTeam.adapter = ApplyTeamAdapter(applyTeamList)
 
 
 

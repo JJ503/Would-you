@@ -82,7 +82,7 @@ class WishListFragment : Fragment() {
                             if (deadline < 0) {
                                 deadlineTxt = "모집 종료"
                             } else {
-                                deadlineTxt = "모집" + deadline.toString() + "일 전"
+                                deadlineTxt = "모집 " + deadline.toString() + "일 전"
                             }
 
                         }
