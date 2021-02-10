@@ -3,6 +3,7 @@ package com.example.guru2_contestapp
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -29,7 +30,7 @@ class ResumeActivity : AppCompatActivity() {
     lateinit var str_etc: String
     var t_num=0
     lateinit var str_name: String
-    lateinit var str_age: String
+    lateinit var str_year: String
     lateinit var str_job: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,15 +69,25 @@ class ResumeActivity : AppCompatActivity() {
         cursor=sqlitedb.rawQuery("SELECT m_name, m_year, m_job FROM member WHERE m_id = '"+USER_ID+"';", null)
         if(cursor.moveToNext()){
             str_name=cursor.getString(cursor.getColumnIndex("m_name"))
-            str_age=cursor.getString(cursor.getColumnIndex("m_year"))
+            str_year=cursor.getString(cursor.getColumnIndex("m_year"))
             str_job=cursor.getString(cursor.getColumnIndex("m_job"))
         }
         cursor.close()
         sqlitedb.close()
         dbManager.close()
 
+        val this_year = Calendar.getInstance().get(Calendar.YEAR)
+        var birth_year = 0
+        if (str_year.toInt() > this_year){
+            birth_year = ("19" + str_year).toInt()
+        } else{
+            birth_year = ("20" + str_year).toInt()
+        }
+
+        val age = this_year - birth_year + 1
+
         nameTextView.text=str_name
-        ageTextView.text=str_age
+        ageTextView.text=age.toString()
         jobTextView.text=str_job
 
         // 제출 버튼 클릭하면 입력 폼에 빈칸이 있는지 확인하고 있는 경우 대화상자로 알림
