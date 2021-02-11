@@ -53,6 +53,7 @@ class HomeFragment : Fragment() {
 
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
+
         var context: Context = requireContext()
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
 
