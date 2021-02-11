@@ -110,6 +110,8 @@ class TeamFragment : Fragment() {
                             tc_num=0
                         }
                         cursor.close()
+                    } else{
+                        tc_num=-1
                     }
                 }
             } catch(e: Exception){
@@ -136,7 +138,7 @@ class TeamFragment : Fragment() {
                 }else{
                     cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
                 }
-                if(cursor.count!=null){
+                if(cursor.count!=0){
                     var cursor2: Cursor
                     while(cursor.moveToNext()){
                         //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
