@@ -92,7 +92,7 @@ class DeleteAccountActivity : AppCompatActivity() {
                         try {
                             if (sqlitedb != null) {
                                 sqlitedb = dbManager.writableDatabase
-                                sqlitedb.execSQL(("DELETE FROM member WHERE m_id = '" + USER_ID + "';"), null)
+                                sqlitedb.execSQL("DELETE FROM member WHERE m_id = '" + USER_ID + "';", null)
                             }
                         } catch (e: Exception) {
                             Log.e("Error", e.message.toString())

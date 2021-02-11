@@ -17,6 +17,7 @@ class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
+        supportActionBar?.elevation = 0f
 
         bottomNavigation=findViewById(R.id.WbottomNavigationView)
 
