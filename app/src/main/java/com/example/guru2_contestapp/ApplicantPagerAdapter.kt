@@ -9,7 +9,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ApplicantPagerAdapter(val itemList : List<ApplicantPagerData>) : RecyclerView.Adapter<ApplicantPagerAdapter.CustomViewHolder>() {
+class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerView.Adapter<ApplicantPagerAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val context = parent.context
@@ -46,7 +46,7 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerData>) : RecyclerV
         val btnAccept = v.findViewById<ImageButton>(R.id.JbtnAccept2)
         val btnRefuse = v.findViewById<ImageButton>(R.id.JbtnRefuse2)
 
-        fun onBind(item: ApplicantPagerData) {
+        fun onBind(item: ApplicantPagerItem) {
             tvUserName.text = item.m_name
             ageText.text = item.m_age.toString()
             hopeText.text = item.r_hope

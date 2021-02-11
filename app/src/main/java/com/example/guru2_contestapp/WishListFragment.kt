@@ -92,11 +92,11 @@ class WishListFragment : Fragment() {
                 cursor2.close()
             }
         }catch(e: Exception){
-        Log.e("Error", e.message.toString())
-    } finally{
-        sqlitedb.close()
-        dbManager.close()
-    }
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
+        }
 
 
 

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class ApplicantListAdapter(val itemList: ArrayList<ApplicantListData>) : RecyclerView.Adapter<ApplicantListAdapter.CustomViewHolder>() {
+class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : RecyclerView.Adapter<ApplicantListAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.applicant_list_item, parent, false)
@@ -16,7 +16,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListData>) : Recycle
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder.onBind(itemList.get(position))
+        holder.onBind(itemList[position])
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context, ApplicantPagerActivity::class.java)
@@ -34,7 +34,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListData>) : Recycle
     class CustomViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         val tvName = itemView.findViewById<TextView>(R.id.JtvName)
 
-        fun onBind(item: ApplicantListData) {
+        fun onBind(item: ApplicantListItem) {
             tvName.text = item.m_name
         }
     }
