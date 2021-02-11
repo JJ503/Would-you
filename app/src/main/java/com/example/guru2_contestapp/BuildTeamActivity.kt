@@ -166,7 +166,7 @@ class BuildTeamActivity : AppCompatActivity() {
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else if(calcDate()<=0){
-                builder.setMessage("마감일은 팀 생성일로부터 1일 후 부터 선택할 수 있습니다.")
+                builder.setMessage("마감일은 팀 생성일로부터\n1일 후 부터 선택할 수 있습니다.")
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
                 builder.show()
