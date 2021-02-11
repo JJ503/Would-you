@@ -152,8 +152,10 @@ class BuildTeamActivity : AppCompatActivity() {
 
             if(contestSpinner.selectedItem=="공모전을 선택하세요"){
                 builder.setMessage("공모전을 선택해주세요.")
-                //builder.setIcon(R.)
+                //builder.setIcon(R.mipmap.ic_launcher_round)
                 builder.setPositiveButton("확인", null)
+                builder.create()
+                builder.setIcon(R.drawable.ic_contest_icon)
                 builder.show()
             } else if (contestNameET.text.toString()==""){
                 builder.setMessage("팀 이름을 입력해 주세요.")
