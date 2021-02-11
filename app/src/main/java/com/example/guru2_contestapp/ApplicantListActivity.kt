@@ -49,7 +49,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
                 cursor2.moveToFirst()
                 var m_name = cursor2.getString(cursor2.getColumnIndex("m_name")).toString()
-                listArray.add(ApplicantListItem(t_num, m_name))
+                listArray.add(ApplicantListItem(t_num, m_id, m_name))
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())

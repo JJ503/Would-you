@@ -1,10 +1,17 @@
 package com.example.guru2_contestapp
 
 import android.content.Intent
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,12 +25,57 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.onBind(itemList[position])
 
+        var dbManager: DBManager =  DBManager(holder.itemView.context, "ContestAppDB", null, 1)
+        var sqlitedb : SQLiteDatabase = dbManager.writableDatabase
+
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context, ApplicantPagerActivity::class.java)
             intent.putExtra("pos", position)
             intent.putExtra("m_id", itemList.get(position).t_num)
 
             ContextCompat.startActivity(holder.itemView.context, intent, null)
+        }
+
+        holder.btnAccept.setOnClickListener {
+            try {
+                var cursor : Cursor
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
+                cursor.moveToFirst()
+
+                if (cursor.getCount() == 1){
+                    sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
+                    holder.itemView.setBackgroundColor(Color.parseColor("#17009688"))
+                    holder.btnAccept.visibility = GONE
+                    holder.btnRefuse.visibility = GONE
+                } else {
+                    Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+                }
+            } catch(e: Exception){
+                Log.e("Error", e.message.toString())
+            } finally{
+
+            }
+        }
+
+        holder.btnRefuse.setOnClickListener {
+            try {
+                var cursor : Cursor
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
+                cursor.moveToFirst()
+
+                if (cursor.getCount() == 1){
+                    sqlitedb.execSQL("UPDATE teamManage SET state = -1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
+                    holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"))
+                    holder.btnAccept.visibility = GONE
+                    holder.btnRefuse.visibility = GONE
+                } else {
+                    Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+                }
+            } catch(e: Exception){
+                Log.e("Error", e.message.toString())
+            } finally{
+
+            }
         }
     }
 
@@ -32,7 +84,10 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
     }
 
     class CustomViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        val tvName = itemView.findViewById<TextView>(R.id.JtvName)
+        val tvName = view.findViewById<TextView>(R.id.JtvName)
+        val btnAccept = view.findViewById<ImageButton>(R.id.JbtnAccept)
+        val btnRefuse = view.findViewById<ImageButton>(R.id.JbtnRefuse)
+
 
         fun onBind(item: ApplicantListItem) {
             tvName.text = item.m_name
