@@ -33,17 +33,13 @@ class HomeFragment : Fragment() {
     lateinit var joinTeam : TextView
     lateinit var applicantTeam : TextView
 
+    lateinit var myTeamList : ArrayList<WishItem>
+
     lateinit var recomConList : ArrayList<WishItem>    // 추천 공모전 리스트
     lateinit var recomTeamList : ArrayList<WishItem>   // 추천 팀 리스트
 
-    lateinit var preRecomConList : ArrayList<WishItem>    // 모든 추천 공모전 리스트
-    lateinit var preRecomTeamList : ArrayList<WishItem>   // 모든 추천 팀 리스트
-
-    lateinit var restConList : ArrayList<WishItem>     // 추천 외의 공모전 리스트
-    lateinit var restTeamList : ArrayList<WishItem>    // 추천 외의 팀 리스트
-
-    lateinit var preRestConList : ArrayList<WishItem>     // 모든 추천 외의 공모전 리스트
-    lateinit var preRestTeamList : ArrayList<WishItem>    // 모든 추천 외의 팀 리스트
+    //lateinit var restConList : ArrayList<WishItem>     // 추천 외의 공모전 리스트
+    //lateinit var restTeamList : ArrayList<WishItem>    // 추천 외의 팀 리스트
 
     var c_num : Int = -1
     lateinit var c_name : String
@@ -58,13 +54,11 @@ class HomeFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
         var context: Context = requireContext()
-        val sharedPreferences: SharedPreferences =
-            context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
 
+        myTeamList = ArrayList()
         recomConList = ArrayList()
         recomTeamList = ArrayList()
-        restConList = ArrayList()
-        restTeamList = ArrayList()
 
         userName = view.findViewById(R.id.userName)
         joinTeam = view.findViewById(R.id.JjoinTeam)
@@ -98,6 +92,51 @@ class HomeFragment : Fragment() {
                 var appli_cursor: Cursor
                 appli_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 0 OR state = 1;", null)
                 applicantTeam.text = appli_cursor.getCount().toString() + " 개"
+
+
+                // user의 내 팀 리스트 (호스트 & 신청 & 팀 완성 전 수락 상태)
+                var myTeam_cursor: Cursor
+                myTeam_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 2;", null)
+                if (myTeam_cursor.getCount() != 0){
+                    while(myTeam_cursor.moveToNext()){
+                        t_num = myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("t_num"))
+
+                        var myTeamInfo_cursor: Cursor
+                        myTeamInfo_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num};", null)
+                        myTeamInfo_cursor.moveToFirst()
+
+                        t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+
+                        myTeamList.add(WishItem(t_num, "팀장입니다", R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                    }
+                }
+
+                myTeam_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 0 OR state = 1;", null)
+
+                if (myTeam_cursor.getCount() != 0){
+                    while(myTeam_cursor.moveToNext()){
+                        t_num = myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("t_num"))
+
+                        var state = ""
+                        if (myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("state")) == 0){
+                            state = "대기 중"
+                        } else {
+                            state = "팀원 수락"
+                        }
+
+                        var myTeamInfo_cursor: Cursor
+                        myTeamInfo_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num};", null)
+                        myTeamInfo_cursor.moveToFirst()
+
+                        t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+
+                        myTeamList.add(WishItem(t_num, state, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                    }
+                }
+
+                myContestRecycler = view.findViewById(R.id.JmyContestRecycler)
+                myContestRecycler.adapter = WishListAdapter(myTeamList)
+
 
                 // user가 관심있어 하는 공모전
                 var recomContest_cursor: Cursor
@@ -141,61 +180,13 @@ class HomeFragment : Fragment() {
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 팀 리스트에 추가
-                                    preRecomTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                    recomTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
                                 }
                             }
 
                             // 추천 공모전 리스트에 추가
-                            preRecomConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
+                            recomConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
                         }
-                    }
-                }
-
-                recomTeamtRecycler = view.findViewById<RecyclerView>(R.id.JrecomTeamtRecycler)
-                recomTeamtRecycler.adapter = WishListAdapter(preRecomTeamList)
-
-                /*
-                // 추천 공모전과 팀 랜덤으로 5개 선택
-                var preRecomConNum : Int = recomContest_cursor.getCount()
-                var preRecomTeamNum : Int = recomTeam_cursor.getCount()
-                var numList : ArrayList<Int> = ArrayList()
-
-                if(preRecomConNum > 0){
-                    numList.add(Random().nextInt(preRecomConNum))
-                    recomConList.add(preRecomConList[numList[0]])
-
-                    var i = 1
-                    while(i <= preRecomConNum - 1){
-                        val num = Random().nextInt(preRecomConNum)
-                        for (j in 0..(i- 1)){
-                            if (numList[i] == numList[j]){
-                                i--
-                                continue
-                            }
-                        }
-
-                        numList.add(num)
-                        recomConList.add(preRecomConList[num])
-                    }
-                }
-
-                numList = ArrayList()
-                if(preRecomTeamNum > 0){
-                    numList.add(Random().nextInt(preRecomTeamNum))
-                    recomTeamList.add(preRecomTeamList[numList[0]])
-
-                    var i = 1
-                    while(i <= preRecomTeamNum - 1){
-                        val num = Random().nextInt(preRecomTeamNum)
-                        for (j in 0..(i- 1)){
-                            if (numList[i] == numList[j]){
-                                i--
-                                continue
-                            }
-                        }
-
-                        numList.add(num)
-                        recomTeamList.add(preRecomConList[num])
                     }
                 }
 
@@ -242,77 +233,29 @@ class HomeFragment : Fragment() {
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 외의 남은 팀 리스트에 추가
-                                    restTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                    recomTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
                                 }
                             }
 
                             // 추천 외의 남은 공모전 리스트에 추가
-                            restConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
+                            recomConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
                         }
                     }
                 }
 
-                // 추천 공모전과 팀 랜덤으로 5개 선택
-                var preRestConNum : Int = 5 - restContest_cursor.getCount()
-                var preRestTeamNum : Int = 5 - restTeam_cursor.getCount()
+                recomTeamtRecycler = view.findViewById(R.id.JrecomTeamtRecycler)
+                recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
 
-                if(preRestConNum > 0){
-                    numList = ArrayList()
-                    numList.add(Random().nextInt(preRestConNum))
-                    restConList.add(preRestConList[numList[0]])
-
-                    var i = 1
-                    while(i <= preRestConNum - 1){
-                        val num = Random().nextInt(preRestConNum)
-                        for (j in 0..(i- 1)){
-                            if (numList[i] == numList[j]){
-                                i--
-                                continue
-                            }
-                        }
-
-                        numList.add(num)
-                        restConList.add(preRestConList[num])
-                    }
-                }
-
-                if(preRestTeamNum > 0){
-                    numList = ArrayList()
-                    numList.add(Random().nextInt(preRestConNum))
-                    restTeamList.add(preRestTeamList[numList[0]])
-
-                    var i = 1
-                    while(i <= preRestTeamNum - 1){
-                        val num = Random().nextInt(preRestTeamNum)
-                        for (j in 0..(i- 1)){
-                            if (numList[i] == numList[j]){
-                                i--
-                                continue
-                            }
-                        }
-
-                        numList.add(num)
-                        restTeamList.add(preRestTeamList[num])
-                    }
-                }
-            */
+                recomContestRecycler = view.findViewById(R.id.JrecomContestRecycler)
+                recomContestRecycler.adapter = WishListAdapter(recomConList)
             }
             } catch (e: Exception){
                 Log.e("Error", e.message.toString())
             } finally {
                 sqlitedb.close()
             }
-            /*
 
-        recomTeamtRecycler = view.findViewById<RecyclerView>(R.id.JrecomTeamtRecycler)
-        recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
-
-        recomContestRecycler = view.findViewById<RecyclerView>(R.id.JrecomContestRecycler)
-        recomContestRecycler.adapter = WishListAdapter(recomConList)
-
-                 */
-
-            return view
+        return view
     }
 
     // 날짜 차이 구하기
