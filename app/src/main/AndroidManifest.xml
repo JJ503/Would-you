@@ -9,8 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Guru2_ContestApp">
-        <activity android:name=".DeleteAccountActivity"></activity>
-        <activity android:name=".DeveloperSupportActivity" />
+
+        <activity android:name=".DeleteAccountActivity"
+            android:label="회원 탈퇴"
+            android:parentActivityName=".NavigationActivity" />
+        <activity android:name=".DeveloperSupportActivity"
+            android:label="개발자 문의"
+            android:parentActivityName=".NavigationActivity" />
 
         <activity android:name=".ApplicantPagerActivity" />
         <activity

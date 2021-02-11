@@ -164,7 +164,7 @@ class MyInfoFragment : Fragment() {
 
             builder.setNeutralButton("취소",null)
             builder.setPositiveButton("수정") { dialog,which->
-                Toast.makeText(activity,email.getText().toString(),Toast.LENGTH_SHORT).show()
+
                 if ( tel.getText().toString() != null ||tel.getText().toString().length !=11 ||
                         email.getText().toString() != null) {
 
@@ -181,9 +181,9 @@ class MyInfoFragment : Fragment() {
                     sqlitedb.execSQL("UPDATE member SET m_area = '" + spinner_area.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
                     sqlitedb.execSQL("UPDATE member SET m_interest = '" + spinner_interest.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
 
-                    Log.d("/--------값 확인----------/",tel.getText().toString()+"\n"+email.getText().toString() +"@"+ spinner_email.selectedItem.toString()
+                   /* Log.d("/--------값 확인----------/",tel.getText().toString()+"\n"+email.getText().toString() +"@"+ spinner_email.selectedItem.toString()
                     +"\n"+spinner_job.selectedItem.toString()+"\n"+ univer.getText().toString() +"\n"+spinner_area.selectedItem.toString() +"\n"+spinner_interest.selectedItem.toString())
-
+*/
                     sqlitedb.close()
                 }
                 else{
