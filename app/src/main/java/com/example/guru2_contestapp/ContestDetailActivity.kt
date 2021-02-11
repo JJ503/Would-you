@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import java.lang.Exception
+
 
 class ContestDetailActivity : AppCompatActivity() {
 
@@ -65,22 +67,30 @@ class ContestDetailActivity : AppCompatActivity() {
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '"+c_num+"';", null)
+        try {
+            if(sqlitedb!=null){
+                cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '"+c_num+"';", null)
 
-        if(cursor.moveToNext()){
-            //var photo
-            str_name=cursor.getString(cursor.getColumnIndex("c_name")).toString()
-            str_host=cursor.getString(cursor.getColumnIndex("c_host")).toString()
-            str_section=cursor.getString(cursor.getColumnIndex("c_section")).toString()
-            str_start=cursor.getString(cursor.getColumnIndex("c_start")).toString()
-            str_end=cursor.getString(cursor.getColumnIndex("c_end")).toString()
-            str_detail=cursor.getString(cursor.getColumnIndex("c_detail")).toString()
-            str_address=cursor.getString(cursor.getColumnIndex("c_address")).toString()
+                if(cursor.count!=0){
+                    if(cursor.moveToNext()){
+                        //var photo
+                        str_name=cursor.getString(cursor.getColumnIndex("c_name")).toString()
+                        str_host=cursor.getString(cursor.getColumnIndex("c_host")).toString()
+                        str_section=cursor.getString(cursor.getColumnIndex("c_section")).toString()
+                        str_start=cursor.getString(cursor.getColumnIndex("c_start")).toString()
+                        str_end=cursor.getString(cursor.getColumnIndex("c_end")).toString()
+                        str_detail=cursor.getString(cursor.getColumnIndex("c_detail")).toString()
+                        str_address=cursor.getString(cursor.getColumnIndex("c_address")).toString()
+                    }
+                }
+                cursor.close()
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally {
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         contestName.text = str_name
         hostName.text = str_host
@@ -94,27 +104,35 @@ class ContestDetailActivity : AppCompatActivity() {
         // 0이면 빈 별을 보여준다.
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
-        cursor=sqlitedb.rawQuery("SELECT state FROM wishlist WHERE m_id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
+        try{
+            if(sqlitedb!=null){
+                cursor=sqlitedb.rawQuery("SELECT state FROM wishlist WHERE m_id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
 
-        var state=-1 //아무상태 아님
-        if(cursor.moveToNext()){
-            state=cursor.getInt(cursor.getColumnIndex("state"))
-        }
+                if(cursor.count!=0){
+                    var state=-1 //아무상태 아님
+                    if(cursor.moveToNext()){
+                        state=cursor.getInt(cursor.getColumnIndex("state"))
+                    }
 
-        when(state){
-            0 -> {  // 빈 상태
-                wishOnBtn.visibility= View.INVISIBLE
-                wishOffBtn.visibility= View.VISIBLE
+                    when(state){
+                        0 -> {  // 빈 상태
+                            wishOnBtn.visibility= View.INVISIBLE
+                            wishOffBtn.visibility= View.VISIBLE
+                        }
+                        1 -> {  // 좋아요 선택
+                            wishOnBtn.visibility= View.VISIBLE
+                            wishOffBtn.visibility= View.INVISIBLE
+                        }
+                    }
+                }
+                cursor.close()
             }
-            1 -> {  // 좋아요 선택
-                wishOnBtn.visibility= View.VISIBLE
-                wishOffBtn.visibility= View.INVISIBLE
-            }
+        }catch (e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         // 홈페이지 바로가기 클릭하면 DB에서 가져온 홈페이지 주소로 웹 브라우저를 이용해 이동
         homepage.setOnClickListener {
@@ -136,18 +154,24 @@ class ContestDetailActivity : AppCompatActivity() {
             wishOnBtn.visibility= View.VISIBLE
             wishOffBtn.visibility= View.INVISIBLE
 
-            //var cursor: Cursor
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            cursor=sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
-            if(cursor.count==0){
-                sqlitedb.execSQL("INSERT INTO wishlist (m_id, c_num, state) VALUES ('"+USER_ID+"', "+c_num+", 1)")
-            }else{
-                sqlitedb.execSQL("UPDATE wishlist SET state = 1 WHERE m_id ='"+ USER_ID+"' AND c_num =" +c_num+";")
+            try {
+                if(sqlitedb!=null){
+                    cursor=sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '"+USER_ID+"' AND c_num = "+c_num+";", null)
+                    if(cursor.count==0){
+                        sqlitedb.execSQL("INSERT INTO wishlist (m_id, c_num, state) VALUES ('"+USER_ID+"', "+c_num+", 1)")
+                    }else{
+                        sqlitedb.execSQL("UPDATE wishlist SET state = 1 WHERE m_id ='"+ USER_ID+"' AND c_num =" +c_num+";")
+                    }
+                    cursor.close()
+                }
+            } catch(e: Exception){
+                Log.e("Error", e.message.toString())
+            } finally{
+                sqlitedb.close()
+                dbManager.close()
             }
-            cursor.close()
-            sqlitedb.close()
-            dbManager.close()
         }
 
         //노란별 별을 클릭한 경우 DB에서 로그인 계정의 현재 공모전에 대한 state를 0로 바꿔주고, 노란 별을 숨기고 빈 별을 보여준다.
@@ -157,9 +181,16 @@ class ContestDetailActivity : AppCompatActivity() {
 
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            sqlitedb.execSQL("UPDATE wishlist SET state = 0 WHERE m_id ='"+ USER_ID+"' AND c_num =" +c_num+";")
-            sqlitedb.close()
-            dbManager.close()
+            try {
+                if(sqlitedb!=null){
+                    sqlitedb.execSQL("UPDATE wishlist SET state = 0 WHERE m_id ='"+ USER_ID+"' AND c_num =" +c_num+";")
+                }
+            } catch(e: Exception){
+                Log.e("Error", e.message.toString())
+            } finally{
+                sqlitedb.close()
+                dbManager.close()
+            }
         }
     }
 
