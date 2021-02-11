@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -33,13 +34,15 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var slash: TextView
     lateinit var detail: TextView
     lateinit var applyBtn: Button
-    // 댓글 리스트
     lateinit var commentListArray: ArrayList<CommentListViewItem>
     lateinit var commentItem: CommentListViewItem
     lateinit var commentListView: ListView
-    //댓글 작성
     lateinit var commentRegET: EditText
     lateinit var commentRegBtn: Button
+    //lateinit var 사진?
+    lateinit var cm_name: TextView
+    lateinit var cm_date: TextView
+    lateinit var cm_detail: TextView
 
     lateinit var str_teamName: String
     lateinit var str_contestNum: String
@@ -51,24 +54,15 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_host: String
     lateinit var c_name: String
     lateinit var c_section: String
-
-
-    //lateinit var 사진?
-    lateinit var cm_name: TextView
-    lateinit var cm_date: TextView
-    lateinit var cm_detail: TextView
-
     lateinit var str_cm_id: String
     lateinit var str_cm_date: String
     lateinit var str_cm_detail: String
-
     lateinit var str_cm_reg_date: String
     lateinit var str_cm_reg_detail: String
+    lateinit var end_date: String
     var state=-1
     var total_num=-1
     var now_num=-1
-    lateinit var end_date: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,26 +95,38 @@ class TeamDetailActivity : AppCompatActivity() {
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
         val cursor2: Cursor
-        cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = '" + t_num + "';", null)
+        try {
+            if(sqlitedb!=null){
+                cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = '" + t_num + "';", null)
+                if(cursor.count!=null){
+                    if (cursor.moveToNext()){
+                        //var photo
+                        str_teamName=cursor.getString(cursor.getColumnIndex("t_name")).toString()
+                        str_contestNum=cursor.getInt(cursor.getColumnIndex("c_num")).toString()
+                        str_endDate=cursor.getString(cursor.getColumnIndex("t_end_date")).toString()
+                        str_needPart=cursor.getString(cursor.getColumnIndex("t_need_part")).toString()
+                        str_nowNum=cursor.getInt(cursor.getColumnIndex("t_now_num")).toString()
+                        str_totalNum=cursor.getInt(cursor.getColumnIndex("t_total_num")).toString()
+                        str_detail=cursor.getString(cursor.getColumnIndex("t_detail")).toString()
+                        str_host=cursor.getString(cursor.getColumnIndex("t_host")).toString()
 
-        if (cursor.moveToNext()){
-            //var photo
-            str_teamName=cursor.getString(cursor.getColumnIndex("t_name")).toString()
-            str_contestNum=cursor.getInt(cursor.getColumnIndex("c_num")).toString()
-            str_endDate=cursor.getString(cursor.getColumnIndex("t_end_date")).toString()
-            str_needPart=cursor.getString(cursor.getColumnIndex("t_need_part")).toString()
-            str_nowNum=cursor.getInt(cursor.getColumnIndex("t_now_num")).toString()
-            str_totalNum=cursor.getInt(cursor.getColumnIndex("t_total_num")).toString()
-            str_detail=cursor.getString(cursor.getColumnIndex("t_detail")).toString()
-            str_host=cursor.getString(cursor.getColumnIndex("t_host")).toString()
-
-            //team 테이블이 가진 c_num 값으로 contest 테이블에서 헤당 공모전 정보를 가져옴
-            cursor2=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '" + str_contestNum + "';", null)
-            if(cursor2.moveToNext()){
-                c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
-                c_section=cursor2.getString(cursor2.getColumnIndex("c_section")).toString()
+                        //team 테이블이 가진 c_num 값으로 contest 테이블에서 헤당 공모전 정보를 가져옴
+                        cursor2=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '" + str_contestNum + "';", null)
+                        if(cursor2.count!=null){
+                            if(cursor2.moveToNext()){
+                                c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
+                                c_section=cursor2.getString(cursor2.getColumnIndex("c_section")).toString()
+                            }
+                            cursor2.close()
+                        }
+                    }
+                }
             }
-            cursor2.close()
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
 
         teamName.text=str_teamName
@@ -165,7 +171,6 @@ class TeamDetailActivity : AppCompatActivity() {
             endDate.setTextColor(ContextCompat.getColor(this, R.color.impend))
         }
 
-
         //댓글
         commentListArray= arrayListOf<CommentListViewItem>()
         val cm_contest: View = layoutInflater.inflate(R.layout.comment_list, null, false)
@@ -173,28 +178,37 @@ class TeamDetailActivity : AppCompatActivity() {
         cm_date= cm_contest.findViewById<TextView>(R.id.WdateTextView)
         cm_detail= cm_contest.findViewById<TextView>(R.id.WcommentTextView)
 
-        // comment 테이블에서 t_num으로 해당 팀에 대한 댓글에 대한 정보를 가져와 출력
-        cursor=sqlitedb.rawQuery("SELECT * FROM comment WHERE t_num = " + t_num + ";", null)
-        str_cm_id=""
-        str_cm_date=""
-        str_cm_detail=""
+        dbManager = DBManager(this, "ContestAppDB", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        try {
+            if(sqlitedb!=null){
+                // comment 테이블에서 t_num으로 해당 팀에 대한 댓글에 대한 정보를 가져와 출력
+                cursor=sqlitedb.rawQuery("SELECT * FROM comment WHERE t_num = " + t_num + ";", null)
+                str_cm_id=""
+                str_cm_date=""
+                str_cm_detail=""
+                if(cursor.count!=0){
+                    while(cursor.moveToNext()){
+                        str_cm_id=cursor.getString(cursor.getColumnIndex("m_id")).toString()
+                        str_cm_date=cursor.getString(cursor.getColumnIndex("cm_date")).toString()
+                        str_cm_detail=cursor.getString(cursor.getColumnIndex("cm_detail")).toString()
 
-        while(cursor.moveToNext()){
-            str_cm_id=cursor.getString(cursor.getColumnIndex("m_id")).toString()
-            str_cm_date=cursor.getString(cursor.getColumnIndex("cm_date")).toString()
-            str_cm_detail=cursor.getString(cursor.getColumnIndex("cm_detail")).toString()
-
-            commentItem= CommentListViewItem("사진", str_cm_id, str_cm_detail, str_cm_date)
-            commentListArray.add(commentItem)
+                        commentItem= CommentListViewItem("사진", str_cm_id, str_cm_detail, str_cm_date)
+                        commentListArray.add(commentItem)
+                    }
+                    cursor.close()
+                }
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         cm_name.text=str_cm_id
         cm_date.text=str_cm_date
         cm_detail.text=str_cm_detail
-
 
         // 댓글 작성 버튼 클릭 시, 댓글 내용이 없으면 대화상자로 입력하라는 메시지를 전달
         // 내용이 있는 경우, 입력 내용을 DB에 입력
@@ -213,10 +227,16 @@ class TeamDetailActivity : AppCompatActivity() {
 
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                sqlitedb.execSQL("INSERT INTO comment (t_num, m_id, cm_date, cm_detail) VALUES(" + t_num + ", '팀장' , '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
-
-                sqlitedb.close()
-                dbManager.close()
+                try {
+                    if(sqlitedb!=null){
+                        sqlitedb.execSQL("INSERT INTO comment (t_num, m_id, cm_date, cm_detail) VALUES(" + t_num + ", '팀장' , '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
+                    }
+                } catch(e: Exception){
+                    Log.e("Error", e.message.toString())
+                } finally{
+                    sqlitedb.close()
+                    dbManager.close()
+                }
 
                 // 입력한 댓글이 바로 보일 수 있게 새로고침
                 val intent = getIntent()
@@ -231,10 +251,17 @@ class TeamDetailActivity : AppCompatActivity() {
 
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.writableDatabase
-                sqlitedb.execSQL("INSERT INTO comment (t_num, m_id, cm_date, cm_detail) VALUES(" + t_num + ", '" + USER_ID + "', '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
+                try {
+                    if(sqlitedb!=null){
+                        sqlitedb.execSQL("INSERT INTO comment (t_num, m_id, cm_date, cm_detail) VALUES(" + t_num + ", '" + USER_ID + "', '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
 
-                sqlitedb.close()
-                dbManager.close()
+                    }
+                } catch(e: Exception){
+                    Log.e("Error", e.message.toString())
+                } finally{
+                    sqlitedb.close()
+                    dbManager.close()
+                }
 
                 // 입력한 댓글이 바로 보일 수 있게 새로고침
                 val intent = getIntent()
@@ -267,20 +294,31 @@ class TeamDetailActivity : AppCompatActivity() {
             // 지원자가 팀장인 경우 대화상자로 알림
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            cursor=sqlitedb.rawQuery("SELECT state FROM teamManage WHERE t_num = '"+t_num+"' AND m_id = '"+USER_ID+"';", null)
-            if(cursor.moveToNext()){
-                state=cursor.getInt(cursor.getColumnIndex("state"))
-            }
+            try {
+                if(sqlitedb!=null){
+                    cursor=sqlitedb.rawQuery("SELECT state FROM teamManage WHERE t_num = '"+t_num+"' AND m_id = '"+USER_ID+"';", null)
+                    if(cursor.count!=0){
+                        if(cursor.moveToNext()){
+                            state=cursor.getInt(cursor.getColumnIndex("state"))
+                        }
+                    }
 
-            cursor=sqlitedb.rawQuery("SELECT t_total_num, t_now_num, t_end_date FROM team WHERE t_num = '"+t_num+"';", null)
-            if(cursor.moveToNext()){
-                total_num=cursor.getInt(cursor.getColumnIndex("t_total_num"))
-                now_num=cursor.getInt(cursor.getColumnIndex("t_now_num"))
-                end_date=cursor.getString(cursor.getColumnIndex("t_end_date"))
+                    cursor=sqlitedb.rawQuery("SELECT t_total_num, t_now_num, t_end_date FROM team WHERE t_num = '"+t_num+"';", null)
+                    if(cursor.count!=0){
+                        if(cursor.moveToNext()){
+                            total_num=cursor.getInt(cursor.getColumnIndex("t_total_num"))
+                            now_num=cursor.getInt(cursor.getColumnIndex("t_now_num"))
+                            end_date=cursor.getString(cursor.getColumnIndex("t_end_date"))
+                        }
+                        cursor.close()
+                    }
+                }
+            }catch(e: Exception){
+                Log.e("Error", e.message.toString())
+            } finally{
+                sqlitedb.close()
+                dbManager.close()
             }
-            cursor.close()
-            sqlitedb.close()
-            dbManager.close()
 
             // 남은 인원 계산
             val possible_num=total_num-now_num
