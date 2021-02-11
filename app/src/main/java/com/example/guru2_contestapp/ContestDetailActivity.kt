@@ -38,7 +38,6 @@ class ContestDetailActivity : AppCompatActivity() {
     lateinit var str_section: String
     lateinit var str_detail: String
     lateinit var str_address: String
-    var colorSwitch=0 //white
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
