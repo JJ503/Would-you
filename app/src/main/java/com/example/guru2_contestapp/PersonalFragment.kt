@@ -274,7 +274,7 @@ class PersonalFragment : Fragment() {
         cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 5;", null)  //  쿼리1
         Carreer_num = cursor.getCount()
 
-        cursor = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '" + USER_ID + "';", null)
+        cursor = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '" + USER_ID + "' and state == 1 ;", null)
         Wish_num = cursor.getCount()
 
         cursor.close()
@@ -319,11 +319,15 @@ class PersonalFragment : Fragment() {
         override fun getItemCount():Int = PAGE_CNT
     }
 
-
+/*
     // 뒤로 가기 설정
-    private fun loadImage(){
-        val intent= Intent()
-        intent.type="image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==android.R.id.home){
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
+
+ */
 }
