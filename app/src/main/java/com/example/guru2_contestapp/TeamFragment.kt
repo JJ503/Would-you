@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentTransaction
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TeamFragment : Fragment() {
@@ -23,6 +24,7 @@ class TeamFragment : Fragment() {
     lateinit var addTeamFAb: FloatingActionButton
     lateinit var searchET: AutoCompleteTextView
     lateinit var searchBtn: ImageButton
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     var str_search=""
     var t_num=0
@@ -73,8 +75,6 @@ class TeamFragment : Fragment() {
 
         var adapter=ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, contestSearchArray)
         searchET.setAdapter(adapter)
-
-
 
 
         //검색 버튼 클릭
@@ -162,6 +162,24 @@ class TeamFragment : Fragment() {
         }else{
             searchNum.text="0"
         }
+
+        // 당겨서 새로고침
+        swipeRefreshLayout=v_team.findViewById(R.id.WswipeRefresh)
+        swipeRefreshLayout.setOnRefreshListener {
+            val teamListAdapter= activity?.let { TeamListViewAdapter(it, teamListArray) }
+            if (teamListAdapter != null) {
+                teamListAdapter.notifyDataSetChanged()
+            }
+            teamListView.adapter=teamListAdapter
+
+            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
+            ft.detach(this)
+            ft.attach(this)
+            ft.commit()
+            swipeRefreshLayout.isRefreshing=false
+        }
+
+
 
         // 팀 목록에서 팀을 선택하면 intent로 팀 번호를 팀 상세 페이지로 넘긴다.
         teamListView.setOnItemClickListener { parent, view, position, id ->

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentTransaction
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class ContestFragment : Fragment() {
 
@@ -23,6 +24,7 @@ class ContestFragment : Fragment() {
     lateinit var contestListArray: ArrayList<ContestListViewItem>
     lateinit var contestItem: ContestListViewItem
     lateinit var contestSearchArray: MutableList<String>
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     var str_search=""
     var c_num=0
@@ -80,7 +82,6 @@ class ContestFragment : Fragment() {
         var adapter=ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, contestSearchArray)
         searchET.setAdapter(adapter)
 
-
         //DB
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
@@ -107,6 +108,23 @@ class ContestFragment : Fragment() {
         cursor.close()
         dbManager.close()
         sqlitedb.close()
+
+
+        // 당겨서 새로고침
+        swipeRefreshLayout=v_contest.findViewById(R.id.WswipeRefresh)
+        swipeRefreshLayout.setOnRefreshListener {
+            val contestListAdapter= activity?.let { ContestListViewAdapter(it, contestListArray) }
+            if (contestListAdapter != null) {
+                contestListAdapter.notifyDataSetChanged()
+            }
+            contestListView.adapter=contestListAdapter
+
+            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
+            ft.detach(this)
+            ft.attach(this)
+            ft.commit()
+            swipeRefreshLayout.isRefreshing=false
+        }
 
 
         // 공모전 목록에서 공모전을 선택하면 해당 공모전의 번호를 intent로 다음 페이지로 보냄

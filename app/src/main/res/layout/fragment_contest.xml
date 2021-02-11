@@ -118,14 +118,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/WtextView3">
 
-                <ListView
-                    android:id="@+id/WcontestListView"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:layout_editor_absoluteX="10dp"
-                    tools:layout_editor_absoluteY="70dp">
+                    android:id="@+id/WswipeRefresh">
 
-                </ListView>
+                    <ListView
+                        android:id="@+id/WcontestListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:layout_editor_absoluteX="10dp"
+                        tools:layout_editor_absoluteY="70dp">
+
+                    </ListView>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             </ScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
