@@ -5,10 +5,12 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -193,28 +195,34 @@ class BuildTeamActivity : AppCompatActivity() {
                 str_t_detail=teamIntroET.text.toString()
                 str_c_name=contestSpinner.selectedItem.toString()
 
-                // 공모전 이름으로 c_num 찾기
+
                 dbManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.readableDatabase
-                cursor=sqlitedb.rawQuery("SELECT c_num FROM contest WHERE c_name = '"+str_c_name+"';", null)
-                if(cursor.moveToNext()){
-                    c_num=cursor.getInt(cursor.getColumnIndex("c_num"))
+                try{
+                    if(sqlitedb!=null){
+                        // 공모전 이름으로 c_num 찾기
+                        cursor=sqlitedb.rawQuery("SELECT c_num FROM contest WHERE c_name = '"+str_c_name+"';", null)
+                        if(cursor.moveToNext()){
+                            c_num=cursor.getInt(cursor.getColumnIndex("c_num"))
+                        }
+
+                        // DB에 정보 넣기
+                        sqlitedb = dbManager.writableDatabase
+                        sqlitedb.execSQL("INSERT INTO team (c_num, t_name, t_host, t_total_num, t_now_num, t_end_date, t_need_part, t_detail) VALUES ("+c_num+", '"+str_t_name+"', '"+ USER_ID + "'," +t_total_num+", "+1+", '"+str_t_end_date+"', '"+str_t_need_part+"', '"+str_t_detail+"')")
+                        cursor=sqlitedb.rawQuery("SELECT t_num FROM team WHERE t_name = '"+str_t_name+"';", null)
+                        if(cursor.moveToNext()){
+                            t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
+                        }
+
+                        sqlitedb.execSQL("INSERT INTO teamManage (m_id, t_num, state) VALUES ('"+USER_ID+"', "+t_num+", 2)")
+                    }
+                } catch (e: Exception){
+                    Log.e("Error", e.message.toString())
+                } finally {
+                    cursor.close()
+                    sqlitedb.close()
+                    dbManager.close()
                 }
-                cursor.close()
-
-                // DB에 정보 넣기
-                sqlitedb = dbManager.writableDatabase
-                sqlitedb.execSQL("INSERT INTO team (c_num, t_name, t_host, t_total_num, t_now_num, t_end_date, t_need_part, t_detail) VALUES ("+c_num+", '"+str_t_name+"', '"+ USER_ID + "'," +t_total_num+", "+1+", '"+str_t_end_date+"', '"+str_t_need_part+"', '"+str_t_detail+"')")
-                cursor=sqlitedb.rawQuery("SELECT t_num FROM team WHERE t_name = '"+str_t_name+"';", null)
-                if(cursor.moveToNext()){
-                    t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
-                }
-                cursor.close()
-
-                sqlitedb.execSQL("INSERT INTO teamManage (m_id, t_num, state) VALUES ('"+USER_ID+"', "+t_num+", 2)")
-                sqlitedb.close()
-                dbManager.close()
-
                 this.finish()
             }
         }
