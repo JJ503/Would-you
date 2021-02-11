@@ -10,19 +10,19 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class ApplyTeamAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): RecyclerView.Adapter <ApplyTeamAdapter.CustomViewHolder>() {
+class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): RecyclerView.Adapter <ApplyTeamListAdapter.CustomViewHolder>() {
 
     // 뷰 연동
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-    ): ApplyTeamAdapter.CustomViewHolder {
+    ): ApplyTeamListAdapter.CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_apply_team_item, parent, false)
         return CustomViewHolder(view)
     }
 
     // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
-    override fun onBindViewHolder(holder: ApplyTeamAdapter.CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ApplyTeamListAdapter.CustomViewHolder, position: Int) {
         holder.adverImageView.setImageResource(applyTeamList.get(position).c_photo)
         holder.adverTitleTextView.text = applyTeamList.get(position).t_name
         holder.contestNameTextView.text = applyTeamList.get(position).c_name

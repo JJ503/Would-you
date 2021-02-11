@@ -109,7 +109,7 @@ class ApplyTeamListFragment : Fragment() {
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         rv_applyTeam.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
-        rv_applyTeam.adapter = ApplyTeamAdapter(applyTeamList)
+        rv_applyTeam.adapter = ApplyTeamListAdapter(applyTeamList)
 
 
 

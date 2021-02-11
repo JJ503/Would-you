@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class CareerListFragment : Fragment() {
+class CareerTeamListFragment : Fragment() {
 
 
     override fun onCreateView(

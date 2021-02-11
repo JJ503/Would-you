@@ -311,7 +311,7 @@ class PersonalFragment : Fragment() {
             return when(position){
                 0 -> BuildTeamListFragment()
                 1 -> ApplyTeamListFragment()
-                2 -> CareerListFragment()
+                2 -> CareerTeamListFragment()
                 3 -> WishListFragment()
                 else -> ErrorFragment()
             }
