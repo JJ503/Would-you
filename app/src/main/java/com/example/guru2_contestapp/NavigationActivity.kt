@@ -32,10 +32,10 @@ class NavigationActivity : AppCompatActivity() {
                     R.id.homeMenu -> {
                         changeFragment(fragmentHome)
                     }
-                    R.id.groupMenu -> {
+                    R.id.contestMenu -> {
                         changeFragment(fragmentContest)
                     }
-                    R.id.searchMenu -> {
+                    R.id.teamMenu -> {
                         changeFragment(fragmentTeam)
                     }
                     R.id.personalMenu -> {

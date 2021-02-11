@@ -8,27 +8,27 @@
         android:icon="@drawable/ic_baseline_home_24"
         android:enabled="true"
         android:checked="true"
-        android:title="리스트" />
+        android:title="홈" />
 
     <item
-        android:id="@+id/groupMenu"
+        android:id="@+id/contestMenu"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_contest_icon"
+        android:enabled="true"
+        android:title="공모전"/>
+
+    <item
+        android:id="@+id/teamMenu"
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_groups_24"
         android:enabled="true"
-        android:title="기록"/>
-
-    <item
-        android:id="@+id/searchMenu"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_baseline_search_24"
-        android:enabled="true"
-        android:title="더보기"/>
+        android:title="팀"/>
 
     <item
         android:id="@+id/personalMenu"
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_perm_contact_calendar_24"
         android:enabled="true"
-        android:title="더보기"/>
+        android:title="개인페이지"/>
 
 </menu>
