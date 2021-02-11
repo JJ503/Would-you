@@ -48,13 +48,15 @@
 
             <TextView
                 android:id="@+id/WcontestNameTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="공모전 이름"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 app:layout_constraintBottom_toTopOf="@+id/WhostNameTextView"
                 app:layout_constraintStart_toEndOf="@+id/WcontestImageView"
                 app:layout_constraintTop_toTopOf="parent" />

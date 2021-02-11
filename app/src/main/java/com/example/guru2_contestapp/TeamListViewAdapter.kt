@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
@@ -29,7 +31,6 @@ class TeamListViewAdapter (val teamList: ArrayList<TeamListViewItem>): RecyclerV
         holder.needPart.text = teamList.get(position).needPart
         holder.nowNum.text = teamList.get(position).nowNum.toString()
         holder.totalNum.text = teamList.get(position).totalNum.toString()
-
 
         // 남은 인원이 1명 -> 글자색 변경
         // 남은 인원이 0명 -> 모집 종료, 글자색 변경
@@ -77,8 +78,9 @@ class TeamListViewAdapter (val teamList: ArrayList<TeamListViewItem>): RecyclerV
             holder.endDate.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.impend))
             holder.endDate.text="모집 종료"
             holder.magam.visibility=View.GONE
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.non_click))
+            holder.cardview.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.non_click))
         }
+
 
         // 팀 목록에서 팀을 선택하면 intent로 팀 번호를 팀 상세 페이지로 넘긴다.
         holder.itemView.setOnClickListener {
@@ -104,6 +106,7 @@ class TeamListViewAdapter (val teamList: ArrayList<TeamListViewItem>): RecyclerV
         val totalNum =  view.findViewById<TextView>(R.id.WtotalNumTextView)
         val slash = view.findViewById<TextView>(R.id.WslashTextView)
         val magam = view.findViewById<TextView>(R.id.WtextView16)
+        val cardview = view.findViewById<CardView>(R.id.Wcardview)
     }
 
 }
