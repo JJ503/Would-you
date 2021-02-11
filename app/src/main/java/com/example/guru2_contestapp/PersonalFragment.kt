@@ -52,7 +52,8 @@ class PersonalFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        // 옵션 메뉴 사용 true
+        setHasOptionsMenu(true) 
 
         var v_personal = inflater.inflate(R.layout.fragment_personal, null)
 
@@ -139,7 +140,7 @@ class PersonalFragment : Fragment() {
 
 
         return v_personal
-        setHasOptionsMenu(true)
+
 
 
     }
@@ -169,9 +170,8 @@ class PersonalFragment : Fragment() {
                    editor.putString("USER_ID", "")
                    editor.commit()
 
-
                    //로그인 페이지로 이동
-                val intent = Intent (activity, MainActivity::class.java)
+                   val intent = Intent (activity, MainActivity::class.java)
                    startActivity(intent)
                })
 
@@ -182,12 +182,6 @@ class PersonalFragment : Fragment() {
             // 개발자 문의
             R.id.action_developerSupport ->{
                 val intent = Intent (activity, DeveloperSupportActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-            //버그 신고
-            R.id.action_bugReport-> {
-                val intent = Intent (activity, BugReportActivity::class.java)
                 startActivity(intent)
                 return true
             }
@@ -317,7 +311,7 @@ class PersonalFragment : Fragment() {
             return when(position){
                 0 -> BuildTeamListFragment()
                 1 -> ApplyTeamListFragment()
-                2 -> CareerListFragment()
+                2 -> CareerTeamListFragment()
                 3 -> WishListFragment()
                 else -> ErrorFragment()
             }

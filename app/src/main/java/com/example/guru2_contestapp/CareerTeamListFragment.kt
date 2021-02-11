@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class CareerListFragment : Fragment() {
+class CareerTeamListFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -36,8 +36,8 @@ class CareerListFragment : Fragment() {
         var t_total_num: Int = -1
         var c_num: Int = -1
 
-        lateinit var teamList: ArrayList<Team>
-        teamList = ArrayList()
+        lateinit var careerTeamList: ArrayList<TeamItem>
+        careerTeamList = ArrayList()
 
         var context: Context = requireContext()
         val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
@@ -81,8 +81,8 @@ class CareerListFragment : Fragment() {
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
 
 
-                            teamList.add(
-                                    Team(t_num, R.drawable.poster_img, t_name, c_name,
+                            careerTeamList.add(
+                                    TeamItem(t_num, R.drawable.poster_img, t_name, c_name,
                                             t_now_num, t_total_num, t_end_date, t_need_part)
                             )
                         }
@@ -105,7 +105,7 @@ class CareerListFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_createTeam.setHasFixedSize(true)
 
-        rv_createTeam.adapter = TeamAdapter(teamList)
+        rv_createTeam.adapter = CareerTeamListAdapter(careerTeamList)
 
 
         return v_careerList

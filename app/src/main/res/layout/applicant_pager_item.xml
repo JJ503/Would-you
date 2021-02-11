@@ -34,6 +34,8 @@
         android:layout_height="60dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="30dp"
+        android:background="@drawable/applicant_pager_button_boder_line"
+        android:tint="@color/accept"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/JbtnInfo"
         app:srcCompat="@drawable/ic_baseline_check_24" />
@@ -44,6 +46,8 @@
         android:layout_height="60dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="100dp"
+        android:background="@drawable/applicant_pager_button_boder_line"
+        android:tint="@color/refuse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/JbtnInfo"
         app:srcCompat="@drawable/ic_baseline_clear_24" />
@@ -102,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="정보 보기"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hope" />

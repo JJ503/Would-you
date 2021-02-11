@@ -22,7 +22,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
     lateinit var btnLeft: ImageButton
     lateinit var personNumTv: TextView
 
-    lateinit var pagerArray: ArrayList<ApplicantPagerData>
+    lateinit var pagerArray: ArrayList<ApplicantPagerItem>
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
 
         var cursor : Cursor? = null
         try {
-            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num}", null)
+            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2", null)
 
             while (cursor.moveToNext()){
                 var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
@@ -70,7 +70,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
                 var r_self_intro = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
                 var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
 
-                pagerArray.add(ApplicantPagerData(m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
+                pagerArray.add(ApplicantPagerItem(m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())
@@ -105,8 +105,6 @@ class ApplicantPagerActivity : AppCompatActivity() {
                 person_num = (current + 1).toString() + " / " + cursor?.getCount()
                 personNumTv.setText(person_num)
             }
-
-            Toast.makeText(this, current.toString(), Toast.LENGTH_SHORT).show()
         }
 
         btnLeft.setOnClickListener {
@@ -119,8 +117,6 @@ class ApplicantPagerActivity : AppCompatActivity() {
                 person_num = (current + 1).toString() + " / " + cursor?.getCount()
                 personNumTv.setText(person_num)
             }
-
-            Toast.makeText(this, current.toString(), Toast.LENGTH_SHORT).show()
 
         }
     }
@@ -137,7 +133,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
             birth_year = ("20" + m_year).toInt()
         }
 
-        birth_year = this_year - birth_year
+        birth_year = this_year - birth_year + 1
 
         return birth_year
     }

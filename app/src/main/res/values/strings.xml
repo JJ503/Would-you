@@ -6,7 +6,6 @@
     <!-- fragment_Personal(개인페이지)의 메뉴 아이템 -->
     <string name="action_logout">로그아웃</string>
     <string name="action_developerSupport">개발자 문의</string>
-    <string name="action_bugReport">버그 신고</string>
     <string name="action_deleteAccount">회원 탈퇴</string>
 
 

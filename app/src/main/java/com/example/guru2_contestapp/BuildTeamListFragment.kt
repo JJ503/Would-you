@@ -37,8 +37,8 @@ class BuildTeamListFragment : Fragment() {
         var t_total_num: Int = -1
         var c_num: Int = -1
 
-        lateinit var teamList: ArrayList<Team>
-        teamList = ArrayList()
+        lateinit var buildTeamList: ArrayList<TeamItem>
+        buildTeamList = ArrayList()
 
         //현재 로그인 중인 사용자 지정
         var context: Context = requireContext()
@@ -82,8 +82,8 @@ class BuildTeamListFragment : Fragment() {
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
 
                         }
-                        teamList.add(
-                                Team(t_num, R.drawable.poster_img, t_name, c_name,
+                        buildTeamList.add(
+                                TeamItem(t_num, R.drawable.poster_img, t_name, c_name,
                                         t_now_num, t_total_num, t_end_date, t_need_part)
                         )
                     }
@@ -106,7 +106,7 @@ class BuildTeamListFragment : Fragment() {
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
-        rv_applyTeam.adapter = BuildTeamListAdapter(teamList)
+        rv_applyTeam.adapter = BuildTeamListAdapter(buildTeamList)
 
 
         return v_buildTeamList

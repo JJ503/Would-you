@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class BuildTeamListAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <BuildTeamListAdapter.CustomViewHolder>() {
+class BuildTeamListAdapter(val buildTeamList :ArrayList<TeamItem>):RecyclerView.Adapter <BuildTeamListAdapter.CustomViewHolder>() {
 
     // 뷰 연동
     override fun onCreateViewHolder(
@@ -23,18 +23,18 @@ class BuildTeamListAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <
 
     // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: BuildTeamListAdapter.CustomViewHolder, position: Int) {
-        holder.adverImageView.setImageResource(teamList.get(position).c_photo)
-        holder.adverTitleTextView.text = teamList.get(position).t_name
-        holder.contestNameTextView.text = teamList.get(position).c_name
-        holder.nowNumTextView.text = teamList.get(position).t_now_num.toString()
-        holder.totalNumTextView.text = teamList.get(position).t_total_num.toString()
-        holder.endDateTextView.text = teamList.get(position).t_end_date
-        holder.needPartTextivew.text = teamList.get(position).t_need_part
+        holder.adverImageView.setImageResource(buildTeamList.get(position).c_photo)
+        holder.adverTitleTextView.text = buildTeamList.get(position).t_name
+        holder.contestNameTextView.text = buildTeamList.get(position).c_name
+        holder.nowNumTextView.text = buildTeamList.get(position).t_now_num.toString()
+        holder.totalNumTextView.text = buildTeamList.get(position).t_total_num.toString()
+        holder.endDateTextView.text = buildTeamList.get(position).t_end_date
+        holder.needPartTextivew.text = buildTeamList.get(position).t_need_part
 
-        // item(Team)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
+        // item(teamItem)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
-            intent.putExtra("t_num", teamList.get(position).t_num)
+            intent.putExtra("t_num", buildTeamList.get(position).t_num)
 
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
@@ -42,7 +42,7 @@ class BuildTeamListAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <
 
     //리스트 총 개수
     override fun getItemCount(): Int {
-        return teamList.size
+        return buildTeamList.size
     }
 
     // 뷰를 잡아줌

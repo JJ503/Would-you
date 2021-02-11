@@ -24,7 +24,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="535dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,19 +72,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="17dp"
-                        android:text="현재 공모중인 공모전 : "
+                        android:text="참여한 공모전 : "
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
                         app:layout_constraintTop_toBottomOf="@+id/userName" />
 
                     <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/JjoinTeam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="17dp"
-                        android:text="3 개"
+                        android:text="-1 개"
                         android:textColor="@color/indigo_700"
                         android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@+id/textView7"
@@ -96,39 +96,38 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:text="현재 지원한 공모전 : "
+                        android:text="지원한 공모전 : "
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
                     <TextView
-                        android:id="@+id/textView10"
+                        android:id="@+id/JapplicantTeam"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="7dp"
                         android:layout_marginTop="10dp"
-                        android:text="2 개"
+                        android:text="-1 개"
                         android:textColor="@color/indigo_700"
                         android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@+id/textView9"
-                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                        app:layout_constraintTop_toBottomOf="@+id/JjoinTeam" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="30dp"
-                    android:text="현재 팀 모집 중인 공모전"
+                    android:text="내 공모전"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recruitList"
+                    android:id="@+id/JmyContestRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -136,7 +135,29 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/recruit_list_item" />
+                    tools:listitem="@layout/fragment_wishlist_item" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="30dp"
+                    android:text="추천 공모전 팀"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/JrecomTeamtRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:listitem="@layout/fragment_wishlist_item" />
 
                 <TextView
                     android:id="@+id/textView12"
@@ -149,12 +170,13 @@
                     android:textSize="18sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/JrecomContestRecycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/contest_list_item" />
+                    tools:listitem="@layout/fragment_wishlist_item" />
 
             </LinearLayout>
         </ScrollView>

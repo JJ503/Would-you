@@ -38,7 +38,7 @@ class ApplyTeamListFragment : Fragment() {
         var c_num : Int = -1
         var state : Int = -2
 
-        lateinit var applyTeamList : ArrayList<ApplyTeam>
+        lateinit var applyTeamList : ArrayList<ApplyTeamItem>
         applyTeamList=ArrayList()
 
 
@@ -86,7 +86,7 @@ class ApplyTeamListFragment : Fragment() {
 
                         }
                         applyTeamList.add(
-                                ApplyTeam(t_num, R.drawable.poster_img, t_name, c_name,
+                                ApplyTeamItem(t_num, R.drawable.poster_img, t_name, c_name,
                                 t_now_num, t_total_num, t_end_date, t_need_part, state)
                         )
                     }
@@ -109,7 +109,7 @@ class ApplyTeamListFragment : Fragment() {
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         rv_applyTeam.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
-        rv_applyTeam.adapter = ApplyTeamAdapter(applyTeamList)
+        rv_applyTeam.adapter = ApplyTeamListAdapter(applyTeamList)
 
 
 

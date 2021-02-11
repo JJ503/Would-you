@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Guru2_ContestApp">
         <activity android:name=".DeleteAccountActivity"></activity>
-        <activity android:name=".BugReportActivity" />
         <activity android:name=".DeveloperSupportActivity" />
 
         <activity android:name=".ApplicantPagerActivity" />

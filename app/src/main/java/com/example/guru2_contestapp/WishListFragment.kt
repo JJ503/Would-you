@@ -10,12 +10,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,7 +32,7 @@ class WishListFragment : Fragment() {
         lateinit var c_end: String
 
 
-        lateinit var wishlist: ArrayList<Wish>
+        lateinit var wishlist: ArrayList<WishItem>
         wishlist = ArrayList()
 
         // DB에서 정보 불러오기(리사이클러뷰)
@@ -87,7 +84,7 @@ class WishListFragment : Fragment() {
 
                         }
                         wishlist.add(
-                                Wish(deadlineTxt, R.drawable.ic_baseline_add_photo_alternate_24, c_name)
+                                WishItem(c_num, deadlineTxt, R.drawable.ic_baseline_add_photo_alternate_24, c_name)
                         )
                     }
                 }
@@ -95,11 +92,11 @@ class WishListFragment : Fragment() {
                 cursor2.close()
             }
         }catch(e: Exception){
-        Log.e("Error", e.message.toString())
-    } finally{
-        sqlitedb.close()
-        dbManager.close()
-    }
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
+        }
 
 
 

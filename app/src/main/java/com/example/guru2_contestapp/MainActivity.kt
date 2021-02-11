@@ -91,4 +91,16 @@ class MainActivity : AppCompatActivity() {
         var pref = this.getPreferences(0)
         var user_id = pref.getString("KEY_USERID", "")
     }
+
+    var lastTimeBackPressed : Long = 0
+    override fun onBackPressed() {
+        if(System.currentTimeMillis() - lastTimeBackPressed >= 1500){
+            lastTimeBackPressed = System.currentTimeMillis()
+            Toast.makeText(this,"'뒤로' 버튼을 한번 더 누르시면 종료됩니다.",Toast.LENGTH_LONG).show()
+        }
+        else {
+            finish()
+        }
+    }
+
 }

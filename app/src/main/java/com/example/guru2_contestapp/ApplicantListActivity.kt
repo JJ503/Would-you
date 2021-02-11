@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
     lateinit var applicantRecycler : RecyclerView
 
-    lateinit var listArray : ArrayList<ApplicantListData>         // SQLite에서 가져온 원본 데이터 리스트
+    lateinit var listArray : ArrayList<ApplicantListItem>         // SQLite에서 가져온 원본 데이터 리스트
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
         try {
             var cursor : Cursor
-            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num}", null)
+            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2", null)
 
             while (cursor.moveToNext()){
                 var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
@@ -48,7 +49,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
                 cursor2.moveToFirst()
                 var m_name = cursor2.getString(cursor2.getColumnIndex("m_name")).toString()
-                listArray.add(ApplicantListData(t_num, m_name))
+                listArray.add(ApplicantListItem(t_num, m_name))
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())
