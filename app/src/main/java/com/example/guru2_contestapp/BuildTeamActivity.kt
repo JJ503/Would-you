@@ -26,10 +26,9 @@ class BuildTeamActivity : AppCompatActivity() {
     lateinit var personNumET: EditText
     lateinit var needPartET: EditText
     lateinit var teamIntroET: EditText
-
-    lateinit var arrayCName: String
     lateinit var contestArray: MutableList<String>
 
+    lateinit var arrayCName: String
     lateinit var str_c_name: String
     lateinit var str_t_name: String
     lateinit var str_t_total_num: String

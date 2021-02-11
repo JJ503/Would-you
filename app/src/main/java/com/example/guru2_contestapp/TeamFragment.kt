@@ -26,13 +26,13 @@ class TeamFragment : Fragment() {
     lateinit var searchBtn: ImageButton
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
-    var str_search=""
-    var t_num=0
-    lateinit var t_name: String
-    var tc_num= 0
     lateinit var c_name: String
     lateinit var t_endDate: String
     lateinit var t_need_part: String
+    lateinit var t_name: String
+    var str_search=""
+    var t_num=0
+    var tc_num= 0
     var t_total_num=0
     var t_now_num=0
     var search_num=0
@@ -179,8 +179,6 @@ class TeamFragment : Fragment() {
             swipeRefreshLayout.isRefreshing=false
         }
 
-
-
         // 팀 목록에서 팀을 선택하면 intent로 팀 번호를 팀 상세 페이지로 넘긴다.
         teamListView.setOnItemClickListener { parent, view, position, id ->
             activity?.let {
@@ -217,8 +215,6 @@ class TeamFragment : Fragment() {
         sqlitedb.close()
         dbManager.close()
 
-        Log.i("-----------search_num -------", search_num.toString())
-        Log.i("-----------select_num -------", select_num.toString())
         if((search_num+1)<=select_num){
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)

@@ -26,12 +26,12 @@ class ContestFragment : Fragment() {
     lateinit var contestSearchArray: MutableList<String>
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
-    var str_search=""
-    var c_num=0
     lateinit var c_name: String
     lateinit var c_host: String
     lateinit var c_startDay: String
     lateinit var c_endDay: String
+    var str_search=""
+    var c_num=0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

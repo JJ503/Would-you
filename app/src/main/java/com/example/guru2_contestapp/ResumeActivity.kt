@@ -33,10 +33,10 @@ class ResumeActivity : AppCompatActivity() {
     lateinit var str_hope: String
     lateinit var str_self_intro: String
     lateinit var str_etc: String
-    var t_num=0
     lateinit var str_name: String
     lateinit var str_year: String
     lateinit var str_job: String
+    var t_num=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

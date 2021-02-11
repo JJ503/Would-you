@@ -33,13 +33,15 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var slash: TextView
     lateinit var detail: TextView
     lateinit var applyBtn: Button
-    // 댓글 리스트
     lateinit var commentListArray: ArrayList<CommentListViewItem>
     lateinit var commentItem: CommentListViewItem
     lateinit var commentListView: ListView
-    //댓글 작성
     lateinit var commentRegET: EditText
     lateinit var commentRegBtn: Button
+    //lateinit var 사진?
+    lateinit var cm_name: TextView
+    lateinit var cm_date: TextView
+    lateinit var cm_detail: TextView
 
     lateinit var str_teamName: String
     lateinit var str_contestNum: String
@@ -51,24 +53,15 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_host: String
     lateinit var c_name: String
     lateinit var c_section: String
-
-
-    //lateinit var 사진?
-    lateinit var cm_name: TextView
-    lateinit var cm_date: TextView
-    lateinit var cm_detail: TextView
-
     lateinit var str_cm_id: String
     lateinit var str_cm_date: String
     lateinit var str_cm_detail: String
-
     lateinit var str_cm_reg_date: String
     lateinit var str_cm_reg_detail: String
+    lateinit var end_date: String
     var state=-1
     var total_num=-1
     var now_num=-1
-    lateinit var end_date: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
