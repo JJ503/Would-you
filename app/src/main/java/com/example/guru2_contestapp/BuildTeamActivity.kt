@@ -148,15 +148,13 @@ class BuildTeamActivity : AppCompatActivity() {
             }
 
             // 입력 폼에 빈칸이 있는 경우 & 선택 날짜가 현재보다 이전인 경우 ==>  대화상자로 알림
-            val builder = AlertDialog.Builder(this)
+            val builder= AlertDialog.Builder(this)
 
             if(contestSpinner.selectedItem=="공모전을 선택하세요"){
                 builder.setMessage("공모전을 선택해주세요.")
+                //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
-                var alert = builder.create()
-                alert.setIcon(R.drawable.logo_2_04)
-                alert.setTitle("")
-                alert.show()
+                builder.show()
             } else if (contestNameET.text.toString()==""){
                 builder.setMessage("팀 이름을 입력해 주세요.")
                 //builder.setIcon(R.)
