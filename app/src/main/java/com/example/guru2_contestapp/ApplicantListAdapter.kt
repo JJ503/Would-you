@@ -48,4 +48,13 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListData>) : Recycle
     fun setItemClickListener(itemClickListener: ItemClickListener) {
         this.itemClickListener = itemClickListener
     }
+
+
+
+    // 뒤로 가기 설정
+    private fun loadImage(){
+        val intent= Intent()
+        intent.type="image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+    }
 }

@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class BuildTeamListAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <BuildTeamListAdapter.CustomViewHolder>() {
+class BuildTeamListAdapter(val teamList :ArrayList<TeamItem>):RecyclerView.Adapter <BuildTeamListAdapter.CustomViewHolder>() {
 
     // 뷰 연동
     override fun onCreateViewHolder(
@@ -31,7 +31,7 @@ class BuildTeamListAdapter(val teamList :ArrayList<Team>):RecyclerView.Adapter <
         holder.endDateTextView.text = teamList.get(position).t_end_date
         holder.needPartTextivew.text = teamList.get(position).t_need_part
 
-        // item(Team)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
+        // item(teamItem)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
             intent.putExtra("t_num", teamList.get(position).t_num)

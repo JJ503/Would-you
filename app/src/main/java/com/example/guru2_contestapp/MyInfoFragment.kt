@@ -141,9 +141,11 @@ class MyInfoFragment : Fragment() {
                        univerTableRow.visibility = View.VISIBLE
                    }
                     else->{
-                        // 그 외의 경우는, visibility를 gone으로 설정
+                        // 그 외의 경우는, visibility를 gone으로 설정하고, 대학교 editText 값을 지워줌
                         isUniv=false
                         univerTableRow.visibility = View.GONE
+                        univer.setText(null)
+
                     }
                 }
             }
@@ -172,6 +174,9 @@ class MyInfoFragment : Fragment() {
                     sqlitedb.execSQL("UPDATE member SET m_job = '" + spinner_job.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
                     if (isUniv==true) {
                         sqlitedb.execSQL("UPDATE member SET m_univ = '" + univer.getText().toString() + "' WHERE m_id = '" + USER_ID + "';")
+                    }
+                    else{
+                        sqlitedb.execSQL("UPDATE member SET m_univ = null WHERE m_id = '" + USER_ID + "';")
                     }
                     sqlitedb.execSQL("UPDATE member SET m_area = '" + spinner_area.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
                     sqlitedb.execSQL("UPDATE member SET m_interest = '" + spinner_interest.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")

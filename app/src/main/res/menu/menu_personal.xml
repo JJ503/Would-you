@@ -8,9 +8,6 @@
         android:id="@+id/action_developerSupport"
         android:title="@string/action_developerSupport" />
     <item
-        android:id="@+id/action_bugReport"
-        android:title="@string/action_bugReport" />
-    <item
         android:id="@+id/action_deleteAccount"
         android:title="@string/action_deleteAccount" />
 </menu>

@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class TeamAdapter (val teamList :ArrayList<Team>): RecyclerView.Adapter <TeamAdapter.CustomViewHolder>() {
+class TeamAdapter (val teamList :ArrayList<TeamItem>): RecyclerView.Adapter <TeamAdapter.CustomViewHolder>() {
 
     // 뷰 연동
     override fun onCreateViewHolder(

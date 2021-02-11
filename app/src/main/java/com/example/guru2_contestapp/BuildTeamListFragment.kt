@@ -37,7 +37,7 @@ class BuildTeamListFragment : Fragment() {
         var t_total_num: Int = -1
         var c_num: Int = -1
 
-        lateinit var teamList: ArrayList<Team>
+        lateinit var teamList: ArrayList<TeamItem>
         teamList = ArrayList()
 
         //현재 로그인 중인 사용자 지정
@@ -83,7 +83,7 @@ class BuildTeamListFragment : Fragment() {
 
                         }
                         teamList.add(
-                                Team(t_num, R.drawable.poster_img, t_name, c_name,
+                                TeamItem(t_num, R.drawable.poster_img, t_name, c_name,
                                         t_now_num, t_total_num, t_end_date, t_need_part)
                         )
                     }

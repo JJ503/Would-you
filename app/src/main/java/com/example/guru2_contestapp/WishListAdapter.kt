@@ -1,6 +1,5 @@
 package com.example.guru2_contestapp
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -11,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class WishListAdapter (val wishlist:ArrayList<Wish>): RecyclerView.Adapter <WishListAdapter.CustomViewHolder>()
+class WishListAdapter (val wishlist:ArrayList<WishItem>): RecyclerView.Adapter <WishListAdapter.CustomViewHolder>()
 
 {
     // 뷰 연동
@@ -32,15 +31,13 @@ class WishListAdapter (val wishlist:ArrayList<Wish>): RecyclerView.Adapter <Wish
             holder.deadLine.setTextColor(Color.parseColor("#FF0000"))
         }
 
-        /*
-        // item(Wish)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
+        // item(WishItem)클릭시 ContestDetailActivity(공모전 소개)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
-            intent.putExtra("t_num", teamList.get(position).t_num)
-
+            val intent = Intent(holder.itemView?.context,ContestDetailActivity::class.java )
+            intent.putExtra("intent_c_num", wishlist.get(position).c_num)
             ContextCompat.startActivity(holder.itemView.context, intent, null)
+
         }
-    */
 
     }
 

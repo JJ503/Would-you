@@ -245,9 +245,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:hint="대학교를 입력해주세요"
                 android:paddingLeft="15dp"
                 android:singleLine="true"
-                android:text="서울여자대학교"
                 android:textSize="18sp" />
         </TableRow>
 
