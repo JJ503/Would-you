@@ -65,6 +65,9 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_cm_reg_date: String
     lateinit var str_cm_reg_detail: String
     var state=-1
+    var total_num=-1
+    var now_num=-1
+    lateinit var end_date: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -269,9 +272,55 @@ class TeamDetailActivity : AppCompatActivity() {
                 state=cursor.getInt(cursor.getColumnIndex("state"))
             }
 
+            cursor=sqlitedb.rawQuery("SELECT t_total_num, t_now_num, t_end_date FROM team WHERE t_num = '"+t_num+"';", null)
+            if(cursor.moveToNext()){
+                total_num=cursor.getInt(cursor.getColumnIndex("t_total_num"))
+                now_num=cursor.getInt(cursor.getColumnIndex("t_now_num"))
+                end_date=cursor.getString(cursor.getColumnIndex("t_end_date"))
+            }
+            cursor.close()
+            sqlitedb.close()
+            dbManager.close()
+
+            // 남은 인원 계산
+            val possible_num=total_num-now_num
+
+
+            // 마감일과 현재의 날짜차이 계산
+            val today= Calendar.getInstance().apply{
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
+
+            val dateString=end_date
+            val token=dateString.split(".")
+            val deadline= Calendar.getInstance().apply {
+                set(Calendar.YEAR, token[0].toInt())
+                set(Calendar.MONTH, (token[1].toInt())-1)
+                set(Calendar.DAY_OF_MONTH, token[2].toInt())
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
+
+            val calcDate=(deadline-today) / (24*60*60*1000)
+
             val builder= AlertDialog.Builder(this)
             if(state==2){
                 builder.setMessage("당신은 이 팀의 팀장입니다.")
+                //builder.setIcon(R.)
+                builder.setPositiveButton("확인", null)
+                builder.show()
+            } else if(possible_num==0){
+                builder.setMessage("인원이 가득 찼습니다.")
+                //builder.setIcon(R.)
+                builder.setPositiveButton("확인", null)
+                builder.show()
+            } else if(calcDate<0){
+                builder.setMessage("모집일이 지났습니다.")
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
                 builder.show()
