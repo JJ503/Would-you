@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -129,5 +130,25 @@ class ResumeActivity : AppCompatActivity() {
                 this.finish()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Log.i("--onResume--", "ok22")
+
+        dbManager = DBManager(this, "ContestAppDB", null, 1)
+        sqlitedb = dbManager.writableDatabase
+        var cursor: Cursor
+        cursor=sqlitedb.rawQuery("SELECT m_job FROM member WHERE m_name = '"+str_name+"';", null)
+        if(cursor.moveToNext()){
+            str_job=cursor.getString(cursor.getColumnIndex("m_job"))
+        }
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
+
+        jobTextView.text=str_job
+
     }
 }
