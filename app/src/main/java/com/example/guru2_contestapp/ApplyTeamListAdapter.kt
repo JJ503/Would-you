@@ -54,8 +54,6 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
        holder.apply_state.text = str_apply_state
 
 
-
-
         // item(applyTeam)클릭시 TeamDetailActivity(팀 소개)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context,TeamDetailActivity::class.java )

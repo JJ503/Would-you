@@ -36,8 +36,8 @@ class CareerTeamListFragment : Fragment() {
         var t_total_num: Int = -1
         var c_num: Int = -1
 
-        lateinit var teamList: ArrayList<TeamItem>
-        teamList = ArrayList()
+        lateinit var careerTeamList: ArrayList<TeamItem>
+        careerTeamList = ArrayList()
 
         var context: Context = requireContext()
         val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
@@ -81,7 +81,7 @@ class CareerTeamListFragment : Fragment() {
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
 
 
-                            teamList.add(
+                            careerTeamList.add(
                                     TeamItem(t_num, R.drawable.poster_img, t_name, c_name,
                                             t_now_num, t_total_num, t_end_date, t_need_part)
                             )
@@ -105,7 +105,7 @@ class CareerTeamListFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_createTeam.setHasFixedSize(true)
 
-        rv_createTeam.adapter = CareerTeamListAdapter(teamList)
+        rv_createTeam.adapter = CareerTeamListAdapter(careerTeamList)
 
 
         return v_careerList

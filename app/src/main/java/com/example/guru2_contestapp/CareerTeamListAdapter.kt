@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class CareerTeamListAdapter (val teamList :ArrayList<TeamItem>): RecyclerView.Adapter <CareerTeamListAdapter.CustomViewHolder>() {
+class CareerTeamListAdapter (val careerTeamList :ArrayList<TeamItem>): RecyclerView.Adapter <CareerTeamListAdapter.CustomViewHolder>() {
 
     // 뷰 연동
     override fun onCreateViewHolder(
@@ -21,20 +22,27 @@ class CareerTeamListAdapter (val teamList :ArrayList<TeamItem>): RecyclerView.Ad
 
     // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: CareerTeamListAdapter.CustomViewHolder, position: Int) {
-        holder.adverImageView.setImageResource(teamList.get(position).c_photo)
-        holder.adverTitleTextView.text = teamList.get(position).t_name
-        holder.contestNameTextView.text = teamList.get(position).c_name
-        holder.nowNumTextView.text = teamList.get(position).t_now_num.toString()
-        holder.totalNumTextView.text = teamList.get(position).t_total_num.toString()
-        holder.endDateTextView.text = teamList.get(position).t_end_date
-        holder.needPartTextivew.text = teamList.get(position).t_need_part
+        holder.adverImageView.setImageResource(careerTeamList.get(position).c_photo)
+        holder.adverTitleTextView.text = careerTeamList.get(position).t_name
+        holder.contestNameTextView.text = careerTeamList.get(position).c_name
+        holder.nowNumTextView.text = careerTeamList.get(position).t_now_num.toString()
+        holder.totalNumTextView.text = careerTeamList.get(position).t_total_num.toString()
+        holder.endDateTextView.text = careerTeamList.get(position).t_end_date
+        holder.needPartTextivew.text = careerTeamList.get(position).t_need_part
 
+        // item(TeamItem)클릭시 TeamDetailActivity(팀 소개)페이지로 넘어간다.
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView?.context,TeamDetailActivity::class.java )
+            intent.putExtra("intent_t_num", careerTeamList.get(position).t_num)
+
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
+        }
 
     }
 
     //리스트 총 개수
     override fun getItemCount(): Int {
-        return teamList.size
+        return careerTeamList.size
     }
 
     // 뷰를 잡아줌
