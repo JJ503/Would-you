@@ -110,14 +110,15 @@
                     android:layout_height="match_parent"
                     android:id="@+id/WswipeRefresh">
 
-                    <ListView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/WcontestListView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         tools:layout_editor_absoluteX="10dp"
-                        tools:layout_editor_absoluteY="70dp">
+                        tools:layout_editor_absoluteY="70dp"
+                        tools:listitem="@layout/contest_list"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-                    </ListView>
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             </ScrollView>
 

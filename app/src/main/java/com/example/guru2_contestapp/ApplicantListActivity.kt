@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class ApplicantListActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
@@ -17,6 +17,8 @@ class ApplicantListActivity : AppCompatActivity() {
     lateinit var applicantRecycler : RecyclerView
 
     lateinit var listArray : ArrayList<ApplicantListItem>         // SQLite에서 가져온 원본 데이터 리스트
+
+    lateinit var swipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,5 +64,39 @@ class ApplicantListActivity : AppCompatActivity() {
         applicantRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         applicantRecycler.setHasFixedSize(true)
         applicantRecycler.adapter = ApplicantListAdapter(listArray)
+
+
+        // 당겨서 새로고침
+        swipeRefresh=findViewById(R.id.JswipeRefresh)
+        swipeRefresh.setOnRefreshListener {
+            listArray = ArrayList()
+            dbManager = DBManager(this, "ContestAppDB", null, 1)
+            sqlitedb = dbManager.writableDatabase
+            var cursor: Cursor
+            try {
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2", null)
+
+                while (cursor.moveToNext()){
+                    var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
+
+                    var cursor2 : Cursor
+                    cursor2 = sqlitedb.rawQuery("SELECT m_name FROM member WHERE m_id = '${m_id}'", null)
+
+                    cursor2.moveToFirst()
+                    var m_name = cursor2.getString(cursor2.getColumnIndex("m_name")).toString()
+                    listArray.add(ApplicantListItem(t_num, m_id, m_name))
+                }
+            } catch(e: Exception){
+                Log.e("Error", e.message.toString())
+            } finally{
+                sqlitedb.close()
+                dbManager.close()
+            }
+            applicantRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            applicantRecycler.setHasFixedSize(true)
+            applicantRecycler.adapter = ApplicantListAdapter(listArray)
+
+            swipeRefresh.isRefreshing = false
+        }
     }
 }

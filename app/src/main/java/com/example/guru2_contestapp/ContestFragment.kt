@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 class ContestFragment : Fragment() {
@@ -18,7 +19,7 @@ class ContestFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
-    lateinit var contestListView: ListView
+    lateinit var contestListView: RecyclerView
     lateinit var searchNum: TextView
     lateinit var searchET: AutoCompleteTextView
     lateinit var searchBtn: ImageButton
@@ -26,6 +27,7 @@ class ContestFragment : Fragment() {
     lateinit var contestItem: ContestListViewItem
     lateinit var contestSearchArray: MutableList<String>
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
 
     lateinit var c_name: String
     lateinit var c_host: String
@@ -46,10 +48,11 @@ class ContestFragment : Fragment() {
         searchBtn=v_contest.findViewById(R.id.WprofileEditButton)
         searchET=v_contest.findViewById(R.id.WsearchEditText)
 
+
         // 검색 버튼 클릭 시, 현재 Fragment를 새로고침하여 변경된 contestListArray이 적용되게 함
         searchBtn.setOnClickListener {
             str_search=searchET.text.toString()
-            val contestListAdapter= activity?.let { ContestListViewAdapter(it, contestListArray) }
+            val contestListAdapter= activity?.let { ContestListViewAdapter(contestListArray) }
             if (contestListAdapter != null) {
                 contestListAdapter.notifyDataSetChanged()
             }
@@ -112,7 +115,7 @@ class ContestFragment : Fragment() {
                         c_startDay=cursor.getString(cursor.getColumnIndex("c_start")).toString()
                         c_endDay=cursor.getString(cursor.getColumnIndex("c_end")).toString()
 
-                        contestItem=ContestListViewItem(c_num, c_name, c_name,c_host,c_startDay,c_endDay)
+                        contestItem=ContestListViewItem(c_num, c_name, c_name, c_host, c_startDay, c_endDay)
                         contestListArray.add(contestItem)
                     }
                     cursor.close()
@@ -125,10 +128,13 @@ class ContestFragment : Fragment() {
             dbManager.close()
         }
 
+        contestListView=v_contest.findViewById<RecyclerView>(R.id.WcontestListView)
+        contestListView.adapter = ContestListViewAdapter(contestListArray)
+
         // 당겨서 새로고침
         swipeRefreshLayout=v_contest.findViewById(R.id.WswipeRefresh)
         swipeRefreshLayout.setOnRefreshListener {
-            val contestListAdapter= activity?.let { ContestListViewAdapter(it, contestListArray) }
+            val contestListAdapter= activity?.let { ContestListViewAdapter(contestListArray) }
             if (contestListAdapter != null) {
                 contestListAdapter.notifyDataSetChanged()
             }
@@ -142,8 +148,8 @@ class ContestFragment : Fragment() {
         }
 
 
-        // 공모전 목록에서 공모전을 선택하면 해당 공모전의 번호를 intent로 다음 페이지로 보냄
-        //         -->  다음 페이지에서 intent 정보로 해당 공모전에 대한 것만 DB에서 가져오도록 함
+        /*
+        // adapter로 이동시킴 -JJ-
         contestListView=v_contest.findViewById<ListView>(R.id.WcontestListView)
         contestListView.setOnItemClickListener { parent, view, position, id ->
             activity?.let {
@@ -151,14 +157,14 @@ class ContestFragment : Fragment() {
                 intent.putExtra("intent_c_num", contestListArray[position].num)
                 startActivity(intent)
             }
-        }
+        }*/
 
         // 검색 결과 수 TextView 값 = Item 수
         searchNum=v_contest.findViewById(R.id.WsearchNumTextView)
-        val contestListAdapter= activity?.let { ContestListViewAdapter(it, contestListArray) }
+        val contestListAdapter= activity?.let { ContestListViewAdapter(contestListArray) }
         contestListView.adapter=contestListAdapter
         if (contestListAdapter != null) {
-            searchNum.text= contestListAdapter.count.toString()
+            searchNum.text= contestListAdapter.itemCount.toString()
         }else{
             searchNum.text="0"
         }

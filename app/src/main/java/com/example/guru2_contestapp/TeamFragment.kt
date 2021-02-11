@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -19,7 +20,7 @@ class TeamFragment : Fragment() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
-    lateinit var teamListView: ListView
+    lateinit var teamListView: RecyclerView
     lateinit var searchNum: TextView
     lateinit var addTeamFAb: FloatingActionButton
     lateinit var searchET: AutoCompleteTextView
@@ -87,7 +88,7 @@ class TeamFragment : Fragment() {
         searchBtn.setOnClickListener {
             str_search=searchET.text.toString()
 
-            val teamListViewAdapter=activity?.let{ TeamListViewAdapter(it, teamListArray) }
+            val teamListViewAdapter=activity?.let{ TeamListViewAdapter(teamListArray) }
             if(teamListViewAdapter!=null){
                 teamListViewAdapter.notifyDataSetChanged()
             }
@@ -173,13 +174,13 @@ class TeamFragment : Fragment() {
         }
 
         val teamListAdapter= activity?.let {
-            TeamListViewAdapter(it, teamListArray)
+            TeamListViewAdapter(teamListArray)
         }
         teamListView.adapter=teamListAdapter
 
         if (teamListAdapter != null) {
-            searchNum.text= teamListAdapter.count.toString()
-            search_num=teamListAdapter.count
+            searchNum.text= teamListAdapter.itemCount.toString()
+            search_num=teamListAdapter.itemCount
         }else{
             searchNum.text="0"
         }
@@ -187,7 +188,7 @@ class TeamFragment : Fragment() {
         // 당겨서 새로고침
         swipeRefreshLayout=v_team.findViewById(R.id.WswipeRefresh)
         swipeRefreshLayout.setOnRefreshListener {
-            val teamListAdapter= activity?.let { TeamListViewAdapter(it, teamListArray) }
+            val teamListAdapter= activity?.let { TeamListViewAdapter(teamListArray) }
             if (teamListAdapter != null) {
                 teamListAdapter.notifyDataSetChanged()
             }
@@ -200,6 +201,8 @@ class TeamFragment : Fragment() {
             swipeRefreshLayout.isRefreshing=false
         }
 
+        /*
+        // adapter로 이동시킴 -JJ-
         // 팀 목록에서 팀을 선택하면 intent로 팀 번호를 팀 상세 페이지로 넘긴다.
         teamListView.setOnItemClickListener { parent, view, position, id ->
             activity?.let {
@@ -208,6 +211,8 @@ class TeamFragment : Fragment() {
                 startActivity(intent)
             }
         }
+
+         */
 
         // 팀 추가 버튼(FloatingActionButton)을 누르면 팀 생성페이지로 이동
         addTeamFAb.setOnClickListener {
