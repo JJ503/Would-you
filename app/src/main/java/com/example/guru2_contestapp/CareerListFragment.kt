@@ -105,7 +105,7 @@ class CareerListFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_createTeam.setHasFixedSize(true)
 
-        rv_createTeam.adapter = TeamAdapter(teamList)
+        rv_createTeam.adapter = CareerTeamListAdapter(teamList)
 
 
         return v_careerList
