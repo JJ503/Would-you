@@ -13,8 +13,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -40,6 +42,8 @@ class HomeFragment : Fragment() {
 
     //lateinit var restConList : ArrayList<WishItem>     // 추천 외의 공모전 리스트
     //lateinit var restTeamList : ArrayList<WishItem>    // 추천 외의 팀 리스트
+
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     var c_num : Int = -1
     lateinit var c_name : String
@@ -255,6 +259,24 @@ class HomeFragment : Fragment() {
             } finally {
                 sqlitedb.close()
             }
+
+        // 당겨서 새로고침
+        swipeRefreshLayout=view.findViewById(R.id.JswipeRefresh)
+        swipeRefreshLayout.setOnRefreshListener {
+            val WishListAdapter= activity?.let { WishListAdapter(myTeamList) }
+            if (WishListAdapter != null) {
+                WishListAdapter.notifyDataSetChanged()
+            }
+            myContestRecycler.adapter=WishListAdapter
+            recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
+            recomContestRecycler.adapter = WishListAdapter(recomConList)
+
+            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
+            ft.detach(this)
+            ft.attach(this)
+            ft.commit()
+            swipeRefreshLayout.isRefreshing=false
+        }
 
         return view
     }
