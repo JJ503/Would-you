@@ -121,29 +121,31 @@ class BuildTeamActivity : AppCompatActivity() {
         // 팀 생성 완료 버튼 클릭하면 누락된 정보 없는지 확인하고 없으면 DB에 정보 넣고, 액티비티 종료
         reg_finishBtn.setOnClickListener {
 
-            // 오늘 날짜, 캘린더에서 선택한 날짜 차이 계산
-            val today= Calendar.getInstance().apply{
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-            }.timeInMillis
+            fun calcDate(): Int {
+                // 오늘 날짜, 캘린더에서 선택한 날짜 차이 계산
+                val today= Calendar.getInstance().apply{
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.timeInMillis
 
-            val year=yearTextView.text.toString()
-            val month=monthTextView.text.toString()
-            val day=dateTextView.text.toString()
-            val deadline= Calendar.getInstance().apply {
-                set(Calendar.YEAR, year.toInt())
-                set(Calendar.MONTH, (month.toInt())-1)
-                set(Calendar.DAY_OF_MONTH, day.toInt())
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-            }.timeInMillis
+                val year=yearTextView.text.toString()
+                val month=monthTextView.text.toString()
+                val day=dateTextView.text.toString()
+                val deadline= Calendar.getInstance().apply {
+                    set(Calendar.YEAR, year.toInt())
+                    set(Calendar.MONTH, (month.toInt())-1)
+                    set(Calendar.DAY_OF_MONTH, day.toInt())
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.timeInMillis
+                val calcDate=(deadline-today) / (24*60*60*1000)
 
-            val calcDate=(deadline-today) / (24*60*60*1000)
-
+                return calcDate.toInt()
+            }
 
             // 입력 폼에 빈칸이 있는 경우 & 선택 날짜가 현재보다 이전인 경우 ==>  대화상자로 알림
             val builder= AlertDialog.Builder(this)
@@ -163,6 +165,11 @@ class BuildTeamActivity : AppCompatActivity() {
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
                 builder.show()
+            } else if(calcDate()<=0){
+                builder.setMessage("마감일은 팀 생성일로부터 1일 후 부터 선택할 수 있습니다.")
+                //builder.setIcon(R.)
+                builder.setPositiveButton("확인", null)
+                builder.show()
             } else if(personNumET.text.toString()==""){
                 builder.setMessage("인원 수를 입력해 주세요.")
                 //builder.setIcon(R.)
@@ -175,11 +182,6 @@ class BuildTeamActivity : AppCompatActivity() {
                 builder.show()
             } else if(teamIntroET.text.toString()==""){
                 builder.setMessage("팀 소개를 입력해 주세요.")
-                //builder.setIcon(R.)
-                builder.setPositiveButton("확인", null)
-                builder.show()
-            } else if(calcDate.toInt()<=0){
-                builder.setMessage("마감일은 팀 생성일로부터 1일 후 부터 선택할 수 있습니다.")
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
                 builder.show()
