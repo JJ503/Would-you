@@ -264,7 +264,7 @@ class TeamDetailActivity : AppCompatActivity() {
             // 지원자가 팀장인 경우 대화상자로 알림
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
-            cursor=sqlitedb.rawQuery("SELECT state FROM teamManage WHERE m_id = '"+USER_ID+"';", null)
+            cursor=sqlitedb.rawQuery("SELECT state FROM teamManage WHERE t_num = '"+t_num+"' AND m_id = '"+USER_ID+"';", null)
             if(cursor.moveToNext()){
                 state=cursor.getInt(cursor.getColumnIndex("state"))
             }

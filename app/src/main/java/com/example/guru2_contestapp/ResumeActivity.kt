@@ -8,6 +8,7 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -150,5 +151,13 @@ class ResumeActivity : AppCompatActivity() {
 
         jobTextView.text=str_job
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==android.R.id.home){
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
