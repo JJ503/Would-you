@@ -9,10 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -24,7 +21,7 @@ class TeamFragment : Fragment() {
     lateinit var teamListView: ListView
     lateinit var searchNum: TextView
     lateinit var addTeamFAb: FloatingActionButton
-    lateinit var searchET: EditText
+    lateinit var searchET: AutoCompleteTextView
     lateinit var searchBtn: ImageButton
 
     var str_search=""
@@ -40,6 +37,7 @@ class TeamFragment : Fragment() {
     var select_num=0
 
     lateinit var teamListArray: ArrayList<TeamListViewItem>
+    lateinit var contestSearchArray: MutableList<String>
     lateinit var teamItem: TeamListViewItem
 
     override fun onCreateView(
@@ -47,6 +45,7 @@ class TeamFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         teamListArray= arrayListOf<TeamListViewItem>()
+        contestSearchArray=ArrayList<String>()
 
         val v_team = inflater.inflate(R.layout.fragment_team, null)
         teamListView=v_team.findViewById(R.id.WteamListView)
@@ -54,6 +53,29 @@ class TeamFragment : Fragment() {
         addTeamFAb=v_team.findViewById(R.id.WteamAddFab)
         searchBtn=v_team.findViewById(R.id.WsearchTeamButton)
         searchET=v_team.findViewById(R.id.WsearchEditText)
+
+        //공모전 목록 가져와 자동완성 목록에 추가
+        //DB의 contest 테이블에서 공모전 이름 가져와 목록에 추가
+        dbManager = DBManager(context, "ContestAppDB", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        cursor=sqlitedb.rawQuery("SELECT c_name FROM contest;", null)
+
+        var arrayCName: String
+        while(cursor.moveToNext()){
+            arrayCName=cursor.getString(cursor.getColumnIndex("c_name")).toString()
+            contestSearchArray.add(arrayCName)
+        }
+
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
+
+        var adapter=ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, contestSearchArray)
+        searchET.setAdapter(adapter)
+
+
+
 
         //검색 버튼 클릭
         searchBtn.setOnClickListener {
@@ -94,7 +116,6 @@ class TeamFragment : Fragment() {
         // 검색창에 문자열이 있으면 해당 팀만 가져온다.
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
-        val cursor: Cursor
 
         if(str_search!=""){
             cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)

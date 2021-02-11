@@ -8,10 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.FragmentTransaction
 
 class ContestFragment : Fragment() {
@@ -21,10 +18,11 @@ class ContestFragment : Fragment() {
 
     lateinit var contestListView: ListView
     lateinit var searchNum: TextView
-    lateinit var searchET: EditText
+    lateinit var searchET: AutoCompleteTextView
     lateinit var searchBtn: ImageButton
     lateinit var contestListArray: ArrayList<ContestListViewItem>
     lateinit var contestItem: ContestListViewItem
+    lateinit var contestSearchArray: MutableList<String>
 
     var str_search=""
     var c_num=0
@@ -39,7 +37,6 @@ class ContestFragment : Fragment() {
     ): View? {
 
         contestListArray= arrayListOf<ContestListViewItem>()
-
         val v_contest = inflater.inflate(R.layout.fragment_contest, null)
 
         // 공모전 검색
@@ -61,10 +58,32 @@ class ContestFragment : Fragment() {
             ft.commit()
         }
 
+        contestSearchArray=ArrayList<String>()
+
+        //공모전 목록 가져와 자동완성 목록에 추가
+        //DB의 contest 테이블에서 공모전 이름 가져와 목록에 추가
+        dbManager = DBManager(context, "ContestAppDB", null, 1)
+        sqlitedb = dbManager.readableDatabase
+        var cursor: Cursor
+        cursor=sqlitedb.rawQuery("SELECT c_name FROM contest;", null)
+
+        var arrayCName: String
+        while(cursor.moveToNext()){
+            arrayCName=cursor.getString(cursor.getColumnIndex("c_name")).toString()
+            contestSearchArray.add(arrayCName)
+        }
+
+        cursor.close()
+        sqlitedb.close()
+        dbManager.close()
+
+        var adapter=ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, contestSearchArray)
+        searchET.setAdapter(adapter)
+
+
         //DB
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
-        val cursor: Cursor
 
         // 검색창에 아무것도 입력하지 않은 경우, 모든 공모전을 보여줌
         // 검색창에 문자열을 입력하면 해당 공모전만 해당되는 공모전만 contestListArray에 추가
