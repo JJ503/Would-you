@@ -61,21 +61,27 @@ class TeamFragment : Fragment() {
         dbManager = DBManager(context, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        cursor=sqlitedb.rawQuery("SELECT c_name FROM contest;", null)
-
-        var arrayCName: String
-        while(cursor.moveToNext()){
-            arrayCName=cursor.getString(cursor.getColumnIndex("c_name")).toString()
-            contestSearchArray.add(arrayCName)
+        try {
+            if(sqlitedb!=null){
+                cursor=sqlitedb.rawQuery("SELECT c_name FROM contest;", null)
+                if(cursor.count!=0){
+                    var arrayCName: String
+                    while(cursor.moveToNext()){
+                        arrayCName=cursor.getString(cursor.getColumnIndex("c_name")).toString()
+                        contestSearchArray.add(arrayCName)
+                    }
+                    cursor.close()
+                }
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         var adapter=ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, contestSearchArray)
         searchET.setAdapter(adapter)
-
 
         //검색 버튼 클릭
         searchBtn.setOnClickListener {
@@ -91,20 +97,27 @@ class TeamFragment : Fragment() {
             dbManager= DBManager(activity, "ContestAppDB", null, 1)
             sqlitedb=dbManager.readableDatabase
             val cursor: Cursor
+            try {
+                if(sqlitedb!=null){
+                    cursor=sqlitedb.rawQuery("SELECT c_num FROM contest WHERE c_name = '"+str_search+"';", null)
+                    if(cursor.count!=0){
+                        if(cursor.moveToNext()){
+                            tc_num=cursor.getInt(cursor.getColumnIndex("c_num"))
+                        }
 
-            cursor=sqlitedb.rawQuery("SELECT c_num FROM contest WHERE c_name = '"+str_search+"';", null)
-            if(cursor.moveToNext()){
-                tc_num=cursor.getInt(cursor.getColumnIndex("c_num"))
+                        select_num=cursor.count
+                        if(select_num==0){
+                            tc_num=0
+                        }
+                        cursor.close()
+                    }
+                }
+            } catch(e: Exception){
+                Log.e("Error", e.message.toString())
+            } finally{
+                sqlitedb.close()
+                dbManager.close()
             }
-
-            select_num=cursor.count
-            if(select_num==0){
-                tc_num=0
-            }
-
-            cursor.close()
-            sqlitedb.close()
-            dbManager.close()
 
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
@@ -116,40 +129,46 @@ class TeamFragment : Fragment() {
         // 검색창에 문자열이 있으면 해당 팀만 가져온다.
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
+        try {
+            if(sqlitedb!=null){
+                if(str_search!=""){
+                    cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
+                }else{
+                    cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
+                }
+                if(cursor.count!=null){
+                    var cursor2: Cursor
+                    while(cursor.moveToNext()){
+                        //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
+                        t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
+                        t_name=cursor.getString(cursor.getColumnIndex("t_name")).toString()
+                        t_need_part=cursor.getString(cursor.getColumnIndex("t_need_part")).toString()
+                        t_endDate=cursor.getString(cursor.getColumnIndex("t_end_date")).toString()
+                        t_total_num=cursor.getInt(cursor.getColumnIndex("t_total_num"))
+                        t_now_num=cursor.getInt(cursor.getColumnIndex("t_now_num"))
+                        tc_num=cursor.getInt(cursor.getColumnIndex("c_num"))
 
-        if(str_search!=""){
-            cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
-        }else{
-            cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
-        }
-
-        var cursor2: Cursor
-        while(cursor.moveToNext()){
-            //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
-            t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
-            t_name=cursor.getString(cursor.getColumnIndex("t_name")).toString()
-            t_need_part=cursor.getString(cursor.getColumnIndex("t_need_part")).toString()
-            t_endDate=cursor.getString(cursor.getColumnIndex("t_end_date")).toString()
-            t_total_num=cursor.getInt(cursor.getColumnIndex("t_total_num"))
-            t_now_num=cursor.getInt(cursor.getColumnIndex("t_now_num"))
-            tc_num=cursor.getInt(cursor.getColumnIndex("c_num"))
-
-            // team 테이블의 tc_num(공모전 번호)를 가져와 contest 테이블에서 해당 공모전 이름을 가져온다.
-            cursor2=sqlitedb.rawQuery("SELECT c_name FROM contest WHERE c_num = '"+tc_num+"';", null)
-            if(cursor2.moveToNext()){
-                c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
+                        // team 테이블의 tc_num(공모전 번호)를 가져와 contest 테이블에서 해당 공모전 이름을 가져온다.
+                        cursor2=sqlitedb.rawQuery("SELECT c_name FROM contest WHERE c_num = '"+tc_num+"';", null)
+                        if(cursor2.count!=0){
+                            if(cursor2.moveToNext()){
+                                c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
+                            }
+                            cursor2.close()
+                        }
+                        teamItem=TeamListViewItem(t_num, "photo", t_name, c_name, t_endDate, t_need_part, t_total_num, t_now_num)
+                        teamListArray.add(teamItem)
+                    }
+                    select_num=cursor.count
+                    cursor.close()
+                }
             }
-            cursor2.close()
-
-            teamItem=TeamListViewItem(t_num, "photo", t_name, c_name, t_endDate, t_need_part, t_total_num, t_now_num)
-            teamListArray.add(teamItem)
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        select_num=cursor.count
-
-        cursor.close()
-        dbManager.close()
-        sqlitedb.close()
 
         val teamListAdapter= activity?.let {
             TeamListViewAdapter(it, teamListArray)
@@ -204,16 +223,22 @@ class TeamFragment : Fragment() {
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
         val cursor: Cursor
-        if(str_search!=""){
-            cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
-        }else{
-            cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
+        try {
+            if(sqlitedb!=null){
+                if(str_search!=""){
+                    cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
+                }else{
+                    cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
+                }
+                select_num=cursor.count
+                cursor.close()
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-        select_num=cursor.count
-
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         if((search_num+1)<=select_num){
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
