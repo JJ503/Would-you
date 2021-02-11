@@ -4,6 +4,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -67,17 +68,24 @@ class ContestFragment : Fragment() {
         dbManager = DBManager(context, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
-        cursor=sqlitedb.rawQuery("SELECT c_name FROM contest;", null)
-
-        var arrayCName: String
-        while(cursor.moveToNext()){
-            arrayCName=cursor.getString(cursor.getColumnIndex("c_name")).toString()
-            contestSearchArray.add(arrayCName)
+        try {
+            if (sqlitedb!=null){
+                cursor=sqlitedb.rawQuery("SELECT c_name FROM contest;", null)
+                if(cursor.count!=0){
+                    var arrayCName: String
+                    while(cursor.moveToNext()){
+                        arrayCName=cursor.getString(cursor.getColumnIndex("c_name")).toString()
+                        contestSearchArray.add(arrayCName)
+                    }
+                }
+                cursor.close()
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        cursor.close()
-        sqlitedb.close()
-        dbManager.close()
 
         var adapter=ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, contestSearchArray)
         searchET.setAdapter(adapter)
@@ -85,30 +93,37 @@ class ContestFragment : Fragment() {
         //DB
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
+        try {
+            if(sqlitedb!=null){
+                // 검색창에 아무것도 입력하지 않은 경우, 모든 공모전을 보여줌
+                // 검색창에 문자열을 입력하면 해당 공모전만 해당되는 공모전만 contestListArray에 추가
+                if(str_search!=""){
+                    cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_name = '"+str_search+"';", null)
+                }else{
+                    cursor=sqlitedb.rawQuery("SELECT * FROM contest ORDER BY c_start;", null)
+                }
 
-        // 검색창에 아무것도 입력하지 않은 경우, 모든 공모전을 보여줌
-        // 검색창에 문자열을 입력하면 해당 공모전만 해당되는 공모전만 contestListArray에 추가
-        if(str_search!=""){
-            cursor=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_name = '"+str_search+"';", null)
-        }else{
-            cursor=sqlitedb.rawQuery("SELECT * FROM contest ORDER BY c_start;", null)
+                if(cursor.count!=0){
+                    while(cursor.moveToNext()){
+                        //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
+                        c_num=cursor.getInt(cursor.getColumnIndex("c_num"))
+                        c_name=cursor.getString(cursor.getColumnIndex("c_name")).toString()
+                        c_host=cursor.getString(cursor.getColumnIndex("c_host")).toString()
+                        c_startDay=cursor.getString(cursor.getColumnIndex("c_start")).toString()
+                        c_endDay=cursor.getString(cursor.getColumnIndex("c_end")).toString()
+
+                        contestItem=ContestListViewItem(c_num, c_name, c_name,c_host,c_startDay,c_endDay)
+                        contestListArray.add(contestItem)
+                    }
+                    cursor.close()
+                }
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
         }
-
-        while(cursor.moveToNext()){
-            //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
-            c_num=cursor.getInt(cursor.getColumnIndex("c_num"))
-            c_name=cursor.getString(cursor.getColumnIndex("c_name")).toString()
-            c_host=cursor.getString(cursor.getColumnIndex("c_host")).toString()
-            c_startDay=cursor.getString(cursor.getColumnIndex("c_start")).toString()
-            c_endDay=cursor.getString(cursor.getColumnIndex("c_end")).toString()
-
-            contestItem=ContestListViewItem(c_num, c_name, c_name,c_host,c_startDay,c_endDay)
-            contestListArray.add(contestItem)
-        }
-        cursor.close()
-        dbManager.close()
-        sqlitedb.close()
-
 
         // 당겨서 새로고침
         swipeRefreshLayout=v_contest.findViewById(R.id.WswipeRefresh)
