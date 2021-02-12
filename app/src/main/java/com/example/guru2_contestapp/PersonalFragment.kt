@@ -315,6 +315,39 @@ class PersonalFragment : Fragment() {
 
             return super.onOptionsItemSelected(item)
         }
+/*
+    override fun onResume() {
+        super.onResume()
+        // 팀 추가 버튼으로 팀을 생성하고 다시 돌아왔을 때, 추가한 팀에 대한 정보가 바로 리스트에 적용되도록
+        // DB에 있는 레코드 수와 현재 리스트 Item 수를 비교해 레코드 수가 많으면 현재 Fragment를 새로고침 하도록 한다.
+        dbManager= DBManager(activity, "ContestAppDB", null, 1)
+        sqlitedb=dbManager.readableDatabase
+        val cursor: Cursor
+        try {
+            if(sqlitedb!=null){
+                if(str_search!=""){
+                    cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
+                }else{
+                    cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
+                }
+                select_num=cursor.count
+                cursor.close()
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
+        }
+
+        if((search_num+1)<=select_num){
+            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
+            ft.detach(this)
+            ft.attach(this)
+            ft.commit()
+        }
+    }
+*/
 
 
     }
