@@ -13,7 +13,8 @@
         android:layout_marginTop="100dp"
         android:ems="10"
         android:hint="전화번호 (-를 제외하고 입력해주세요)"
-        android:inputType="phone"
+        android:inputType="number"
+        android:maxLength="11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,13 +35,13 @@
         android:layout_marginTop="70dp"
         android:ems="10"
         android:hint="생년월일  ex) 990101"
-        android:inputType="date"
+        android:inputType="number"
+        android:maxLength="6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/JphoneEditTextText" />
 
     <TextView
-        android:id="@+id/birthTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
@@ -64,18 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/JbirthEditText" />
 
-    <TextView
-        android:id="@+id/emailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="8dp"
-        android:text="이메일을 형식에 맞게 입력해주세요"
-        android:textColor="#D84315"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/JemailEditText" />
-
     <Button
         android:id="@+id/JnextButton2"
         android:layout_width="150dp"
@@ -91,21 +80,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="77dp"
         android:text="@"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/JemailEditText"
-        app:layout_constraintTop_toBottomOf="@+id/birthTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/JbirthEditText" />
 
     <Spinner
         android:id="@+id/JemailSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="57dp"
+        android:layout_marginTop="80dp"
         android:entries="@array/mail"
         app:layout_constraintStart_toEndOf="@+id/slash"
-        app:layout_constraintTop_toBottomOf="@+id/birthTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/JbirthEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

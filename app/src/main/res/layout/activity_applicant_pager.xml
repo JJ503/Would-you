@@ -37,14 +37,18 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical|left"
-            android:src="@drawable/ic_baseline_chevron_left_24" />
+            android:background="@drawable/transparent_background"
+            android:src="@drawable/ic_baseline_chevron_left_24"
+            android:tint="@color/indigo_900" />
 
         <ImageButton
             android:id="@+id/btnRight"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical|right"
-            android:src="@drawable/ic_baseline_chevron_right_24" />
+            android:background="@drawable/transparent_background"
+            android:src="@drawable/ic_baseline_chevron_right_24"
+            android:tint="@color/indigo_900" />
 
     </FrameLayout>
 

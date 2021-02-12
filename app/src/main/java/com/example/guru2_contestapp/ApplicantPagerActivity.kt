@@ -40,7 +40,13 @@ class ApplicantPagerActivity : AppCompatActivity() {
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
-        var t_num = 1
+        var t_num = -1
+
+        if (intent.hasExtra("t_num")) {
+            t_num = intent.getIntExtra("t_num", -1)
+        } else {
+            Toast.makeText(this, "전달된 값이 없습니다", Toast.LENGTH_SHORT).show()
+        }
 
         var cursor : Cursor? = null
         try {
@@ -100,6 +106,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
 
             if (current == cursor?.getCount()) {
                 current--
+                Toast.makeText(this, "마지막 페이지 입니다", Toast.LENGTH_SHORT).show()
             } else {
                 applicantPager.setCurrentItem(current, false)
                 person_num = (current + 1).toString() + " / " + cursor?.getCount()
@@ -112,6 +119,8 @@ class ApplicantPagerActivity : AppCompatActivity() {
 
             if (current == -1) {
                 current++
+                Toast.makeText(this, "첫 페이지 입니다", Toast.LENGTH_SHORT).show()
+
             } else {
                 applicantPager.setCurrentItem(current, false)
                 person_num = (current + 1).toString() + " / " + cursor?.getCount()

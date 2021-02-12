@@ -66,7 +66,7 @@ class SignUpActivity : AppCompatActivity() {
                     cursor.moveToFirst()
 
                     if (cursor.getCount() != 1){
-                        if (idEditText.text.toString() == ""){
+                        if (idEditText.text.toString().trim() == ""){
                             Toast.makeText(this, "아이디를 입력해 주세요", Toast.LENGTH_SHORT).show()
                         } else{
                             overlap = true
@@ -113,13 +113,13 @@ class SignUpActivity : AppCompatActivity() {
         })
 
         nextButton.setOnClickListener {
-            if (nameEditText.text.toString() == ""){
+            if (nameEditText.text.toString().trim() == ""){
                 Toast.makeText(this, "이름을 입력해 주세요", Toast.LENGTH_SHORT).show()
-            } else if (idEditText.text.toString() == ""){
+            } else if (idEditText.text.toString().trim() == ""){
                 Toast.makeText(this, "아이디를 입력해 주세요", Toast.LENGTH_SHORT).show()
-            } else if (passwordEditText.text.toString() == ""){
+            } else if (passwordEditText.text.toString().trim() == ""){
                 Toast.makeText(this, "비밀번호를 입력해 주세요", Toast.LENGTH_SHORT).show()
-            } else if (passCheckEditText.text.toString() == ""){
+            } else if (passCheckEditText.text.toString().trim() == ""){
                 Toast.makeText(this, "비밀번호 확인을 입력해 주세요", Toast.LENGTH_SHORT).show()
             } else if(overlap == false) {
                 Toast.makeText(this, "중복 확인 버튼을 눌러 주세요", Toast.LENGTH_SHORT).show()

@@ -17,7 +17,10 @@
             android:label="개발자 문의"
             android:parentActivityName=".NavigationActivity" />
 
-        <activity android:name=".ApplicantPagerActivity" />
+        <activity
+            android:name=".ApplicantPagerActivity"
+            android:label="팀 신청자 정보"
+            android:parentActivityName=".ApplicantListActivity"/>
         <activity
             android:name=".ResumeActivity"
             android:parentActivityName=".NavigationActivity" />

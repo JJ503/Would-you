@@ -9,6 +9,8 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -34,6 +36,7 @@ class HomeFragment : Fragment() {
     lateinit var name : String
     lateinit var joinTeam : TextView
     lateinit var applicantTeam : TextView
+    lateinit var nonMyTeam : TextView
 
     lateinit var myTeamList : ArrayList<WishItem>
 
@@ -57,7 +60,6 @@ class HomeFragment : Fragment() {
 
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
-
         var context: Context = requireContext()
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
 
@@ -68,6 +70,7 @@ class HomeFragment : Fragment() {
         userName = view.findViewById(R.id.userName)
         joinTeam = view.findViewById(R.id.JjoinTeam)
         applicantTeam = view.findViewById(R.id.JapplicantTeam)
+        nonMyTeam = view.findViewById(R.id.JnonMyTeam)
 
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
@@ -102,7 +105,7 @@ class HomeFragment : Fragment() {
                 // user의 내 팀 리스트 (호스트 & 신청 & 팀 완성 전 수락 상태)
                 var myTeam_cursor: Cursor
                 myTeam_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 2;", null)
-                if (myTeam_cursor.getCount() != 0){
+                if (myTeam_cursor.getCount() > 0){
                     while(myTeam_cursor.moveToNext()){
                         t_num = myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("t_num"))
 
@@ -110,9 +113,19 @@ class HomeFragment : Fragment() {
                         myTeamInfo_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num};", null)
                         myTeamInfo_cursor.moveToFirst()
 
-                        t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+                        if (myTeamInfo_cursor.getCount() == 1) {
+                            t_end_date = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_end_date"))
 
-                        myTeamList.add(WishItem(t_num, "팀장입니다", R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                            var conDeadline = checkDays(t_end_date)
+
+                            if (conDeadline < 0) {
+                                // 모집 기간이 종료된 경우 리스트에 추가 x
+
+                            } else {
+                                t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+                                myTeamList.add(WishItem(t_num, "팀장입니다", R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                            }
+                        }
                     }
                 }
 
@@ -122,25 +135,41 @@ class HomeFragment : Fragment() {
                     while(myTeam_cursor.moveToNext()){
                         t_num = myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("t_num"))
 
-                        var state = ""
-                        if (myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("state")) == 0){
-                            state = "대기 중"
-                        } else {
-                            state = "팀원 수락"
-                        }
-
                         var myTeamInfo_cursor: Cursor
                         myTeamInfo_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num};", null)
                         myTeamInfo_cursor.moveToFirst()
 
-                        t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+                        if (myTeamInfo_cursor.getCount() == 1) {
+                            t_end_date = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_end_date"))
 
-                        myTeamList.add(WishItem(t_num, state, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                            var conDeadline = checkDays(t_end_date)
+
+                            if (conDeadline < 0) {
+                                // 모집 기간이 종료된 경우 리스트에 추가 x
+
+                            } else {
+                                var state = ""
+                                if (myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("state")) == 0){
+                                    state = "대기 중"
+                                } else {
+                                    state = "팀원 수락"
+                                }
+
+                                t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+
+                                myTeamList.add(WishItem(t_num, state, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                            }
+                        }
                     }
                 }
 
-                myContestRecycler = view.findViewById(R.id.JmyContestRecycler)
-                myContestRecycler.adapter = WishListAdapter(myTeamList)
+                if (myTeamList.size > 0){
+                    nonMyTeam.visibility = GONE
+                    myContestRecycler = view.findViewById(R.id.JmyContestRecycler)
+                    myContestRecycler.adapter = WishListAdapter(myTeamList)
+                } else {
+                    nonMyTeam.visibility = VISIBLE
+                }
 
 
                 // user가 관심있어 하는 공모전

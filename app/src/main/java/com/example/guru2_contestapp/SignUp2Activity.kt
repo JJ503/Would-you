@@ -18,9 +18,7 @@ class SignUp2Activity : AppCompatActivity() {
     lateinit var phoneEditText : EditText
     lateinit var overlapButton2 : Button
     lateinit var birthEditText : EditText
-    lateinit var birthTextView : TextView
     lateinit var emailEditText : EditText
-    lateinit var emailTextView : TextView
     lateinit var emailSpinner : Spinner
     lateinit var nextButton2 : Button
 
@@ -31,9 +29,7 @@ class SignUp2Activity : AppCompatActivity() {
         phoneEditText = findViewById<EditText>(R.id.JphoneEditTextText)
         overlapButton2 = findViewById<Button>(R.id.JoverlapButton2)
         birthEditText = findViewById<EditText>(R.id.JbirthEditText)
-        birthTextView = findViewById<TextView>(R.id.birthTextView)
         emailEditText = findViewById<EditText>(R.id.JemailEditText)
-        emailTextView = findViewById<TextView>(R.id.emailTextView)
         emailSpinner = findViewById<Spinner>(R.id.JemailSpinner)
         nextButton2 = findViewById<Button>(R.id.JnextButton2)
 
@@ -43,18 +39,13 @@ class SignUp2Activity : AppCompatActivity() {
 
         phoneEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (phoneEditText.text.toString().length <= 11) {
-                    phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
-                } else {
-                    //Toast.makeText(this, "전화번호를 다시 확인해 주세요.", Toast.LENGTH_SHORT).show()
-                    phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
-                }
+
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
+                birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
             }
         })
 
@@ -86,12 +77,7 @@ class SignUp2Activity : AppCompatActivity() {
 
         birthEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (birthEditText.text.toString().length <= 6) {
-                    birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
-                } else {
-                    //Toast.makeText(this, "이메일을 다시 확인해 주세요.", Toast.LENGTH_SHORT).show()
-                    birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
-                }
+
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -101,22 +87,6 @@ class SignUp2Activity : AppCompatActivity() {
             }
         })
 
-//        emailEditText.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(p0: Editable?) {
-//                if (emailEditText.text.toString().contains("@")) {
-//                    emailEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.normal))
-//                } else {
-//                    //Toast.makeText(this, "이메일을 다시 확인해 주세요.", Toast.LENGTH_SHORT).show()
-//                    emailEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.error))
-//                }
-//            }
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                emailEditText.setTextColor(ContextCompat.getColor(this@SignUp2, R.color.normal))
-//            }
-//        })
 
 
         nextButton2.setOnClickListener {
@@ -124,12 +94,18 @@ class SignUp2Activity : AppCompatActivity() {
                 Toast.makeText(this, "전화번호를 입력해 주세요", Toast.LENGTH_SHORT).show()
             } else if (birthEditText.text.toString() == ""){
                 Toast.makeText(this, "생년월일을 입력해 주세요", Toast.LENGTH_SHORT).show()
-            } else if (emailEditText.text.toString() == ""){
+            } else if (emailEditText.text.toString().trim() == ""){
                 Toast.makeText(this, "메일을 입력해 주세요", Toast.LENGTH_SHORT).show()
-            } else if(emailSpinner.selectedItem.toString() == "직업을선택해주세요") {
+            } else if(emailSpinner.selectedItem.toString() == "선택해주세요") {
                 Toast.makeText(this, "메일의 도메인 주소를 선택해 주세요", Toast.LENGTH_SHORT).show()
             } else if(overlap2 == false) {
                 Toast.makeText(this, "중복 확인 버튼을 눌러 주세요", Toast.LENGTH_SHORT).show()
+            } else if (phoneEditText.text.toString().length < 11){
+                Toast.makeText(this, "전화번호를 확인해 주세요", Toast.LENGTH_SHORT).show()
+                phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
+            } else if (birthEditText.text.toString().length < 6){
+                Toast.makeText(this, " 생년월일을 확인해 주세요", Toast.LENGTH_SHORT).show()
+                birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
             } else {
                 saveData(phoneEditText.text.toString(),
                     birthEditText.text.toString(),

@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +43,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
         try {
             var cursor : Cursor
-            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2", null)
+            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
 
             while (cursor.moveToNext()){
                 var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
@@ -74,7 +76,7 @@ class ApplicantListActivity : AppCompatActivity() {
             sqlitedb = dbManager.writableDatabase
             var cursor: Cursor
             try {
-                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2", null)
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
 
                 while (cursor.moveToNext()){
                     var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
@@ -98,5 +100,18 @@ class ApplicantListActivity : AppCompatActivity() {
 
             swipeRefresh.isRefreshing = false
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_applicant_list, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==android.R.id.home){
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

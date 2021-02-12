@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.app.Activity
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -12,7 +13,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : RecyclerView.Adapter<ApplicantListAdapter.CustomViewHolder>() {
@@ -31,7 +34,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context, ApplicantPagerActivity::class.java)
             intent.putExtra("pos", position)
-            intent.putExtra("m_id", itemList.get(position).t_num)
+            intent.putExtra("t_num", itemList.get(position).t_num)
 
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
@@ -44,7 +47,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
 
                 if (cursor.getCount() == 1){
                     sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
-                    holder.itemView.setBackgroundColor(Color.parseColor("#17009688"))
+                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
                     holder.btnAccept.visibility = GONE
                     holder.btnRefuse.visibility = GONE
                 } else {
@@ -65,7 +68,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
 
                 if (cursor.getCount() == 1){
                     sqlitedb.execSQL("UPDATE teamManage SET state = -1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
-                    holder.itemView.setBackgroundColor(Color.parseColor("#FF0000"))
+                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.refusal))
                     holder.btnAccept.visibility = GONE
                     holder.btnRefuse.visibility = GONE
                 } else {
@@ -87,6 +90,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
         val tvName = view.findViewById<TextView>(R.id.JtvName)
         val btnAccept = view.findViewById<ImageButton>(R.id.JbtnAccept)
         val btnRefuse = view.findViewById<ImageButton>(R.id.JbtnRefuse)
+        val cardView = view.findViewById<CardView>(R.id.JlistCardView)
 
 
         fun onBind(item: ApplicantListItem) {
