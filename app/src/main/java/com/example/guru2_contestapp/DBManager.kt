@@ -19,6 +19,7 @@ class DBManager(
                 "m_id TEXT NOT NULL," +
                 "cm_date TEXT NOT NULL," +
                 "cm_detail TEXT NOT NULL," +
+                "FOREIGN KEY(m_id) REFERENCES member(m_id) ON DELETE CASCADE," +
                 "PRIMARY KEY(cm_idx AUTOINCREMENT)" +
                 ");")
 
@@ -62,6 +63,7 @@ class DBManager(
                 "r_hope TEXT NOT NULL," +
                 "r_self_intro TEXT NOT NULL," +
                 "r_etc TEXT," +
+                "FOREIGN KEY(m_id) REFERENCES member(m_id) ON DELETE CASCADE," +
                 "PRIMARY KEY(r_idx)" +
                 ");")
 
@@ -76,6 +78,8 @@ class DBManager(
                 "t_end_date TEXT NOT NULL," +
                 "t_need_part TEXT NOT NULL," +
                 "t_detail TEXT NOT NULL," +
+                "t_complete INTEGER NOT NULL" +
+                "FOREIGN KEY(t_host) REFERENCES member(m_id) ON DELETE CASCADE," +
                 "PRIMARY KEY(t_num)" +
                 ");")
 

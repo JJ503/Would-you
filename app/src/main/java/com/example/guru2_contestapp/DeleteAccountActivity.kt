@@ -90,10 +90,11 @@ class DeleteAccountActivity : AppCompatActivity() {
                         editor.commit()
 
                         //DB에서 해당 사용자 계정 삭제
+                        dbManager = DBManager(this, "ContestAppDB", null, 1)
                         try {
                             if (sqlitedb != null) {
                                 sqlitedb = dbManager.writableDatabase
-                                sqlitedb.execSQL("DELETE FROM member WHERE m_id = '" + USER_ID + "';" ,null)
+                                sqlitedb.execSQL("DELETE FROM member WHERE m_id = '" + USER_ID + "';" )
                             }
                         } catch (e: Exception) {
                             Log.e("Error", e.message.toString())

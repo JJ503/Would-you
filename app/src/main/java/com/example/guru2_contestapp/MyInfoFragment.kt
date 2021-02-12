@@ -180,7 +180,6 @@ class MyInfoFragment : Fragment() {
                     }
                     sqlitedb.execSQL("UPDATE member SET m_area = '" + spinner_area.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
                     sqlitedb.execSQL("UPDATE member SET m_interest = '" + spinner_interest.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
-
                     sqlitedb.close()
                 }
                 else{
