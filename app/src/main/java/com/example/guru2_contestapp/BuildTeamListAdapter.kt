@@ -49,19 +49,8 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         holder.endDateTextView.text = buildTeamList.get(position).t_end_date
         holder.needPartTextivew.text = buildTeamList.get(position).t_need_part
 
-        // item(teamItem)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
-        holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
-
-            //t_num 넘겨주기
-            val sharedPreferences : SharedPreferences = holder.itemView?.context.getSharedPreferences("t_num", MODE_PRIVATE)
-            val editor : SharedPreferences.Editor = sharedPreferences.edit()
-            editor.putInt("t_num", buildTeamList.get(position).t_num)
-            editor.commit()
-
-            ContextCompat.startActivity(holder.itemView.context, intent, null)
-        }
-
+        //모집 종료면 0, 모집 중이면 1
+        var t_endStatus = 1
 
 
         // 마감일과 현재의 날짜차이 계산
@@ -91,25 +80,44 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         // 마감일이 1일 남은 경우 -> 글자색 변경
         if(calcDate.toInt()<=1){
             holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
-            //magam.setTextColor(ContextCompat.getColor(context, R.color.impend))
         }
 
         // 마감일이 지난 경우 -> 날짜 TextView 숨김
         if(calcDate.toInt()<0){
             holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
             holder.endDateTextView.text="모집 종료"
-            //magam.visibility=View.GONE
-            //view.setBackgroundColor(ContextCompat.getColor(context, R.color.non_click))
             holder.teamItem_cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.non_click))
+
+            t_endStatus = 0
         }
 
         // 남은 인원이 1명 -> 글자색 변경
-        // 남은 인원이 0명 -> 모집 종료, 글자색 변경
         val possible_num = buildTeamList.get(position).t_total_num - buildTeamList.get(position).t_now_num
         if(possible_num==1){
             holder.nowNumTextView.setTextColor(Color.parseColor("#F15F5F"))
             holder.slash.setTextColor(Color.parseColor("#F15F5F"))
             holder.totalNumTextView.setTextColor(Color.parseColor("#F15F5F"))
+        }
+
+
+        // item(teamItem)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
+        holder.itemView.setOnClickListener {
+            //t_num 넘겨주기
+            val sharedPreferences : SharedPreferences = holder.itemView?.context.getSharedPreferences("t_num", MODE_PRIVATE)
+            val editor : SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putInt("t_num", buildTeamList.get(position).t_num)
+            editor.commit()
+
+            //t_endStatus 넘겨주기
+            val sharedPreferences2 : SharedPreferences = holder.itemView?.context.getSharedPreferences("t_endStatus", MODE_PRIVATE)
+            val editor2 : SharedPreferences.Editor = sharedPreferences2.edit()
+            editor2.putInt("t_endStatus", t_endStatus)
+            editor2.commit()
+
+
+            //페이지 이동
+            val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
+            ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
 
     }
