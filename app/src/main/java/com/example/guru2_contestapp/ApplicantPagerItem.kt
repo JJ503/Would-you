@@ -1,6 +1,9 @@
 package com.example.guru2_contestapp
 
-class ApplicantPagerItem(val m_name : String,
+class ApplicantPagerItem(val t_num : Int,
+                         val t_endStatus : Int,
+                         val m_id : String,
+                         val m_name : String,
                          val m_age : Int,
                          val r_hope : String,
                          val m_tel : String,

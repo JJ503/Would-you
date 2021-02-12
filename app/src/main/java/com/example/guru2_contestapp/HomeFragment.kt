@@ -166,6 +166,7 @@ class HomeFragment : Fragment() {
                 if (myTeamList.size > 0){
                     nonMyTeam.visibility = GONE
                     myContestRecycler = view.findViewById(R.id.JmyContestRecycler)
+                    myContestRecycler.setHasFixedSize(true)
                     myContestRecycler.adapter = WishListAdapter(myTeamList)
                 } else {
                     nonMyTeam.visibility = VISIBLE
@@ -278,9 +279,11 @@ class HomeFragment : Fragment() {
                 }
 
                 recomTeamtRecycler = view.findViewById(R.id.JrecomTeamtRecycler)
+                recomTeamtRecycler.setHasFixedSize(true)
                 recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
 
                 recomContestRecycler = view.findViewById(R.id.JrecomContestRecycler)
+                recomContestRecycler.setHasFixedSize(true)
                 recomContestRecycler.adapter = WishListAdapter(recomConList)
             }
             } catch (e: Exception){
@@ -296,7 +299,7 @@ class HomeFragment : Fragment() {
             if (WishListAdapter != null) {
                 WishListAdapter.notifyDataSetChanged()
             }
-            myContestRecycler.adapter=WishListAdapter
+            myContestRecycler.adapter = WishListAdapter
             recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
             recomContestRecycler.adapter = WishListAdapter(recomConList)
 

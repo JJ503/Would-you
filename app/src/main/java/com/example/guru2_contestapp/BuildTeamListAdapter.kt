@@ -102,17 +102,12 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
 
         // item(teamItem)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
-            //t_num 넘겨주기
+            //t_num, t_endStatus 넘겨주기
             val sharedPreferences : SharedPreferences = holder.itemView?.context.getSharedPreferences("t_num", MODE_PRIVATE)
             val editor : SharedPreferences.Editor = sharedPreferences.edit()
             editor.putInt("t_num", buildTeamList.get(position).t_num)
+            editor.putInt("t_endStatus", t_endStatus)
             editor.commit()
-
-            //t_endStatus 넘겨주기
-            val sharedPreferences2 : SharedPreferences = holder.itemView?.context.getSharedPreferences("t_endStatus", MODE_PRIVATE)
-            val editor2 : SharedPreferences.Editor = sharedPreferences2.edit()
-            editor2.putInt("t_endStatus", t_endStatus)
-            editor2.commit()
 
 
             //페이지 이동

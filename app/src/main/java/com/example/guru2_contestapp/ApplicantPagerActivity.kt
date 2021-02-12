@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,17 +42,13 @@ class ApplicantPagerActivity : AppCompatActivity() {
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
-        var t_num = -1
-
-        if (intent.hasExtra("t_num")) {
-            t_num = intent.getIntExtra("t_num", -1)
-        } else {
-            Toast.makeText(this, "전달된 값이 없습니다", Toast.LENGTH_SHORT).show()
-        }
+        val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
+        val t_num = sharedPreferences.getInt("t_num", -1)
+        val t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
 
         var cursor : Cursor? = null
         try {
-            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2", null)
+            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
 
             while (cursor.moveToNext()){
                 var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
@@ -76,7 +74,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
                 var r_self_intro = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
                 var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
 
-                pagerArray.add(ApplicantPagerItem(m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
+                pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())

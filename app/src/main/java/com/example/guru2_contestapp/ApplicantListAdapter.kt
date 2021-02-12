@@ -2,6 +2,7 @@ package com.example.guru2_contestapp
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
@@ -31,17 +33,39 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
         var dbManager: DBManager =  DBManager(holder.itemView.context, "ContestAppDB", null, 1)
         var sqlitedb : SQLiteDatabase = dbManager.writableDatabase
 
+        var cursor : Cursor
+        cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
+        cursor.moveToFirst()
+        var state = cursor.getInt(cursor.getColumnIndex("state"))
+
+        when(state){
+            -1 -> {
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.refusal))
+                holder.btnAccept.visibility = GONE
+                holder.btnRefuse.visibility = GONE
+            }
+
+            1 -> {
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
+                holder.btnAccept.visibility = GONE
+                holder.btnRefuse.visibility = GONE
+            }
+
+            else -> {
+
+            }
+        }
+
+
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context, ApplicantPagerActivity::class.java)
             intent.putExtra("pos", position)
-            intent.putExtra("t_num", itemList.get(position).t_num)
 
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
 
         holder.btnAccept.setOnClickListener {
             try {
-                var cursor : Cursor
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
                 cursor.moveToFirst()
 
@@ -56,13 +80,13 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             } catch(e: Exception){
                 Log.e("Error", e.message.toString())
             } finally{
-
+                val activity : ApplicantListActivity = holder.itemView.context as ApplicantListActivity
+                activity.recreate()
             }
         }
 
         holder.btnRefuse.setOnClickListener {
             try {
-                var cursor : Cursor
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
                 cursor.moveToFirst()
 
@@ -77,7 +101,8 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             } catch(e: Exception){
                 Log.e("Error", e.message.toString())
             } finally{
-
+                val activity : ApplicantListActivity = holder.itemView.context as ApplicantListActivity
+                activity.recreate()
             }
         }
     }
