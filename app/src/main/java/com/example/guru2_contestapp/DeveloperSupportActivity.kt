@@ -9,6 +9,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -48,7 +49,7 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
                         var USER_EMAIL :String = cursor.getString(cursor.getColumnIndex("m_email"))
                         var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
-                        var mailTitle = "[ 개발자 문의 ] 개발자 문의_${USER_ID}"
+                        var mailTitle = "[ 개발자 문의 ]"
                         var mailBody = "* 문의자 ID : ${USER_ID}\n" +
                                 "* 문의 제목 : (문의 내용 요약)\n" +
                                 "* 문의 내용 : (문의 내용)\n"
@@ -102,7 +103,7 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
                         var USER_EMAIL :String = cursor.getString(cursor.getColumnIndex("m_email"))
                         var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
-                        var mailTitle = "[ 버그 신고 ] 버그 신고_${USER_ID}"
+                        var mailTitle = "[ 버그 신고 ]"
                         var mailBody = "* 버그 신고자 ID : ${USER_ID}\n" +
                                 "* 버그 종류 : (ex. 데이터 오류/ 화면 꺼짐/ 강제종료 / 기타)\n" +
                                 "* 버그 내용 : (ex. 메인 페이지에서 신청한 팀 목록이 안 보여요.)\n" +
@@ -128,6 +129,8 @@ class DeveloperSupportActivity : AppCompatActivity() {
             } finally {
                 sqlitedb.close()
             }
+
+
         }
 
 
@@ -138,6 +141,16 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
 
 
+    }
+
+
+    //뒤로가기 설정
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==android.R.id.home){
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     }

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
@@ -31,8 +32,8 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
 
     // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: ApplyTeamListAdapter.CustomViewHolder, position: Int) {
-        //현재 로그인 중인 사용자 지정
 
+        //현재 로그인 중인 사용자 지정
         var context: Context = holder.itemView.context
         val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
@@ -62,7 +63,7 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
 
         val dateString= holder.endDateTextView.text.toString()
         val token=dateString.split(".")
-        Log.d("----------",token[0])
+        //Log.d("----------",token[0])
         val deadline= Calendar.getInstance().apply {
             set(Calendar.YEAR, token[0].toInt())
             set(Calendar.MONTH, (token[1].toInt())-1)
@@ -96,20 +97,22 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
             dbManager = DBManager(holder.itemView.context, "ContestAppDB", null, 1)
             sqlitedb = dbManager.writableDatabase
 
-            sqlitedb.execSQL("UPDATE TeamManage SET state = -1 WHERE m_id = '" + USER_ID + "'  AND state >= -1  AND state < 2;")
+            sqlitedb.execSQL("UPDATE TeamManage SET state = -1 WHERE m_id = '" + USER_ID + "'  AND state >= 0  AND state < 2;")
             sqlitedb.close()
-
-
+            holder.applyTeamItem_cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.non_click))
         }
 
         // 남은 인원이 1명 -> 글자색 변경
-        // 남은 인원이 0명 -> 모집 종료, 글자색 변경
+
         val possible_num = applyTeamList.get(position).t_total_num - applyTeamList.get(position).t_now_num
         if(possible_num==1){
             holder.nowNumTextView.setTextColor(Color.parseColor("#F15F5F"))
             holder.slash.setTextColor(Color.parseColor("#F15F5F"))
             holder.totalNumTextView.setTextColor(Color.parseColor("#F15F5F"))
-        }else if (possible_num==0){
+        }
+/*
+        // 남은 인원이 0명 -> 모집 종료, 글자색 변경
+        else if (possible_num==0){
             holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
             holder.endDateTextView.text="모집 종료"
 
@@ -120,12 +123,12 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
             dbManager = DBManager(holder.itemView.context, "ContestAppDB", null, 1)
             sqlitedb = dbManager.writableDatabase
 
-            sqlitedb.execSQL("UPDATE TeamManage SET state = -1 WHERE m_id = '" + USER_ID + "'  AND state >= -1  AND state < 2;")
+            sqlitedb.execSQL("UPDATE TeamManage SET state = -1 WHERE m_id = '" + USER_ID + "'  AND state >= 0  AND state < 2;")
             sqlitedb.close()
 
             //magam.visibility=View.GONE
         }
-
+*/
 
 
 
@@ -135,7 +138,7 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
 
         when(apply_state){
             -1 -> {
-                str_apply_state = "팀원 탈락"
+                str_apply_state = "탈락"
                 holder.apply_state.setBackgroundColor(Color.parseColor("#34FF5151"))
             }
             0 -> {
@@ -143,7 +146,7 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
                 holder.apply_state.setBackgroundColor(Color.parseColor("#8DEAEAEA"))
             }
             1 -> {
-                str_apply_state = "팀원 확정"
+                str_apply_state = "확정"
                 holder.apply_state.setBackgroundColor(Color.parseColor("#17009688"))
             }
             else -> str_apply_state ="오류 발생"
@@ -181,13 +184,9 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
         val needPartTextivew = itemView.findViewById<TextView>(R.id.needPartTextivew)
         val apply_state = itemView.findViewById<TextView>(R.id.apply_state)
         val slash = itemView.findViewById<TextView>(R.id.slash)
+        val applyTeamItem_cardView = itemView.findViewById<CardView>(R.id.applyTeamItem_cardView)
     }
 
-    // 뒤로 가기 설정
-    private fun loadImage(){
-        val intent= Intent()
-        intent.type="image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-    }
+
 }
 

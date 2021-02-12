@@ -17,10 +17,7 @@
             android:label="개발자 문의"
             android:parentActivityName=".NavigationActivity" />
 
-        <activity
-            android:name=".ApplicantPagerActivity"
-            android:label="팀 신청자 정보"
-            android:parentActivityName=".ApplicantListActivity"/>
+        <activity android:name=".ApplicantPagerActivity" />
         <activity
             android:name=".ResumeActivity"
             android:parentActivityName=".NavigationActivity" />
@@ -41,6 +38,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SetProfileActivity"
+            android:label="프로필 변경"
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name=".SettingActivity"
             android:label="설정"

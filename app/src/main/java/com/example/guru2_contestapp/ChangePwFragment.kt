@@ -69,6 +69,7 @@ class ChangePwFragment : Fragment() {
         changePwBtn.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("비밀번호 변경")
+            builder.setIcon(R.drawable.logo_2_04)
 
             // '현재 비밀번호' 입력 안 했을 때
             if (currentPw.getText().toString().equals("") || currentPw.getText().toString() == null) {
@@ -81,7 +82,6 @@ class ChangePwFragment : Fragment() {
                     if (newPw1.getText().toString().equals("") || newPw1.getText().toString() == null || newPw2.getText().toString().equals("") || newPw2.getText().toString() == null
                     ) {
                         builder.setMessage("변경할 비밀번호를 입력하세요. (확인란도 작성)")
-                        //Toast.makeText(getContext(), "'" + newPw1.getText().toString() + "'", Toast.LENGTH_LONG).show()
                     } else {
                         // 성공적으로  비밀번호 변경할 때
                         if (newPw1.getText().toString() == newPw2.getText().toString()) {
@@ -99,7 +99,6 @@ class ChangePwFragment : Fragment() {
                         } else {
                             //변경할 pw가 확인 pw와 다를때
                             builder.setMessage("새로운 비밀번호가 일치하지 않습니다.")
-                            //Toast.makeText(getContext(), "'" + newPw1.getText().toString() + "'", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -111,7 +110,7 @@ class ChangePwFragment : Fragment() {
             newPw2.setText(null);
 
             //팝업창
-            builder.setNeutralButton("확인", null)
+            builder.setPositiveButton("확인", null)
             builder.show()
 
         }

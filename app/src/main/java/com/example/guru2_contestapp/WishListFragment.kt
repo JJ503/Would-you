@@ -103,7 +103,6 @@ class WishListFragment : Fragment() {
 
         var rv_wishlist: RecyclerView = v_wishList.findViewById<RecyclerView>(R.id.rv_wishlist)
         rv_wishlist.layoutManager = GridLayoutManager(requireContext(), 3)
-        //rv_wishlist.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL, false)
         rv_wishlist.setHasFixedSize(true)
 
         rv_wishlist.adapter = WishListAdapter(wishlist)

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 
@@ -92,7 +93,7 @@ class DeleteAccountActivity : AppCompatActivity() {
                         try {
                             if (sqlitedb != null) {
                                 sqlitedb = dbManager.writableDatabase
-                                sqlitedb.execSQL("DELETE FROM member WHERE m_id = '" + USER_ID + "';", null)
+                                sqlitedb.execSQL("DELETE FROM member WHERE m_id = '" + USER_ID + "';" ,null)
                             }
                         } catch (e: Exception) {
                             Log.e("Error", e.message.toString())
@@ -112,5 +113,15 @@ class DeleteAccountActivity : AppCompatActivity() {
             builder.show()
         }
 
+    }
+
+
+    //뒤로가기 설정
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==android.R.id.home){
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

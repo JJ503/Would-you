@@ -145,7 +145,6 @@ class MyInfoFragment : Fragment() {
                         isUniv=false
                         univerTableRow.visibility = View.GONE
                         univer.setText(null)
-
                     }
                 }
             }
@@ -160,6 +159,7 @@ class MyInfoFragment : Fragment() {
         updateBtn.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("개인정보 수정")
+            builder.setIcon(R.drawable.logo_2_04)
             builder.setMessage("개인 정보를 수정하시겠습니까?")
 
             builder.setNeutralButton("취소",null)
@@ -176,14 +176,11 @@ class MyInfoFragment : Fragment() {
                         sqlitedb.execSQL("UPDATE member SET m_univ = '" + univer.getText().toString() + "' WHERE m_id = '" + USER_ID + "';")
                     }
                     else{
-                        sqlitedb.execSQL("UPDATE member SET m_univ = null WHERE m_id = '" + USER_ID + "';")
+                        sqlitedb.execSQL("UPDATE member SET m_univ = '' WHERE m_id = '" + USER_ID + "';")
                     }
                     sqlitedb.execSQL("UPDATE member SET m_area = '" + spinner_area.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
                     sqlitedb.execSQL("UPDATE member SET m_interest = '" + spinner_interest.selectedItem.toString()+ "' WHERE m_id = '" + USER_ID + "';")
 
-                   /* Log.d("/--------값 확인----------/",tel.getText().toString()+"\n"+email.getText().toString() +"@"+ spinner_email.selectedItem.toString()
-                    +"\n"+spinner_job.selectedItem.toString()+"\n"+ univer.getText().toString() +"\n"+spinner_area.selectedItem.toString() +"\n"+spinner_interest.selectedItem.toString())
-*/
                     sqlitedb.close()
                 }
                 else{
