@@ -38,8 +38,23 @@ class SetProfileActivity : AppCompatActivity() {
         try {
             // 여기 for문으로 해서 사진 넣을 예정
             profileItemList.add(ProfileItem(R.drawable.ic_baseline_account_circle_24))
-            profileItemList.add(ProfileItem(R.drawable.ic_baseline_add_photo_alternate_24))
-            profileItemList.add(ProfileItem(R.mipmap.profile1_foreground))
+            profileItemList.add(ProfileItem(R.drawable.profile1))
+            profileItemList.add(ProfileItem(R.drawable.profile2))
+            profileItemList.add(ProfileItem(R.drawable.profile3))
+            profileItemList.add(ProfileItem(R.drawable.profile4))
+            profileItemList.add(ProfileItem(R.drawable.profile5))
+            profileItemList.add(ProfileItem(R.drawable.profile6))
+            profileItemList.add(ProfileItem(R.drawable.profile7))
+            profileItemList.add(ProfileItem(R.drawable.profile8))
+            profileItemList.add(ProfileItem(R.drawable.profile9))
+            profileItemList.add(ProfileItem(R.drawable.profile10))
+            profileItemList.add(ProfileItem(R.drawable.profile11))
+            profileItemList.add(ProfileItem(R.drawable.profile12))
+            profileItemList.add(ProfileItem(R.drawable.profile14))
+            profileItemList.add(ProfileItem(R.drawable.profile15))
+            profileItemList.add(ProfileItem(R.drawable.profile16))
+            
+            
         }catch(e: Exception){
             Log.e("Error", e.message.toString())
         } finally{
@@ -48,7 +63,7 @@ class SetProfileActivity : AppCompatActivity() {
 
         // 리사이클러 뷰에 레이아웃 매니저와 어댑터 설정
         var rv_profile: RecyclerView = this.findViewById<RecyclerView>(R.id.rv_profile)
-        rv_profile.layoutManager = GridLayoutManager(this, 2)
+        rv_profile.layoutManager = GridLayoutManager(this, 3)
         rv_profile.setHasFixedSize(true)
         rv_profile.adapter = ProfileListAdapter(profileItemList)
 
