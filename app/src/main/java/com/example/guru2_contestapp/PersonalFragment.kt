@@ -132,23 +132,6 @@ class PersonalFragment : Fragment() {
                 profileImage.setImageResource(profile)
             }
         }
-/*
-        // 프로필 변경 후 넘어온 인자 값(사진)이 있으면 설정해준다.
-        var profile= arguments?.getInt("profile")
-        if (profile != null) {
-            Log.d("/----ㅇ-----/",profile.toString())
-             profileImage.setImageResource(profile)
-
-            // DB 저장
-            sqlitedb =dbManager.readableDatabase
-            sqlitedb.execSQL("UPDATE member SET m_profile = " + profile + "WHERE m_id = '" + USER_ID + "';",null)
-            sqlitedb.close()
-
-        } else {
-            profileImage.setImageResource(R.drawable.ic_baseline_account_circle_24)
-            Log.d("/------x-----/",profile.toString())
-        }
-        */
 
 
             // 설정 화면으로  전환
