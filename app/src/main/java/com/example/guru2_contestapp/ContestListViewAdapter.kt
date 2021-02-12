@@ -1,7 +1,9 @@
 package com.example.guru2_contestapp
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +20,12 @@ class ContestListViewAdapter(val contestList: ArrayList<ContestListViewItem>): R
     }
 
     override fun onBindViewHolder(holder: ContestListViewAdapter.CustomViewHolder, position: Int) {
-        //나중에 사진 수정
-        holder.contestImg.setImageResource(R.drawable.gentlemans_guide)
+        var photo_src=contestList.get(position).img
+        holder.contestImg.setImageResource(photo_src)
         holder.contestTitle.text = contestList.get(position).contestName
         holder.hostName.text = contestList.get(position).hostName
         holder.startDay.text = contestList.get(position).startDay
         holder.endDay.text = contestList.get(position).endDay
-
 
         // 공모전 목록에서 공모전을 선택하면 해당 공모전의 번호를 intent로 다음 페이지로 보냄
         //         -->  다음 페이지에서 intent 정보로 해당 공모전에 대한 것만 DB에서 가져오도록 함

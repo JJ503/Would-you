@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import java.lang.Exception
 
@@ -30,7 +31,9 @@ class ContestDetailActivity : AppCompatActivity() {
     lateinit var homepage: TextView
     lateinit var wishOnBtn: ImageButton
     lateinit var wishOffBtn: ImageButton
+    lateinit var contestImg: ImageView
 
+    lateinit var str_photo: String
     lateinit var str_name: String
     lateinit var str_host: String
     lateinit var str_start: String
@@ -57,6 +60,7 @@ class ContestDetailActivity : AppCompatActivity() {
         teamAddBtn=findViewById(R.id.WsearchTeamButton)
         wishOnBtn=findViewById(R.id.wishOnButton)
         wishOffBtn=findViewById(R.id.wishOffButton)
+        contestImg=findViewById(R.id.WposterImageView)
 
         // 팀 목록에서 팀을 선택하면 그 팀이 참가하는 공모전 번호가 intent로 넘어온다.
         // 그 값으로 DB에서 공모전 이름, 주최기관 등 자세한 정보를 가져온다.
@@ -72,14 +76,14 @@ class ContestDetailActivity : AppCompatActivity() {
 
                 if(cursor.count!=0){
                     if(cursor.moveToNext()){
-                        //var photo
-                        str_name=cursor.getString(cursor.getColumnIndex("c_name")).toString()
-                        str_host=cursor.getString(cursor.getColumnIndex("c_host")).toString()
-                        str_section=cursor.getString(cursor.getColumnIndex("c_section")).toString()
-                        str_start=cursor.getString(cursor.getColumnIndex("c_start")).toString()
-                        str_end=cursor.getString(cursor.getColumnIndex("c_end")).toString()
-                        str_detail=cursor.getString(cursor.getColumnIndex("c_detail")).toString()
-                        str_address=cursor.getString(cursor.getColumnIndex("c_address")).toString()
+                        str_photo=cursor.getString(cursor.getColumnIndex("c_photo"))
+                        str_name=cursor.getString(cursor.getColumnIndex("c_name"))
+                        str_host=cursor.getString(cursor.getColumnIndex("c_host"))
+                        str_section=cursor.getString(cursor.getColumnIndex("c_section"))
+                        str_start=cursor.getString(cursor.getColumnIndex("c_start"))
+                        str_end=cursor.getString(cursor.getColumnIndex("c_end"))
+                        str_detail=cursor.getString(cursor.getColumnIndex("c_detail"))
+                        str_address=cursor.getString(cursor.getColumnIndex("c_address"))
                     }
                 }
                 cursor.close()
@@ -91,6 +95,8 @@ class ContestDetailActivity : AppCompatActivity() {
             dbManager.close()
         }
 
+        var photo_src=this.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
+        contestImg.setImageResource(photo_src)
         contestName.text = str_name
         hostName.text = str_host
         section.text= str_section

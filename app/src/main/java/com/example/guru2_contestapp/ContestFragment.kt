@@ -29,6 +29,7 @@ class ContestFragment : Fragment() {
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
 
+    lateinit var c_photo: String
     lateinit var c_name: String
     lateinit var c_host: String
     lateinit var c_startDay: String
@@ -77,7 +78,7 @@ class ContestFragment : Fragment() {
                 if(cursor.count!=0){
                     var arrayCName: String
                     while(cursor.moveToNext()){
-                        arrayCName=cursor.getString(cursor.getColumnIndex("c_name")).toString()
+                        arrayCName=cursor.getString(cursor.getColumnIndex("c_name"))
                         contestSearchArray.add(arrayCName)
                     }
                 }
@@ -108,14 +109,15 @@ class ContestFragment : Fragment() {
 
                 if(cursor.count!=0){
                     while(cursor.moveToNext()){
-                        //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
+                        c_photo=cursor.getString(cursor.getColumnIndex("c_photo"))
                         c_num=cursor.getInt(cursor.getColumnIndex("c_num"))
-                        c_name=cursor.getString(cursor.getColumnIndex("c_name")).toString()
-                        c_host=cursor.getString(cursor.getColumnIndex("c_host")).toString()
-                        c_startDay=cursor.getString(cursor.getColumnIndex("c_start")).toString()
-                        c_endDay=cursor.getString(cursor.getColumnIndex("c_end")).toString()
+                        c_name=cursor.getString(cursor.getColumnIndex("c_name"))
+                        c_host=cursor.getString(cursor.getColumnIndex("c_host"))
+                        c_startDay=cursor.getString(cursor.getColumnIndex("c_start"))
+                        c_endDay=cursor.getString(cursor.getColumnIndex("c_end"))
 
-                        contestItem=ContestListViewItem(c_num, c_name, c_name, c_host, c_startDay, c_endDay)
+                        var photo_src=this.resources.getIdentifier(c_photo,"drawable", "com.example.guru2_contestapp")
+                        contestItem=ContestListViewItem(c_num, photo_src, c_name, c_host, c_startDay, c_endDay)
                         contestListArray.add(contestItem)
                     }
                     cursor.close()
