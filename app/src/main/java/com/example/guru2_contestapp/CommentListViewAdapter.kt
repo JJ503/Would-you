@@ -13,14 +13,14 @@ class  CommentListViewAdapter(val context: Context, val commentList: ArrayList<C
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View = LayoutInflater.from(context).inflate(R.layout.comment_list, null)
 
-        //val img = view.findViewById<ImageView>(R.id.WimageView)
+        val img = view.findViewById<ImageView>(R.id.WimageView)
         val name = view.findViewById<TextView>(R.id.WnameTextView)
         val comment = view.findViewById<TextView>(R.id.WcommentTextView)
         val date = view.findViewById<TextView>(R.id.WdateTextView)
 
         val commentlist = commentList[position]
 
-        //img.setImageResource(R.drawable.airportbaby)
+        img.setImageResource(commentlist.img)
         name.text = commentlist.name
         comment.text = commentlist.comment
         date.text = commentlist.date
