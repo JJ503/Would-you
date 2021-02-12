@@ -24,7 +24,8 @@ class TeamListViewAdapter (val teamList: ArrayList<TeamListViewItem>): RecyclerV
     }
 
     override fun onBindViewHolder(holder: TeamListViewAdapter.CustomViewHolder, position: Int) {
-        holder.contestImg.setImageResource(R.drawable.airport_baby)
+        var photo_src=teamList.get(position).img
+        holder.contestImg.setImageResource(photo_src)
         holder.teamName.text = teamList.get(position).teamName
         holder.contestName.text = teamList.get(position).contestNum
         holder.endDate.text = teamList.get(position).endDate

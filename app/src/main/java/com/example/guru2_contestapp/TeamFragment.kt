@@ -31,6 +31,7 @@ class TeamFragment : Fragment() {
     lateinit var t_endDate: String
     lateinit var t_need_part: String
     lateinit var t_name: String
+    lateinit var c_photo: String
     var str_search=""
     var t_num=0
     var tc_num= 0
@@ -142,24 +143,25 @@ class TeamFragment : Fragment() {
                 if(cursor.count!=0){
                     var cursor2: Cursor
                     while(cursor.moveToNext()){
-                        //var c_photo=cursor.getString(cursor.getColumnIndex("c_photo")).toString()
                         t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
-                        t_name=cursor.getString(cursor.getColumnIndex("t_name")).toString()
-                        t_need_part=cursor.getString(cursor.getColumnIndex("t_need_part")).toString()
-                        t_endDate=cursor.getString(cursor.getColumnIndex("t_end_date")).toString()
+                        t_name=cursor.getString(cursor.getColumnIndex("t_name"))
+                        t_need_part=cursor.getString(cursor.getColumnIndex("t_need_part"))
+                        t_endDate=cursor.getString(cursor.getColumnIndex("t_end_date"))
                         t_total_num=cursor.getInt(cursor.getColumnIndex("t_total_num"))
                         t_now_num=cursor.getInt(cursor.getColumnIndex("t_now_num"))
                         tc_num=cursor.getInt(cursor.getColumnIndex("c_num"))
 
-                        // team 테이블의 tc_num(공모전 번호)를 가져와 contest 테이블에서 해당 공모전 이름을 가져온다.
-                        cursor2=sqlitedb.rawQuery("SELECT c_name FROM contest WHERE c_num = '"+tc_num+"';", null)
+                        // team 테이블의 tc_num(공모전 번호)를 가져와 contest 테이블에서 해당 공모전 이름과 사진 주소를 가져온다.
+                        cursor2=sqlitedb.rawQuery("SELECT c_name, c_photo FROM contest WHERE c_num = '"+tc_num+"';", null)
                         if(cursor2.count!=0){
                             if(cursor2.moveToNext()){
-                                c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
+                                c_name=cursor2.getString(cursor2.getColumnIndex("c_name"))
+                                c_photo=cursor2.getString(cursor2.getColumnIndex("c_photo"))
                             }
                             cursor2.close()
                         }
-                        teamItem=TeamListViewItem(t_num, "photo", t_name, c_name, t_endDate, t_need_part, t_total_num, t_now_num)
+                        var photo_src=this.resources.getIdentifier(c_photo,"drawable", "com.example.guru2_contestapp")
+                        teamItem=TeamListViewItem(t_num, photo_src, t_name, c_name, t_endDate, t_need_part, t_total_num, t_now_num)
                         teamListArray.add(teamItem)
                     }
                     select_num=cursor.count

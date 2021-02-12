@@ -10,10 +10,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
@@ -24,6 +21,7 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    lateinit var contestImg: ImageView
     lateinit var teamName: TextView
     lateinit var contestName: TextView
     lateinit var section: TextView
@@ -53,6 +51,7 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_detail: String
     lateinit var str_host: String
     lateinit var c_name: String
+    lateinit var c_photo: String
     lateinit var c_section: String
     lateinit var str_cm_id: String
     lateinit var str_cm_date: String
@@ -72,6 +71,7 @@ class TeamDetailActivity : AppCompatActivity() {
         val sharedPreferences : SharedPreferences = this.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
+        contestImg=findViewById(R.id.WposterImageView)
         teamName=findViewById(R.id.Wtdetail_teamNameTextView)
         contestName=findViewById(R.id.Wtdetail_contestNameTextView)
         section=findViewById(R.id.Wtdetail_sectionTextView)
@@ -100,22 +100,22 @@ class TeamDetailActivity : AppCompatActivity() {
                 cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = '" + t_num + "';", null)
                 if(cursor.count!=null){
                     if (cursor.moveToNext()){
-                        //var photo
-                        str_teamName=cursor.getString(cursor.getColumnIndex("t_name")).toString()
+                        str_teamName=cursor.getString(cursor.getColumnIndex("t_name"))
                         str_contestNum=cursor.getInt(cursor.getColumnIndex("c_num")).toString()
-                        str_endDate=cursor.getString(cursor.getColumnIndex("t_end_date")).toString()
-                        str_needPart=cursor.getString(cursor.getColumnIndex("t_need_part")).toString()
+                        str_endDate=cursor.getString(cursor.getColumnIndex("t_end_date"))
+                        str_needPart=cursor.getString(cursor.getColumnIndex("t_need_part"))
                         str_nowNum=cursor.getInt(cursor.getColumnIndex("t_now_num")).toString()
                         str_totalNum=cursor.getInt(cursor.getColumnIndex("t_total_num")).toString()
-                        str_detail=cursor.getString(cursor.getColumnIndex("t_detail")).toString()
-                        str_host=cursor.getString(cursor.getColumnIndex("t_host")).toString()
+                        str_detail=cursor.getString(cursor.getColumnIndex("t_detail"))
+                        str_host=cursor.getString(cursor.getColumnIndex("t_host"))
 
                         //team 테이블이 가진 c_num 값으로 contest 테이블에서 헤당 공모전 정보를 가져옴
                         cursor2=sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = '" + str_contestNum + "';", null)
                         if(cursor2.count!=null){
                             if(cursor2.moveToNext()){
-                                c_name=cursor2.getString(cursor2.getColumnIndex("c_name")).toString()
-                                c_section=cursor2.getString(cursor2.getColumnIndex("c_section")).toString()
+                                c_photo=cursor2.getString(cursor2.getColumnIndex("c_photo"))
+                                c_name=cursor2.getString(cursor2.getColumnIndex("c_name"))
+                                c_section=cursor2.getString(cursor2.getColumnIndex("c_section"))
                             }
                             cursor2.close()
                         }
@@ -129,6 +129,8 @@ class TeamDetailActivity : AppCompatActivity() {
             dbManager.close()
         }
 
+        var photo_src=this.resources.getIdentifier(c_photo,"drawable", "com.example.guru2_contestapp")
+        contestImg.setImageResource(photo_src)
         teamName.text=str_teamName
         contestName.text=c_name
         section.text=c_section
