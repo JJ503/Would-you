@@ -199,7 +199,9 @@ class TeamDetailActivity : AppCompatActivity() {
                         var cursor2: Cursor
                         cursor2=sqlitedb.rawQuery("SELECT m_profile FROM member WHERE m_id = '"+ USER_ID +"' ;", null)
                         if(cursor2.count!=0){
-                            photo_src=cursor2.getInt(cursor.getColumnIndex("m_profile"))
+                            if(cursor2.moveToNext()){
+                                photo_src=cursor2.getInt(cursor2.getColumnIndex("m_profile"))
+                            }
                         }
 
                         Log.i("asfdasdf", photo_src.toString())
