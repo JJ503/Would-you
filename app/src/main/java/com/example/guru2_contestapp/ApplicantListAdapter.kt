@@ -37,6 +37,10 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
         cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
         cursor.moveToFirst()
         var state = cursor.getInt(cursor.getColumnIndex("state"))
+        if (itemList.get(position).t_endStatus == 0){
+            holder.btnAccept.visibility = GONE
+            holder.btnRefuse.visibility = GONE
+        }
 
         when(state){
             -1 -> {

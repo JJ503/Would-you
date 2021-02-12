@@ -68,17 +68,19 @@ class ApplicantListActivity : AppCompatActivity() {
                         m_cursor.moveToFirst()
 
                         var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
-                        listArray.add(ApplicantListItem(t_num, m_id, m_name))
+                        listArray.add(ApplicantListItem(t_num, t_endStatus, m_id, m_name))
                     }
                 } else {
+                    announStatusText.text = "신청자가 없습니다."
+                    announStatusText.visibility = VISIBLE
+                }
+
+                if (t_endStatus == 0){
+                    announStatusText.text = "모집이 종료되었습니다."
                     announStatusText.visibility = VISIBLE
                 }
 
             } else{  // 완료 전인 팀 : 위에 완료 버튼이 보여야 하고 신청자 모두 보임
-                if (t_endStatus == 1){
-
-                }
-
                 var tm_cursor : Cursor
                 tm_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
 
@@ -93,9 +95,15 @@ class ApplicantListActivity : AppCompatActivity() {
 
                         m_cursor.moveToFirst()
                         var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
-                        listArray.add(ApplicantListItem(t_num, m_id, m_name))
+                        listArray.add(ApplicantListItem(t_num, t_endStatus, m_id, m_name))
                     }
                 } else {
+                    announStatusText.text = "신청자가 없습니다."
+                    announStatusText.visibility = VISIBLE
+                }
+
+                if (t_endStatus == 0){
+                    announStatusText.text = "모집이 종료되었습니다."
                     announStatusText.visibility = VISIBLE
                 }
             }
@@ -141,7 +149,7 @@ class ApplicantListActivity : AppCompatActivity() {
                             m_cursor.moveToFirst()
 
                             var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
-                            listArray.add(ApplicantListItem(t_num, m_id, m_name))
+                            listArray.add(ApplicantListItem(t_num, t_endStatus, m_id, m_name))
                         }
                     } else {
                         announStatusText.visibility = VISIBLE
@@ -163,7 +171,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
                             m_cursor.moveToFirst()
                             var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
-                            listArray.add(ApplicantListItem(t_num, m_id, m_name))
+                            listArray.add(ApplicantListItem(t_num, t_endStatus, m_id, m_name))
                         }
                     } else {
                         announStatusText.visibility = VISIBLE
