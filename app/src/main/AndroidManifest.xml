@@ -41,6 +41,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SetProfileActivity"
+            android:label="프로필 변경"
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name=".SettingActivity"
             android:label="설정"

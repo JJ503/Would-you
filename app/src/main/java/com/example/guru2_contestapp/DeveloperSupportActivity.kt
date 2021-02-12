@@ -47,15 +47,13 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
                     if (cursor.getCount() == 1) {
 
-                        var USER_EMAIL :String = cursor.getString(cursor.getColumnIndex("m_email"))
+                        var USER_EMAIL = arrayOf<String>( cursor.getString(cursor.getColumnIndex("m_email")) )
                         var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
                         var mailTitle = "[ 개발자 문의 ]"
                         var mailBody = "* 문의자 ID : ${USER_ID}\n" +
                                 "* 문의 제목 : (문의 내용 요약)\n" +
                                 "* 문의 내용 : (문의 내용)\n"
 
-
-                        Log.d("/====email===/",USER_EMAIL)
 
                         val email = Intent(Intent.ACTION_SEND)
                         email.type = "plain/text"
@@ -101,7 +99,7 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
                     if (cursor.getCount() == 1) {
 
-                        var USER_EMAIL :String = cursor.getString(cursor.getColumnIndex("m_email"))
+                        var USER_EMAIL = arrayOf<String>(cursor.getString(cursor.getColumnIndex("m_email")))
                         var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
                         var mailTitle = "[ 버그 신고 ]"
                         var mailBody = "* 버그 신고자 ID : ${USER_ID}\n" +
@@ -111,11 +109,9 @@ class DeveloperSupportActivity : AppCompatActivity() {
                                 "* 버그 발생한 기종(환경) : (ex.갤럭시 노트 10)\n"
 
 
-                        Log.d("/====email===/",USER_EMAIL)
-
                         val email = Intent(Intent.ACTION_SEND)
                         email.type = "plain/text"
-                        email.putExtra(Intent.EXTRA_EMAIL, "contestApp@gmail.com") // 받는사람 이메일
+                        email.putExtra(Intent.EXTRA_EMAIL, USER_EMAIL) // 받는사람 이메일
                         email.putExtra(Intent.EXTRA_SUBJECT, mailTitle) //제목
                         email.putExtra(Intent.EXTRA_TEXT, mailBody) //내용
                         startActivity(email)
@@ -132,12 +128,6 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
 
         }
-
-
-
-
-
-
 
 
 

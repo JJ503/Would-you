@@ -61,7 +61,6 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
 
                 var bundle = Bundle()
                 bundle.putInt("profile", profileItemList.get(position).profile)
-                Log.d("/----번들-----/", profileItemList.get(position).profile.toString())
                 mFragment.arguments = bundle
 
 

@@ -9,10 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 
 class ResumeActivity : AppCompatActivity() {
@@ -29,6 +26,7 @@ class ResumeActivity : AppCompatActivity() {
     lateinit var nameTextView: TextView
     lateinit var ageTextView: TextView
     lateinit var jobTextView: TextView
+    lateinit var profileImg: ImageView
 
     lateinit var str_hope: String
     lateinit var str_self_intro: String
@@ -36,6 +34,7 @@ class ResumeActivity : AppCompatActivity() {
     lateinit var str_name: String
     lateinit var str_year: String
     lateinit var str_job: String
+    var pofile_src=0
     var t_num=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +55,8 @@ class ResumeActivity : AppCompatActivity() {
         ageTextView=findViewById(R.id.WageTextView)
         jobTextView=findViewById(R.id.WjobTextView)
         editBtn=findViewById(R.id.WprofileEditButton)
+        profileImg=findViewById(R.id.WimageView)
+
 
         // 상단 텍스트 뷰(공모전과 팀 이름) 내용을 이전 페이지에서 온 intent 값으로 설정
         val ic_name=intent.getStringExtra("intent_c_name")
@@ -74,12 +75,13 @@ class ResumeActivity : AppCompatActivity() {
                         t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
                     }
                 }
-                cursor=sqlitedb.rawQuery("SELECT m_name, m_year, m_job FROM member WHERE m_id = '"+USER_ID+"';", null)
+                cursor=sqlitedb.rawQuery("SELECT m_name, m_year, m_job, m_profile FROM member WHERE m_id = '"+USER_ID+"';", null)
                 if(cursor.count!=0){
                     if(cursor.moveToNext()){
                         str_name=cursor.getString(cursor.getColumnIndex("m_name"))
                         str_year=cursor.getString(cursor.getColumnIndex("m_year"))
                         str_job=cursor.getString(cursor.getColumnIndex("m_job"))
+                        pofile_src=cursor.getInt(cursor.getColumnIndex("m_profile"))
                     }
                     cursor.close()
                 }
@@ -103,6 +105,7 @@ class ResumeActivity : AppCompatActivity() {
         nameTextView.text=str_name
         ageTextView.text=age.toString()
         jobTextView.text=str_job
+        profileImg.setImageResource(pofile_src)
 
         // 프로필에서 수정 버튼 클릭 -> 수정 페이지로 이동
         editBtn.setOnClickListener {

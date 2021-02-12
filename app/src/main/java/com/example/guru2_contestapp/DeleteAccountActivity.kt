@@ -61,6 +61,7 @@ class DeleteAccountActivity : AppCompatActivity() {
         checkBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("회원 탈퇴")
+            builder.setIcon(R.drawable.logo_2_04)
 
 
             // 비밀번호 일치 여부 확인
@@ -95,6 +96,11 @@ class DeleteAccountActivity : AppCompatActivity() {
                             if (sqlitedb != null) {
                                 sqlitedb = dbManager.writableDatabase
                                 sqlitedb.execSQL("DELETE FROM member WHERE m_id = '" + USER_ID + "';" )
+                                sqlitedb.execSQL("DELETE FROM teamManage WHERE m_id = '" + USER_ID + "';" )
+                                sqlitedb.execSQL("DELETE FROM wishList WHERE m_id = '" + USER_ID + "';" )
+                                sqlitedb.execSQL("DELETE FROM comment WHERE m_id = '" + USER_ID + "';" )
+                                sqlitedb.execSQL("DELETE FROM resume WHERE m_id = '" + USER_ID + "';" )
+                                sqlitedb.execSQL("DELETE FROM team WHERE t_host = '" + USER_ID + "';" )
                             }
                         } catch (e: Exception) {
                             Log.e("Error", e.message.toString())
@@ -104,9 +110,10 @@ class DeleteAccountActivity : AppCompatActivity() {
                         }
 
                         //로그인 페이지로 이동
+                        // 이동 후, 뒤로가기를 막기 위해 FLAG 옵션으로 지금까지 액티비티 다 종료하고, 새 액티비티로 이동한다.
                         val intent = Intent (this, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent)
-
                     }
 
                 }
