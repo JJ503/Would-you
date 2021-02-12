@@ -92,9 +92,6 @@ class ChangePwFragment : Fragment() {
                             )
                             sqlitedb.close()
                             USER_PW = newPw1.getText().toString()
-                            Toast.makeText(getContext(), "'" + newPw1.getText().toString() + "'", Toast.LENGTH_LONG
-                            ).show()
-
 
                         } else {
                             //변경할 pw가 확인 pw와 다를때

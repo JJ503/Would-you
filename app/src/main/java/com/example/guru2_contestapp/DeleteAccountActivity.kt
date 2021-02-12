@@ -61,6 +61,7 @@ class DeleteAccountActivity : AppCompatActivity() {
         checkBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("회원 탈퇴")
+            builder.setIcon(R.drawable.logo_2_04)
 
 
             // 비밀번호 일치 여부 확인
