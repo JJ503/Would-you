@@ -45,12 +45,19 @@ class SignUpActivity : AppCompatActivity() {
 
         loadData()
 
+        var profile : Int ?= null
+        if (intent.hasExtra("profile")) {
+            var profile = intent.getIntExtra("profile", -1)
+            profileImage.setImageResource(profile)
+        } else {
+            // 기본 이미지
+        }
+
 
         profileChangeText.setOnClickListener {
-            //갤러리 or 사진 앱 실행하여 사진을 선택하도록..
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0)
+            val intent = Intent(this, SetProfileActivity::class.java)
+            intent.putExtra("from", "SingUp")
+            startActivity(intent)
         }
 
 
@@ -124,9 +131,9 @@ class SignUpActivity : AppCompatActivity() {
             } else if(overlap == false) {
                 Toast.makeText(this, "중복 확인 버튼을 눌러 주세요", Toast.LENGTH_SHORT).show()
             } else {
-                saveData(nameEditText.text.toString(),
-                    idEditText.text.toString(),
-                    passwordEditText.text.toString())
+                saveData(profile,
+                        nameEditText.text.toString(),
+                        idEditText.text.toString())
 
                 val intent = Intent(this, SignUp2Activity::class.java)
                 startActivity(intent)
@@ -134,23 +141,27 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveData(name: String, id: String, password: String){
+    private fun saveData(profile: Int?, name: String, id: String){
         var pref = this.getSharedPreferences("join", 0)
         var editor = pref.edit()
 
+        if (profile != null) {
+            editor.putInt("JOIN_PROFILE", profile).apply()
+        }
         editor.putString("JOIN_NAME", name).apply()
         editor.putString("JOIN_ID", id).apply()
-        editor.putString("JOIN_PASSWORD", password).apply()
         editor.commit()
     }
 
     private fun loadData(){
         var pref = this.getSharedPreferences("join", 0)
+
+        var profile = pref.getInt("JOIN_PROFILE", -1)
         var name = pref.getString("JOIN_NAME", "")
         var id = pref.getString("JOIN_ID", "")
-        var password = pref.getString("JOIN_PASSWORD", "")
 
-        if (name != "" && id != "" && password != ""){
+        if (profile != -1 && name != "" && id != ""){
+            profileImage.setImageResource(profile)
             nameEditText.setText(name.toString())
             idEditText.setText(id.toString())
         }

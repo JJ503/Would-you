@@ -285,7 +285,7 @@
                                 android:minLines="4"
                                 android:padding="10dp"
                                 android:text="안녕하세요 어쩌구 저쩌구"
-                                android:textColor="@color/black_little"
+                                android:textColor="@color/black"
                                 android:textSize="18sp" />
                         </LinearLayout>
 
@@ -314,7 +314,7 @@
 
                             <TextView
                                 android:id="@+id/JinfoEtc"
-                                android:layout_width="match_parent"
+                                android:layout_width="300dp"
                                 android:layout_height="wrap_content"
 
                                 android:layout_marginTop="8dp"
@@ -323,7 +323,7 @@
                                 android:background="@drawable/border_line"
                                 android:padding="10dp"
                                 android:text="날 뽑아주쇼!!"
-                                android:textColor="@color/black_little"
+                                android:textColor="@color/black"
                                 android:textSize="18sp"
                                 tools:minLines="2" />
                         </LinearLayout>

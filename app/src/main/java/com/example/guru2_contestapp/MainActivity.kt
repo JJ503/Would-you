@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +24,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // actionbar 설정해주기
+        //getSupportActionBar()?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFFFF")))
+        getSupportActionBar()?.setTitle("로고와 로그인")
+        getSupportActionBar()?.setIcon(R.drawable.logo_2_04)
+        getSupportActionBar()?.setDisplayUseLogoEnabled(true)
+        getSupportActionBar()?.setDisplayShowHomeEnabled(true)
 
         idEditText = findViewById(R.id.JidEditText)
         pwEditText = findViewById(R.id.JpwEditText)

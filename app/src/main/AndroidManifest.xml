@@ -53,6 +53,10 @@
             android:label="팀 신청자 목록"
             android:parentActivityName=".NavigationActivity" />
         <activity
+            android:name=".SearchIdPwActivity"
+            android:label="회원가입"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".SignUp3Activity"
             android:label="회원가입"
             android:parentActivityName=".SignUp2Activity" />

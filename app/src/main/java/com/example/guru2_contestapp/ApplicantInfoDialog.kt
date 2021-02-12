@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
@@ -36,7 +37,8 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
     fun infoDlg() {
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)      // 타이틀바 제거
         dlg.setContentView(R.layout.applicant_info_dialog)     // 다이얼로그에 사용할 xml 파일을 불러옴
-        dlg.setCancelable(true)                               // 다이얼로그의 바깥 화면을 눌렀을 때 다이얼로그가 닫히지 않도록 함
+        dlg.setCancelable(true)                                // 다이얼로그의 바깥 화면을 눌렀을 때 다이얼로그가 닫히지 않도록 함
+
         btnClose = dlg.findViewById(R.id.JbtnClose)
         btnClose.setOnClickListener {
             dlg.dismiss()
@@ -83,22 +85,22 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
 
                 if (tm_cursor.getInt(tm_cursor.getColumnIndex("state")) == 1 || tm_cursor.getInt(tm_cursor.getColumnIndex("state")) == 5){
                     infoTel.text = m_cursor.getString(m_cursor.getColumnIndex("m_tel")).toString()
-                    infoTel.setTextColor(R.color.black_little)
+                    infoTel.setTextColor(Color.parseColor("#302A2A"))
 
                     infoEmail.text = m_cursor.getString(m_cursor.getColumnIndex("m_email")).toString()
-                    infoEmail.setTextColor(R.color.black_little)
+                    infoEmail.setTextColor(Color.parseColor("#302A2A"))
 
                     infoArea.text = m_cursor.getString(m_cursor.getColumnIndex("m_area")).toString()
-                    infoArea.setTextColor(R.color.black_little)
+                    infoArea.setTextColor(Color.parseColor("#302A2A"))
                 } else {
                     infoTel.text = "수락 후 확인 가능합니다"
-                    infoTel.setTextColor(R.color.impend)
+                    infoTel.setTextColor(Color.parseColor("#ff5151"))
 
                     infoEmail.text = "수락 후 확인 가능합니다"
-                    infoEmail.setTextColor(R.color.impend)
+                    infoEmail.setTextColor(Color.parseColor("#ff5151"))
 
                     infoArea.text = "수락 후 확인 가능합니다"
-                    infoArea.setTextColor(R.color.impend)
+                    infoArea.setTextColor(Color.parseColor("#ff5151"))
                 }
 
             } else {
@@ -110,6 +112,7 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
             sqlitedb.close()
             dbManager.close()
         }
+
         dlg.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT)
         dlg.show()
     }

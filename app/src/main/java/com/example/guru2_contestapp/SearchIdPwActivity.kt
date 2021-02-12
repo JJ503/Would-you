@@ -34,7 +34,6 @@ class SearchIdPwActivity : AppCompatActivity() {
     private inner class ViewPagerAdapter(fa: FragmentActivity): FragmentStateAdapter(fa){
         override fun createFragment(position: Int): Fragment {
             return when(position){
-                //0 -> createTeamFragment()
                 0 -> SearchIdFragment()
                 1 -> SearchPwFragment()
                 else -> ErrorFragment()

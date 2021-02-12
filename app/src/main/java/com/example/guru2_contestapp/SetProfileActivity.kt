@@ -65,8 +65,15 @@ class SetProfileActivity : AppCompatActivity() {
         var rv_profile: RecyclerView = this.findViewById<RecyclerView>(R.id.rv_profile)
         rv_profile.layoutManager = GridLayoutManager(this, 3)
         rv_profile.setHasFixedSize(true)
-        rv_profile.adapter = ProfileListAdapter(profileItemList)
 
+        if (intent.hasExtra("from")) {
+            if (intent.getStringExtra("from") == "SingUp"){
+                rv_profile.adapter = SignUpProfileAdapter(profileItemList)
+            }
+
+        } else {
+            rv_profile.adapter = ProfileListAdapter(profileItemList)
+        }
 
     }
 

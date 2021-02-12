@@ -1,6 +1,7 @@
 package com.example.guru2_contestapp
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -59,6 +60,10 @@ class HomeFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         var view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        //val intent = Intent(this, MainActivity::class.java)
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        //startActivity(intent)
 
         var context: Context = requireContext()
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
