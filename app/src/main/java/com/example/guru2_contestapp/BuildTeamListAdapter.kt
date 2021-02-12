@@ -32,7 +32,6 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
 
 
 
-
     // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: BuildTeamListAdapter.CustomViewHolder, position: Int) {
 

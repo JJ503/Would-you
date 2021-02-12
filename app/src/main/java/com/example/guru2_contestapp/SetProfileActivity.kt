@@ -37,8 +37,10 @@ class SetProfileActivity : AppCompatActivity() {
 
         try {
             // 여기 for문으로 해서 사진 넣을 예정
+            profileItemList.add(ProfileItem(R.drawable.profile1_background))
             profileItemList.add(ProfileItem(R.drawable.ic_baseline_account_circle_24))
             profileItemList.add(ProfileItem(R.drawable.ic_baseline_add_photo_alternate_24))
+            profileItemList.add(ProfileItem(R.drawable.profile2))
         }catch(e: Exception){
             Log.e("Error", e.message.toString())
         } finally{
