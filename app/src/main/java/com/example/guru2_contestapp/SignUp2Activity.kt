@@ -21,6 +21,7 @@ class SignUp2Activity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
+    lateinit var signUp2 : ConstraintLayout
     lateinit var phoneEditText : EditText
     lateinit var overlapButton2 : Button
     lateinit var birthEditText : EditText
@@ -33,9 +34,12 @@ class SignUp2Activity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up2)
 
         supportActionBar?.elevation = 3f
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_signUp)+"</font>"))
 
+        signUp2 = findViewById(R.id.JsingUp2)
         phoneEditText = findViewById<EditText>(R.id.JphoneEditTextText)
         overlapButton2 = findViewById<Button>(R.id.JoverlapButton2)
         birthEditText = findViewById<EditText>(R.id.JbirthEditText)
@@ -43,6 +47,9 @@ class SignUp2Activity : AppCompatActivity() {
         emailSpinner = findViewById<Spinner>(R.id.JemailSpinner)
         nextButton2 = findViewById<Button>(R.id.JnextButton2)
 
+        signUp2.setOnClickListener {
+            CloseKeyboard()
+        }
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
@@ -169,6 +176,17 @@ class SignUp2Activity : AppCompatActivity() {
             phoneEditText.setText(phone.toString())
             birthEditText.setText(birth.toString())
             emailEditText.setText(email.toString())
+        }
+    }
+
+    fun CloseKeyboard()
+    {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }

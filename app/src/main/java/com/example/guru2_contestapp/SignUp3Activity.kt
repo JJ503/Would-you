@@ -21,6 +21,7 @@ class SignUp3Activity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
+    lateinit var signUp3 : ConstraintLayout
     lateinit var jobSpinner: Spinner
     lateinit var univerNameEditText: EditText
     lateinit var areaSpinner: Spinner
@@ -35,9 +36,12 @@ class SignUp3Activity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up3)
 
         supportActionBar?.elevation = 3f
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_signUp)+"</font>"))
 
+        signUp3 = findViewById(R.id.JsignUp3)
         jobSpinner = findViewById<Spinner>(R.id.JjobSpinner)
         univerNameEditText = findViewById<EditText>(R.id.JuniverNameEditText)
         areaSpinner = findViewById<Spinner>(R.id.JareaSpinner)
@@ -47,6 +51,9 @@ class SignUp3Activity : AppCompatActivity() {
         checkBox2 = findViewById<CheckBox>(R.id.JcheckBox2)
         infoPolicy = findViewById<TextView>(R.id.JinfoPolicy)
 
+        signUp3.setOnClickListener{
+            CloseKeyboard()
+        }
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
@@ -71,7 +78,7 @@ class SignUp3Activity : AppCompatActivity() {
 
         infoPolicy.setOnClickListener{
             var builder = AlertDialog.Builder(this)
-            builder.setTitle("아이디 찾기")
+            builder.setTitle("개인정보 처리 방침")
             builder.setIcon(R.drawable.logo_2_04)
             var message = "1. 개인 정보 처리 방침\n" +
                     "개인 정보 처리 방침은 회사가 서비스를 제공함에 있어, 개인 정보를 어떻게 수집/이용/보관/파기하는지에 대한 정보를 담은 방침을 의미합니다. 개인 정보 처리 방침은 개인정보보호법, 정보통신망 이용 촉진 및 정보보호 등에 관한 법률 등 국내 개인 정보 보호 법령을 모두 준수하고 있습니다. 이 약관의 정의는 서비스 이용약관을 따릅니다.\n" +
@@ -137,6 +144,7 @@ class SignUp3Activity : AppCompatActivity() {
                         sqlitedb.execSQL("INSERT INTO member VALUES ('${name}', '${id}', '${pw}', '${profile}', '${phone}', '${year}', '${month}', '${date}', '${user_email}', '${job}', '${univer}', '${area}', '${interest}');")
                         Toast.makeText(this, "회원가입에 성공했습니다", Toast.LENGTH_SHORT).show()
 
+                        editor.remove("JOIN_PROFILE")
                         editor.remove("JOIN_NAME")
                         editor.remove("JOIN_ID")
                         editor.remove("JOIN_PASSWORD")
@@ -154,6 +162,17 @@ class SignUp3Activity : AppCompatActivity() {
                     sqlitedb.close()
                 }
             }
+        }
+    }
+
+    fun CloseKeyboard()
+    {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }

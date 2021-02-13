@@ -143,6 +143,7 @@ class HomeFragment : Fragment() {
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
                                     myTeamList.add(WishItem(t_num, "팀장입니다", c_photo, t_name))
+                                    Log.d("==== my team ===", t_num.toString())
                                 }
                             }
                         }
@@ -183,6 +184,7 @@ class HomeFragment : Fragment() {
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
                                     myTeamList.add(WishItem(t_num, state, c_photo, t_name))
+                                    Log.d("==== my team ===", t_num.toString())
                                 }
                             }
                         }

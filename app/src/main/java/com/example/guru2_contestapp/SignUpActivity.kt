@@ -22,6 +22,7 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
+    lateinit var signUp1 : ConstraintLayout
     lateinit var profileImage : ImageView
     lateinit var profileChangeText : TextView
     lateinit var nameEditText : EditText
@@ -42,6 +43,7 @@ class SignUpActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_signUp)+"</font>"))
 
+        signUp1 = findViewById(R.id.JsingUp1)
         profileImage = findViewById(R.id.JprofileImage)
         profileChangeText = findViewById(R.id.JprofileChangeTextView)
         nameEditText = findViewById(R.id.JnameEditText)
@@ -51,6 +53,10 @@ class SignUpActivity : AppCompatActivity() {
         passCheckEditText = findViewById(R.id.JpassCheckEditText)
 
         nextButton = findViewById<Button>(R.id.JnextButton)
+
+        signUp1.setOnClickListener {
+            CloseKeyboard()
+        }
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
@@ -169,7 +175,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun loadData(){
         var pref = this.getSharedPreferences("join", 0)
 
-        var profile = pref.getString("JOIN_PROFILE", "profile0")
+        var profile = pref.getString("JOIN_PROFILE", "")
         var name = pref.getString("JOIN_NAME", "")
         var id = pref.getString("JOIN_ID", "")
 
@@ -178,6 +184,17 @@ class SignUpActivity : AppCompatActivity() {
             profileImage.setImageResource(profile_src)
             nameEditText.setText(name.toString())
             idEditText.setText(id.toString())
+        }
+    }
+
+    fun CloseKeyboard()
+    {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }

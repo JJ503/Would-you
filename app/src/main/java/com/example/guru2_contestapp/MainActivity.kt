@@ -1,6 +1,7 @@
 package com.example.guru2_contestapp
 
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
@@ -10,13 +11,16 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
 
+    lateinit var main : ConstraintLayout
     lateinit var idEditText : EditText
     lateinit var pwEditText : EditText
     lateinit var signUpText : TextView
@@ -31,14 +35,18 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.app_title)+"</font>"))
 
+        main = findViewById(R.id.Jmain)
         idEditText = findViewById(R.id.JidEditText)
         pwEditText = findViewById(R.id.JpwEditText)
         searchText = findViewById<TextView>(R.id.JsearchText)
         signUpText = findViewById<TextView>(R.id.JsignUpText)
         loginButton = findViewById<Button>(R.id.JloginButton)
 
-        dbManager = DBManager(this, "ContestAppDB", null, 1)
+        main.setOnClickListener {
+            CloseKeyboard()
+        }
 
+        dbManager = DBManager(this, "ContestAppDB", null, 1)
 
         signUpText.setOnClickListener {
             var pref = this.getSharedPreferences("join", 0)
@@ -102,5 +110,16 @@ class MainActivity : AppCompatActivity() {
         var editor = pref.edit()
 
         editor.putString("KEY_USERID", idEditText.text.toString()).apply()
+    }
+
+    fun CloseKeyboard()
+    {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }
