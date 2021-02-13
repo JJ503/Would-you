@@ -46,8 +46,6 @@ class SignUp3Activity : AppCompatActivity() {
         checkBox = findViewById<CheckBox>(R.id.JcheckBox)
         checkBox2 = findViewById<CheckBox>(R.id.JcheckBox2)
         infoPolicy = findViewById<TextView>(R.id.JinfoPolicy)
-        var check1 = false
-        var check2 = false
 
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
@@ -69,14 +67,6 @@ class SignUp3Activity : AppCompatActivity() {
                 univerNameEditText.visibility = GONE
             }
 
-        }
-
-        checkBox.setOnClickListener{
-            check1 = true
-        }
-
-        checkBox.setOnClickListener{
-            check2 = true
         }
 
         infoPolicy.setOnClickListener{
@@ -115,9 +105,9 @@ class SignUp3Activity : AppCompatActivity() {
                 Toast.makeText(this, "관심사를 선택해 주세요.", Toast.LENGTH_SHORT).show()
             } else if (jobSpinner.selectedItem.toString() == "대학생" && univerNameEditText.text.toString().trim() == "") {
                 Toast.makeText(this, "대학교를 입력해주세요.", Toast.LENGTH_SHORT).show()
-            } else if (check1 == false){
+            } else if (!checkBox.isChecked()){
                 Toast.makeText(this, "개인정보 보호 동의에 체크해주세요.", Toast.LENGTH_SHORT).show()
-            } else if (check2 == false){
+            } else if (!checkBox2.isChecked()){
                 Toast.makeText(this, "앱/이메일 수신 동의에 체크해주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 var pref = this.getSharedPreferences("join", 0)
