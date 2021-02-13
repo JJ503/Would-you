@@ -26,6 +26,8 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
         // 상단바  스타일 지정
         supportActionBar?.elevation = 3f
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_developerSupport)+"</font>")
 
