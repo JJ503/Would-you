@@ -173,23 +173,20 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
                 cursor.moveToFirst()
-                Log.d("=== cursor ===", itemList.get(position).t_num.toString())
 
                 if (cursor.getCount() == 1){
                     if (cursor.getInt(cursor.getColumnIndex("state")) == 1){
                         var t_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${itemList.get(position).t_num};", null)
                         t_cursor.moveToFirst()
-                        Log.d("=== tm_cursor ===", itemList.get(position).t_num.toString())
+
                         if (t_cursor.getCount() == 1) {
                             var now_num = t_cursor.getInt(t_cursor.getColumnIndex("t_now_num"))
                             sqlitedb.execSQL("UPDATE team SET t_now_num = ${now_num - 1} WHERE t_num = ${itemList.get(position).t_num};")
-                            Log.d("=== cursor ===", "success")
                         } else {
                             Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
 
-                    Log.d("=== cursor ===", "여기 왔니")
                     sqlitedb.execSQL("UPDATE teamManage SET state = 0 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
                     holder.btnAccept.visibility = VISIBLE
                     holder.btnRefuse.visibility = VISIBLE
@@ -198,7 +195,6 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
                     holder.announText.visibility = GONE
                     holder.btnCancel.visibility = GONE
                     holder.btnInfo2.visibility = GONE
-                    Log.d("=== cursor ===", "진짜 성공")
                 } else {
                     Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
                 }

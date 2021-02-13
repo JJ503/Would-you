@@ -169,7 +169,7 @@ class ApplicantListActivity : AppCompatActivity() {
             if (cursor.getCount() == 1){
                 sqlitedb.execSQL("UPDATE team SET t_complete = 1 WHERE t_num = ${t_num};")
 
-                sqlitedb.execSQL("UPDATE teamManage SET state = 5 WHERE t_num = ${t_num} AND state = 1;")
+                sqlitedb.execSQL("UPDATE teamManage SET state = 5 WHERE t_num = ${t_num} AND state = 1 OR state = 2;")
 
                 sqlitedb.execSQL("UPDATE teamManage SET state = -1 WHERE t_num = ${t_num} AND state = 0;")
 

@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 
+// 회원가입 세 번째 페이지
 class SignUp3Activity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
@@ -35,6 +36,7 @@ class SignUp3Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up3)
 
+        // 액션바 설정
         supportActionBar?.elevation = 3f
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
@@ -51,10 +53,12 @@ class SignUp3Activity : AppCompatActivity() {
         checkBox2 = findViewById<CheckBox>(R.id.JcheckBox2)
         infoPolicy = findViewById<TextView>(R.id.JinfoPolicy)
 
+        // editText 외 다른 부분을 터치하면 키보드 자동 숨김
         signUp3.setOnClickListener{
             CloseKeyboard()
         }
 
+        // DB 연결
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
         jobSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {

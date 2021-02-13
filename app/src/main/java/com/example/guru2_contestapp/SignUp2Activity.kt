@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
+// 회원가입 두 번째 페이지
 class SignUp2Activity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
@@ -33,6 +34,7 @@ class SignUp2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up2)
 
+        // 액션바 설정
         supportActionBar?.elevation = 3f
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
@@ -47,14 +49,17 @@ class SignUp2Activity : AppCompatActivity() {
         emailSpinner = findViewById<Spinner>(R.id.JemailSpinner)
         nextButton2 = findViewById<Button>(R.id.JnextButton2)
 
+        // editText 외 다른 부분을 터치하면 키보드 자동 숨김
         signUp2.setOnClickListener {
             CloseKeyboard()
         }
 
+        // DB 연결
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
-        loadData()
+        loadData()  // 저장된 데이터가 있다면 가져오기
 
+        // 틀려서 텍스트 색이 빨간색이 되었을 때 다시 입력을 시작하면 검정으로 바뀜
         phoneEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
@@ -69,6 +74,7 @@ class SignUp2Activity : AppCompatActivity() {
             }
         })
 
+        // 전화번호 중복 체크
         var overlap2 = false
         overlapButton2.setOnClickListener{
             sqlitedb = dbManager.readableDatabase
@@ -100,6 +106,7 @@ class SignUp2Activity : AppCompatActivity() {
             }
         }
 
+        // 틀려서 텍스트 색이 빨간색이 되었을 때 다시 입력을 시작하면 검정으로 바뀜
         birthEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
@@ -114,6 +121,8 @@ class SignUp2Activity : AppCompatActivity() {
             }
         })
 
+        // 다음 버튼을 누르면 위에서 입력한 정보들이 모두 저장되어 다음 페이지로 넘어감
+        // 만약 하나라도 입력하지 않은 정보가 있다면 넘어갈 수 없음
         nextButton2.setOnClickListener {
             if (phoneEditText.text.toString() == ""){
                 Toast.makeText(this, "전화번호를 입력해 주세요", Toast.LENGTH_SHORT).show()
@@ -138,6 +147,7 @@ class SignUp2Activity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
 
         phoneEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
