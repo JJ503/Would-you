@@ -41,6 +41,8 @@ class ApplicantListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_applicant_list)
 
         supportActionBar?.elevation = 3f
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_applicantList)+"</font>"))
 
@@ -235,8 +237,10 @@ class ApplicantListActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
             }
+        } else if(item.itemId==android.R.id.home){
+            finish()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

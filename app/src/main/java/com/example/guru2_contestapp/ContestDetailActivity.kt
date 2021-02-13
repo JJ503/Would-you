@@ -16,6 +16,8 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,6 +39,7 @@ class ContestDetailActivity : AppCompatActivity() {
     lateinit var wishOnBtn: ImageButton
     lateinit var wishOffBtn: ImageButton
     lateinit var contestImg: ImageView
+    lateinit var contestRecyclerList: RecyclerView
 
     lateinit var str_photo: String
     lateinit var str_name: String
@@ -72,6 +75,7 @@ class ContestDetailActivity : AppCompatActivity() {
         wishOnBtn=findViewById(R.id.wishOnButton)
         wishOffBtn=findViewById(R.id.wishOffButton)
         contestImg=findViewById(R.id.WposterImageView)
+        contestRecyclerList=findViewById(R.id.WcontestRecyclerList)
 
         // 팀 목록에서 팀을 선택하면 그 팀이 참가하는 공모전 번호가 intent로 넘어온다.
         // 그 값으로 DB에서 공모전 이름, 주최기관 등 자세한 정보를 가져온다.
@@ -241,6 +245,9 @@ class ContestDetailActivity : AppCompatActivity() {
         } finally {
             sqlitedb.close()
         }
+
+        contestRecyclerList.setHasFixedSize(true)
+        contestRecyclerList.adapter = WishListAdapter(recTeamList)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

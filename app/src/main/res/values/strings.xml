@@ -5,6 +5,7 @@
 
     <string name="app_title">Would You</string>
     <string name="action_signUp">회원가입</string>
+    <string name="action_search">ID / PW 찾기</string>
     <string name="action_applicantList">신청자 목록</string>
     <string name="action_applicantPager">신청자 정보</string>
 
