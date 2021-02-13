@@ -16,6 +16,7 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class ResumeActivity : AppCompatActivity() {
 
@@ -32,6 +33,7 @@ class ResumeActivity : AppCompatActivity() {
     lateinit var ageTextView: TextView
     lateinit var jobTextView: TextView
     lateinit var profileImg: ImageView
+    lateinit var layout: ConstraintLayout
 
     lateinit var str_hope: String
     lateinit var str_self_intro: String
@@ -50,6 +52,11 @@ class ResumeActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resume)
+
+        // 바탕 클릭하면 키보드 숨김
+        layout=findViewById(R.id.Wlayout)
+        layout.setOnClickListener { CloseKeyboard() }
+
         // 액션바 설정
         supportActionBar?.elevation = 3f
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -133,7 +140,7 @@ class ResumeActivity : AppCompatActivity() {
         // 빈칸 없는 경우 입력한 정보를 DB에 값을 입력하고 액티비티 종료
         submitBtn.setOnClickListener {
             val builder= AlertDialog.Builder(this)
-            this.CloseKeyboard()
+            CloseKeyboard()
             if(hopeET.text.toString()==""){
                 builder.setMessage("\t\t희망 분야를 입력해 주세요.")
                 builder.setTitle(" ")

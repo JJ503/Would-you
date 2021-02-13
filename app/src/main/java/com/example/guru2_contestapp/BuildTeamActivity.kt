@@ -15,6 +15,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,6 +24,7 @@ class BuildTeamActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
+    lateinit var layout: ConstraintLayout
     lateinit var contestSpinner: Spinner
     lateinit var calenderView: CalendarView
     lateinit var yearTextView: TextView
@@ -54,6 +56,9 @@ class BuildTeamActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_buildTeam)+"</font>")
+
+        layout=findViewById(R.id.Wlayout)
+        layout.setOnClickListener { CloseKeyboard() }
 
         // 로그인한 계정 아이디
         val sharedPreferences : SharedPreferences = this.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
@@ -113,14 +118,17 @@ class BuildTeamActivity : AppCompatActivity() {
         //CalendarView에서 날짜를 선택하면 TextView가 해당 날짜로 변경
         yearTextView.setOnClickListener {
             calenderView.visibility= View.VISIBLE
+            CloseKeyboard()
         }
 
         monthTextView.setOnClickListener {
             calenderView.visibility= View.VISIBLE
+            CloseKeyboard()
         }
 
         dateTextView.setOnClickListener {
             calenderView.visibility= View.VISIBLE
+            CloseKeyboard()
         }
 
         calenderView.setOnDateChangeListener { view, year, month, dayOfMonth ->
@@ -268,8 +276,6 @@ class BuildTeamActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 
     fun CloseKeyboard()
     {
