@@ -36,6 +36,7 @@ class BuildTeamListFragment : Fragment() {
         var t_now_num: Int = -1
         var t_total_num: Int = -1
         var c_num: Int = -1
+        var c_photo : Int = -1
 
         lateinit var buildTeamList: ArrayList<TeamItem>
         buildTeamList = ArrayList()
@@ -72,6 +73,7 @@ class BuildTeamListFragment : Fragment() {
 
                             if (cursor3.moveToNext())   //공모전 이름 가져오기
                             {
+
                                 c_name = cursor3.getString(cursor3.getColumnIndex("c_name"))
                             }
 
