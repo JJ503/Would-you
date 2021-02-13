@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -53,37 +54,80 @@ class ApplicantPagerActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
         val t_num = sharedPreferences.getInt("t_num", -1)
-        val t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
+        var t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
 
         var cursor : Cursor? = null
         try {
-            cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
+            var t_cursor : Cursor
+            t_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num}", null)
+            t_cursor.moveToFirst()
+            val t_complete :Int = t_cursor.getInt(t_cursor.getColumnIndex("t_complete"))  // 완료 전인 팀은 0, 완료된 팀은 1
 
-            while (cursor.moveToNext()){
-                var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
+            // 완료된 팀 : 팀원만 보임
+            if (t_complete == 1){
+                var tm_cursor : Cursor
+                tm_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state = 5", null)
 
-                var m_cursor : Cursor
-                m_cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${m_id}'", null)
-                m_cursor.moveToFirst()
+                if (tm_cursor.getCount() > 0) {
+                    t_endStatus = 5
 
-                var r_cursor : Cursor
-                r_cursor = sqlitedb.rawQuery("SELECT * FROM resume WHERE m_id = '${m_id}' AND t_num = ${t_num}", null)
-                r_cursor.moveToFirst()
+                    var m_id = tm_cursor.getString(tm_cursor.getColumnIndex("m_id")).toString()
 
-                var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
-                var m_year = m_cursor.getString(m_cursor.getColumnIndex("m_year")).toString()
-                var m_age = calcAge(m_year)
+                    var m_cursor: Cursor
+                    m_cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${m_id}'", null)
+                    m_cursor.moveToFirst()
 
-                var r_hope = r_cursor.getString(r_cursor.getColumnIndex("r_hope")).toString()
-                var m_tel = m_cursor.getString(m_cursor.getColumnIndex("m_tel")).toString()
-                var m_email = m_cursor.getString(m_cursor.getColumnIndex("m_email")).toString()
-                var m_job = m_cursor.getString(m_cursor.getColumnIndex("m_job")).toString()
-                var m_area = m_cursor.getString(m_cursor.getColumnIndex("m_area")).toString()
-                var m_interest = m_cursor.getString(m_cursor.getColumnIndex("m_interest")).toString()
-                var r_self_intro = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
-                var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
+                    var r_cursor: Cursor
+                    r_cursor = sqlitedb.rawQuery("SELECT * FROM resume WHERE m_id = '${m_id}' AND t_num = ${t_num}", null)
+                    r_cursor.moveToFirst()
 
-                pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
+                    var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
+                    var m_year = m_cursor.getString(m_cursor.getColumnIndex("m_year")).toString()
+                    var m_age = calcAge(m_year)
+
+                    var r_hope = r_cursor.getString(r_cursor.getColumnIndex("r_hope")).toString()
+                    var m_tel = m_cursor.getString(m_cursor.getColumnIndex("m_tel")).toString()
+                    var m_email = m_cursor.getString(m_cursor.getColumnIndex("m_email")).toString()
+                    var m_job = m_cursor.getString(m_cursor.getColumnIndex("m_job")).toString()
+                    var m_area = m_cursor.getString(m_cursor.getColumnIndex("m_area")).toString()
+                    var m_interest = m_cursor.getString(m_cursor.getColumnIndex("m_interest")).toString()
+                    var r_self_intro = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
+                    var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
+
+                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
+
+                } else {
+                    Toast.makeText(this, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
+
+                while (cursor.moveToNext()) {
+                    var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
+
+                    var m_cursor: Cursor
+                    m_cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${m_id}'", null)
+                    m_cursor.moveToFirst()
+
+                    var r_cursor: Cursor
+                    r_cursor = sqlitedb.rawQuery("SELECT * FROM resume WHERE m_id = '${m_id}' AND t_num = ${t_num}", null)
+                    r_cursor.moveToFirst()
+
+                    var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
+                    var m_year = m_cursor.getString(m_cursor.getColumnIndex("m_year")).toString()
+                    var m_age = calcAge(m_year)
+
+                    var r_hope = r_cursor.getString(r_cursor.getColumnIndex("r_hope")).toString()
+                    var m_tel = m_cursor.getString(m_cursor.getColumnIndex("m_tel")).toString()
+                    var m_email = m_cursor.getString(m_cursor.getColumnIndex("m_email")).toString()
+                    var m_job = m_cursor.getString(m_cursor.getColumnIndex("m_job")).toString()
+                    var m_area = m_cursor.getString(m_cursor.getColumnIndex("m_area")).toString()
+                    var m_interest = m_cursor.getString(m_cursor.getColumnIndex("m_interest")).toString()
+                    var r_self_intro = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
+                    var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
+
+                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
+                }
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())

@@ -55,6 +55,12 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
                 holder.btnRefuse.visibility = GONE
             }
 
+            5 -> {
+                holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
+                holder.btnAccept.visibility = GONE
+                holder.btnRefuse.visibility = GONE
+            }
+
             else -> {
 
             }

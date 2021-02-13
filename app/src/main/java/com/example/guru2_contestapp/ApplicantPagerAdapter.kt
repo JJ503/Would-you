@@ -67,10 +67,12 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
             5 -> {
                 holder.announText.text = "팀 모집이 완료되었습니다."
                 holder.announText.visibility = VISIBLE
+                holder.btnInfo.visibility = VISIBLE
 
                 holder.btnCancel.visibility = GONE
                 holder.btnAccept.visibility = GONE
                 holder.btnRefuse.visibility = GONE
+                holder.btnInfo2.visibility = GONE
             }
 
             else -> {

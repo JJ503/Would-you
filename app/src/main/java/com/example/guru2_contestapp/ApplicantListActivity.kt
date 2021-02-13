@@ -48,7 +48,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
         val t_num = sharedPreferences.getInt("t_num", -1)
-        val t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
+        var t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
 
         listArray = ArrayList()
 
@@ -71,7 +71,10 @@ class ApplicantListActivity : AppCompatActivity() {
                 tm_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state = 5", null)
 
                 if (tm_cursor.getCount() > 0){
-                    announStatusText.visibility = GONE
+                    t_endStatus = 5
+
+                    announStatusText.text = "모집이 종료되었습니다."
+                    announStatusText.visibility = VISIBLE
 
                     while (tm_cursor.moveToNext()){
                         var m_id = tm_cursor.getString(tm_cursor.getColumnIndex("m_id")).toString()
@@ -136,70 +139,6 @@ class ApplicantListActivity : AppCompatActivity() {
         // 당겨서 새로고침
         swipeRefresh=findViewById(R.id.JswipeRefresh)
         swipeRefresh.setOnRefreshListener {
-            /*listArray = ArrayList()
-            dbManager = DBManager(this, "ContestAppDB", null, 1)
-            sqlitedb = dbManager.writableDatabase
-            var cursor: Cursor
-            try {
-                var t_cursor : Cursor
-                t_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num}", null)
-                t_cursor.moveToFirst()
-                val t_complete :Int = t_cursor.getInt(t_cursor.getColumnIndex("t_complete"))  // 완료 전인 팀은 0, 완료된 팀은 1
-
-                // 완료된 팀 : 팀원만 보임
-                if (t_complete == 1){
-                    var tm_cursor : Cursor
-                    tm_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state = 5", null)
-
-                    if (tm_cursor.getCount() > 0){
-                        announStatusText.visibility = GONE
-
-                        while (tm_cursor.moveToNext()){
-                            var m_id = tm_cursor.getString(tm_cursor.getColumnIndex("m_id")).toString()
-
-                            var m_cursor : Cursor
-                            m_cursor = sqlitedb.rawQuery("SELECT m_name FROM member WHERE m_id = '${m_id}'", null)
-                            m_cursor.moveToFirst()
-
-                            var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
-                            listArray.add(ApplicantListItem(t_num, t_endStatus, m_id, m_name))
-                        }
-                    } else {
-                        announStatusText.visibility = VISIBLE
-                    }
-
-                } else{  // 완료 전인 팀 : 위에 완료 버튼이 보여야 하고 신청자 모두 보임
-
-                    var tm_cursor : Cursor
-                    tm_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
-
-                    if (tm_cursor.getCount() > 0){
-                        announStatusText.visibility = GONE
-
-                        while (tm_cursor.moveToNext()) {
-                            var m_id = tm_cursor.getString(tm_cursor.getColumnIndex("m_id")).toString()
-
-                            var m_cursor: Cursor
-                            m_cursor = sqlitedb.rawQuery("SELECT m_name FROM member WHERE m_id = '${m_id}'", null)
-
-                            m_cursor.moveToFirst()
-                            var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
-                            listArray.add(ApplicantListItem(t_num, t_endStatus, m_id, m_name))
-                        }
-                    } else {
-                        announStatusText.visibility = VISIBLE
-                    }
-                }
-            } catch(e: Exception){
-                Log.e("Error", e.message.toString())
-            } finally{
-                sqlitedb.close()
-                dbManager.close()
-            }
-            applicantRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            applicantRecycler.setHasFixedSize(true)
-            applicantRecycler.adapter = ApplicantListAdapter(listArray)*/
-
             this.recreate()
             swipeRefresh.isRefreshing = false
         }
