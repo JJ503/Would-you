@@ -54,7 +54,6 @@ class ResumeActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_resume)+"</font>")
 
-
         info=findViewById(R.id.WresumeInfoTextView)
         submitBtn=findViewById(R.id.WsubmitButton)
         hopeET=findViewById<EditText>(R.id.WwishPartEditText)
