@@ -7,7 +7,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
@@ -15,36 +14,38 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+
 
 class DeveloperSupportActivity : AppCompatActivity() {
+
+    lateinit var sqlitedb : SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_developer_support)
 
+        // 상단바  스타일 지정
         supportActionBar?.elevation = 3f
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_developerSupport)+"</font>")
-        supportActionBar?.setDisplayUseLogoEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+
 
 
         var delevoper_supportBtn: Button = findViewById<Button>(R.id.delevoper_supportBtn)
         var bug_reportBtn: Button = findViewById<Button>(R.id.bug_reportBtn)
 
 
+
+        //현재 로그인 중인 사용자 지정
+        var context: Context = this
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
+
         // 개발자 문의 버튼 클릭시, 메일 화면으로 넘어감
         delevoper_supportBtn.setOnClickListener {
-
-            lateinit var sqlitedb : SQLiteDatabase
-            var dbManager: DBManager = DBManager(this, "ContestAppDB", null, 1)
-
-            //현재 로그인 중인 사용자 지정
-            var context: Context = this
-            val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
-            var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
-
             try {
+                var dbManager: DBManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.readableDatabase
 
                 if (sqlitedb != null) {
@@ -56,7 +57,6 @@ class DeveloperSupportActivity : AppCompatActivity() {
                     cursor.moveToFirst()
 
                     if (cursor.getCount() == 1) {
-
                         var USER_EMAIL = arrayOf<String>( cursor.getString(cursor.getColumnIndex("m_email")) )
                         var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
                         var mailTitle = "[ 개발자 문의 ]"
@@ -87,28 +87,19 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
         // 버그 신고 버튼 클릭시, 메일 화면으로 넘어감
         bug_reportBtn.setOnClickListener {
-
-            lateinit var sqlitedb : SQLiteDatabase
-            var dbManager: DBManager = DBManager(this, "ContestAppDB", null, 1)
-
-            //현재 로그인 중인 사용자 지정
-            var context: Context = this
-            val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
-            var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
-
             try {
+                var dbManager: DBManager = DBManager(this, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.readableDatabase
 
                 if (sqlitedb != null) {
                     var cursor: Cursor
                     cursor = sqlitedb.rawQuery(
-                        "SELECT * FROM member WHERE m_id = '${USER_ID}';",
-                        null
+                            "SELECT * FROM member WHERE m_id = '${USER_ID}';",
+                            null
                     )
                     cursor.moveToFirst()
 
                     if (cursor.getCount() == 1) {
-
                         var USER_EMAIL = arrayOf<String>(cursor.getString(cursor.getColumnIndex("m_email")))
                         var USER_NAME = cursor.getString(cursor.getColumnIndex("m_name"))
                         var mailTitle = "[ 버그 신고 ]"
@@ -117,7 +108,6 @@ class DeveloperSupportActivity : AppCompatActivity() {
                                 "* 버그 내용 : (ex. 메인 페이지에서 신청한 팀 목록이 안 보여요.)\n" +
                                 "* 버그 발생 일시 : (ex.2020.02.11/23:34)\n" +
                                 "* 버그 발생한 기종(환경) : (ex.갤럭시 노트 10)\n"
-
 
                         val email = Intent(Intent.ACTION_SEND)
                         email.type = "plain/text"
@@ -135,12 +125,7 @@ class DeveloperSupportActivity : AppCompatActivity() {
             } finally {
                 sqlitedb.close()
             }
-
-
         }
-
-
-
     }
 
 
@@ -153,4 +138,4 @@ class DeveloperSupportActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    }
+}

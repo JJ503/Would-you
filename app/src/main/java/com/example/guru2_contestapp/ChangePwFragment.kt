@@ -13,13 +13,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
+
 
 
 class ChangePwFragment : Fragment() {
+
+
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,15 +29,10 @@ class ChangePwFragment : Fragment() {
     ): View? {
         var preView = inflater.inflate(R.layout.fragment_change_pw, container, false)
 
-
         var currentPw: EditText = preView.findViewById(R.id.currentPw)
         var newPw1: EditText = preView.findViewById(R.id.newPw1)
         var newPw2: EditText = preView.findViewById(R.id.newPw2)
         var changePwBtn: Button = preView.findViewById(R.id.changePwBtn)
-        lateinit var USER_PW: String
-
-        lateinit var dbManager: DBManager
-        lateinit var sqlitedb: SQLiteDatabase
 
 
         //현재 로그인 중인 사용자 지정
@@ -44,9 +41,14 @@ class ChangePwFragment : Fragment() {
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
-        //DB연결
+
+
+        // 사용자의 pw를 db에서 가져온다.
+        var USER_PW: String=""
+
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb =dbManager.readableDatabase
+
         try {
             if (sqlitedb != null) {
                 var cursor: Cursor
@@ -65,6 +67,7 @@ class ChangePwFragment : Fragment() {
             dbManager.close()
         }
 
+
         // 버튼 클릭시 팝업창 열기
         changePwBtn.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
@@ -79,20 +82,19 @@ class ChangePwFragment : Fragment() {
                 if (USER_PW != currentPw.getText().toString()) {
                     builder.setMessage("현재 비밀번호가 아닙니다.")
                 } else {
+                     // '변경할 비밀번호'를 입력하지 않았을 때
                     if (newPw1.getText().toString().equals("") || newPw1.getText().toString() == null || newPw2.getText().toString().equals("") || newPw2.getText().toString() == null
                     ) {
                         builder.setMessage("변경할 비밀번호를 입력하세요. (확인란도 작성)")
                     } else {
-                        // 성공적으로  비밀번호 변경할 때
+                        // 비밀번호 변경
                         if (newPw1.getText().toString() == newPw2.getText().toString()) {
                             builder.setMessage("비밀번호를 변경합니다.")
                             sqlitedb = dbManager.writableDatabase
-                            sqlitedb.execSQL(
-                                "UPDATE member SET m_pw = '" + newPw1.getText().toString() + "' WHERE m_id = '" + USER_ID + "';"
-                            )
+                            sqlitedb.execSQL("UPDATE member SET m_pw = '" + newPw1.getText().toString() + "' WHERE m_id = '" + USER_ID + "';")
                             sqlitedb.close()
-                            USER_PW = newPw1.getText().toString()
 
+                            USER_PW = newPw1.getText().toString()
                         } else {
                             //변경할 pw가 확인 pw와 다를때
                             builder.setMessage("새로운 비밀번호가 일치하지 않습니다.")
@@ -101,7 +103,7 @@ class ChangePwFragment : Fragment() {
                 }
             }
 
-            // editText 에  입력한 값 지우기
+            // editText에  입력한 값 지우기
             currentPw.setText(null);
             newPw1.setText(null);
             newPw2.setText(null);
@@ -109,7 +111,6 @@ class ChangePwFragment : Fragment() {
             //팝업창
             builder.setPositiveButton("확인", null)
             builder.show()
-
         }
 
         return preView

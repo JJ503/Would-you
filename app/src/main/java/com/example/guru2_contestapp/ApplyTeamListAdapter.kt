@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): RecyclerView.Adapter <ApplyTeamListAdapter.CustomViewHolder>() {
 
-    // 뷰 연동
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
+
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -30,14 +31,8 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
         return CustomViewHolder(view)
     }
 
-    // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
+
     override fun onBindViewHolder(holder: ApplyTeamListAdapter.CustomViewHolder, position: Int) {
-
-        //현재 로그인 중인 사용자 지정
-        var context: Context = holder.itemView.context
-        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
-        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
-
 
         holder.adverImageView.setImageResource(applyTeamList.get(position).c_photo)
         holder.adverTitleTextView.text = applyTeamList.get(position).t_name
@@ -47,10 +42,16 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
         holder.endDateTextView.text = applyTeamList.get(position).t_end_date
         holder.needPartTextivew.text = applyTeamList.get(position).t_need_part
 
+        // 현재 로그인 중인 사용자 정보 가져오기
+        var context: Context = holder.itemView.context
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
-        // 팀 상태에 따라 조정 필요
+
+        // 사용자가 팀원으로 신청한 것의 합격유무
         var apply_state : Int = applyTeamList.get(position).state
         var str_apply_state : String =""
+
 
         // 마감일과 현재의 날짜차이 계산
         val today= Calendar.getInstance().apply{
@@ -80,24 +81,20 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
             holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
         }
 
-        // 마감일이 지난 경우 -> 날짜 TextView 숨김
+        // 마감일이 지난 경우(모집마감) -> 날짜 TextView 숨김 / 자동으로  팀원 탈락됨
         if(calcDate.toInt()<0){
             holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
             holder.endDateTextView.text="모집 종료"
             str_apply_state = "탈락"
             holder.apply_state.text = str_apply_state
             apply_state = -1
+            holder.applyTeamItem_cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.non_click))
 
-            // 모집종료면 자동으로  팀원 탈락됨.
-            lateinit var dbManager: DBManager
-            lateinit var sqlitedb: SQLiteDatabase
-
+            // DB에 탈락 상태 반영
             dbManager = DBManager(holder.itemView.context, "ContestAppDB", null, 1)
             sqlitedb = dbManager.writableDatabase
-
             sqlitedb.execSQL("UPDATE TeamManage SET state = -1 WHERE m_id = '" + USER_ID + "'  AND state >= 0  AND state < 2;")
             sqlitedb.close()
-            holder.applyTeamItem_cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.non_click))
         }
 
         // 남은 인원이 1명 -> 글자색 변경
@@ -109,6 +106,7 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
         }
 
 
+        // 신청 상태를 글자로 바꿔 레이아웃에 반영
         when(apply_state){
             -1 -> {
                 str_apply_state = "탈락"
@@ -136,15 +134,14 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
 
-
     }
 
-    //리스트 총 개수
+
     override fun getItemCount(): Int {
         return applyTeamList.size
     }
 
-    // 뷰를 잡아줌
+
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val adverImageView = itemView.findViewById<ImageView>(R.id.adverImageView)
         val adverTitleTextView = itemView.findViewById<TextView>(R.id.adverTitleTextView)
@@ -157,7 +154,5 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
         val slash = itemView.findViewById<TextView>(R.id.slash)
         val applyTeamItem_cardView = itemView.findViewById<CardView>(R.id.applyTeamItem_cardView)
     }
-
-
 }
 

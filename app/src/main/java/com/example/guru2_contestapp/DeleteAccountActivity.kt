@@ -21,22 +21,22 @@ class DeleteAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delete_account)
 
+        // 상단바  스타일 지정
         supportActionBar?.elevation = 3f
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_deleteAccount)+"</font>")
 
 
-
         val userPwEdit: EditText = findViewById(R.id.userPwEdit)
         val checkBtn: Button = findViewById(R.id.checkBtn)
 
-        //현재 로그인 중인 사용자 지정
+        // 현재 로그인 중인 사용자 정보 가져오기
         var context: Context = this
-        val sharedPreferences: SharedPreferences =
-            context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
-        //DB연결하여, 사용자 pw 불러오기
+
+        //DB연결하여 사용자 pw 불러오기
         lateinit var dbManager: DBManager
         lateinit var sqlitedb: SQLiteDatabase
 
@@ -72,11 +72,9 @@ class DeleteAccountActivity : AppCompatActivity() {
             builder.setTitle("회원 탈퇴")
             builder.setIcon(R.drawable.logo_2_04)
 
-
             // 비밀번호 일치 여부 확인
             // '현재 비밀번호' 입력 안 했을 때
-            if (userPwEdit.getText().toString().equals("") || userPwEdit.getText()
-                    .toString() == null
+            if (userPwEdit.getText().toString().equals("") || userPwEdit.getText().toString() == null
             ) {
                 builder.setMessage("비밀번호를 입력하세요.")
                 builder.setPositiveButton("확인",null)
