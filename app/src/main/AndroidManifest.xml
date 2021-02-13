@@ -12,7 +12,8 @@
 
         <activity android:name=".DeleteAccountActivity"
             android:label="회원 탈퇴"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".DeveloperSupportActivity"
             android:label="개발자 문의"
             android:parentActivityName=".NavigationActivity" />
@@ -23,18 +24,23 @@
             android:parentActivityName=".ApplicantListActivity"/>
         <activity
             android:name=".ResumeActivity"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".TeamDetailActivity"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".BuildTeamActivity"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".ContestDetailActivity"
             android:parentActivityName=".NavigationActivity" />
         <activity android:name=".NavigationActivity" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +53,8 @@
         <activity
             android:name=".SettingActivity"
             android:label="설정"
-            android:parentActivityName=".NavigationActivity" />
+            android:parentActivityName=".NavigationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".ApplicantListActivity"
             android:label="팀 신청자 목록"
@@ -59,15 +66,18 @@
         <activity
             android:name=".SignUp3Activity"
             android:label="회원가입"
-            android:parentActivityName=".SignUp2Activity" />
+            android:parentActivityName=".SignUp2Activity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".SignUp2Activity"
             android:label="회원가입"
-            android:parentActivityName=".SignUpActivity" />
+            android:parentActivityName=".SignUpActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".SignUpActivity"
             android:label="회원가입"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 
 </manifest>
