@@ -123,7 +123,7 @@ class ApplicantListActivity : AppCompatActivity() {
         // 당겨서 새로고침
         swipeRefresh=findViewById(R.id.JswipeRefresh)
         swipeRefresh.setOnRefreshListener {
-            listArray = ArrayList()
+            /*listArray = ArrayList()
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.writableDatabase
             var cursor: Cursor
@@ -185,8 +185,9 @@ class ApplicantListActivity : AppCompatActivity() {
             }
             applicantRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
             applicantRecycler.setHasFixedSize(true)
-            applicantRecycler.adapter = ApplicantListAdapter(listArray)
+            applicantRecycler.adapter = ApplicantListAdapter(listArray)*/
 
+            this.recreate()
             swipeRefresh.isRefreshing = false
         }
     }
