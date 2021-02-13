@@ -36,7 +36,7 @@ class SignUpProfileAdapter (val profileItemList: ArrayList<ProfileItem>): Recycl
                 var profile = profileItemList.get(position).profile
 
                 val intent = Intent(holder.itemView?.context, SignUpActivity::class.java)
-                intent.putExtra("profile", str_photo)
+                intent.putExtra("profile", profile)
 
                 ContextCompat.startActivity(holder.itemView.context, intent, null)
             }

@@ -59,8 +59,6 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
             builder.setPositiveButton("확인") { dialog, which ->
 
 
-
-
                 // DB 저장
                 lateinit var dbManager: DBManager
                 lateinit var sqlitedb: SQLiteDatabase

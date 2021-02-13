@@ -1,11 +1,13 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -34,7 +36,7 @@ class SettingActivity : AppCompatActivity() {
         tablayout=findViewById<TabLayout>(R.id.tabLayout)
         viewPager2_1=findViewById<ViewPager2>(R.id.viewPager2_1)
         viewPager2_1.adapter =ViewPagerAdapter_setting(this)  // 어댑터 지정해주자.. 이거 안하면 오류남 ㅋㅋ
-
+        CloseKeyboard()
 
         val tabLayoutTextArray = arrayOf("개인정보 수정","비밀번호 변경")
 
@@ -71,4 +73,15 @@ class SettingActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
+    fun CloseKeyboard()
+    {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
 }

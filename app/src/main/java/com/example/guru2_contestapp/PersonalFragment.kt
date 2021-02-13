@@ -53,6 +53,7 @@ class PersonalFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
         // 옵션 메뉴 사용 true
         setHasOptionsMenu(true)
 
@@ -251,7 +252,6 @@ class PersonalFragment : Fragment() {
             when (item?.itemId) {
                 //로그아웃
                 R.id.action_logout -> {
-
                     val builder = AlertDialog.Builder(activity)
                     builder.setTitle("로그아웃")
                     builder.setMessage("지금 로그아웃하시겠어요?")

@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,26 +8,28 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 
 
 class ChangePwFragment : Fragment() {
-
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
+
+
         var preView = inflater.inflate(R.layout.fragment_change_pw, container, false)
 
         var currentPw: EditText = preView.findViewById(R.id.currentPw)
@@ -60,7 +63,7 @@ class ChangePwFragment : Fragment() {
                 }
                 cursor.close()
             }
-        }catch(e: Exception){
+        }catch (e: Exception){
             Log.e("Error", e.message.toString())
         } finally{
             sqlitedb.close()
@@ -70,6 +73,11 @@ class ChangePwFragment : Fragment() {
 
         // 버튼 클릭시 팝업창 열기
         changePwBtn.setOnClickListener {
+
+            val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+
+
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("비밀번호 변경")
             builder.setIcon(R.drawable.logo_2_04)
@@ -115,4 +123,15 @@ class ChangePwFragment : Fragment() {
 
         return preView
     }
+    /*
+    fun closeKeyboard() {
+        val activity = activity as FeedActivity
+
+        val view = activity.currentFocus
+        if (view != null) {
+            val imm = ContextCompat.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm!!.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
+        }
+    }
+*/
 }

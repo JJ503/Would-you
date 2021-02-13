@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 
