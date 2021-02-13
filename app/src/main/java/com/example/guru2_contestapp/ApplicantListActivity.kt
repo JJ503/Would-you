@@ -222,8 +222,8 @@ class ApplicantListActivity : AppCompatActivity() {
             dbManager = DBManager(this, "ContestAppDB", null, 1)
             sqlitedb = dbManager.readableDatabase
 
-            var cursor : Cursor
-            cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE ", null)
+            //var cursor : Cursor
+            //cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE ", null)
         }
         return super.onOptionsItemSelected(item)
     }
