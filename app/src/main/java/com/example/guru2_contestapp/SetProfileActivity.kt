@@ -2,19 +2,15 @@ package com.example.guru2_contestapp
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class SetProfileActivity : AppCompatActivity() {
@@ -34,35 +30,17 @@ class SetProfileActivity : AppCompatActivity() {
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
-        //사진 이름 저장 리스트
-        var profileNameList: ArrayList<String> = ArrayList()
-        for( i in 1..16){
-            profileNameList.add("profile"+i.toString())
-        }
-
 
         // 리사이클러뷰
         var profileItemList: ArrayList<ProfileItem> = ArrayList()
 
 
         try {
-            profileItemList.add(ProfileItem(R.drawable.ic_baseline_account_circle_24))
-            profileItemList.add(ProfileItem(R.drawable.profile1))
-            profileItemList.add(ProfileItem(R.drawable.profile2))
-            profileItemList.add(ProfileItem(R.drawable.profile3))
-            profileItemList.add(ProfileItem(R.drawable.profile4))
-            profileItemList.add(ProfileItem(R.drawable.profile5))
-            profileItemList.add(ProfileItem(R.drawable.profile6))
-            profileItemList.add(ProfileItem(R.drawable.profile7))
-            profileItemList.add(ProfileItem(R.drawable.profile8))
-            profileItemList.add(ProfileItem(R.drawable.profile9))
-            profileItemList.add(ProfileItem(R.drawable.profile10))
-            profileItemList.add(ProfileItem(R.drawable.profile11))
-            profileItemList.add(ProfileItem(R.drawable.profile12))
-            profileItemList.add(ProfileItem(R.drawable.profile14))
-            profileItemList.add(ProfileItem(R.drawable.profile15))
-            profileItemList.add(ProfileItem(R.drawable.profile16))
-            
+
+            for(i in 0..16){
+                profileItemList.add(ProfileItem("profile"+i.toString()))
+            }
+
             
         }catch(e: Exception){
             Log.e("Error", e.message.toString())

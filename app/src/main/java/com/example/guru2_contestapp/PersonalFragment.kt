@@ -1,6 +1,5 @@
 package com.example.guru2_contestapp
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -8,10 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -19,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -46,10 +41,12 @@ class PersonalFragment : Fragment() {
     var str_univ :String =""
     var str_job :String =""
 
-    var profileVal = -1
+    var str_photo :String = "" // 사진 이름
+    var profile_src= -1// 사진 경로
+
 
     var now_job =""
-    var now_profile = -1
+    var now_profile :String = "" // 확인용(새로고침용) 사진이름
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,10 +95,12 @@ class PersonalFragment : Fragment() {
                             if (cursor.getString(cursor.getColumnIndex("m_univ")) != "")
                                 str_univ = "(" + cursor.getString(cursor.getColumnIndex("m_univ")) + ")"
                         }
-                        if (cursor.getInt(cursor.getColumnIndex("m_profile")) != null) {
-                            profileVal = cursor.getInt(cursor.getColumnIndex("m_profile"))
+                        if (cursor.getString(cursor.getColumnIndex("m_profile")) != null) {
+                            if (cursor.getString(cursor.getColumnIndex("m_profile")) != "")
+                            str_photo =  cursor.getString(cursor.getColumnIndex("m_profile"))
+                                Log.d("dfdfpersonal",str_photo)
                         } else {
-                            profileVal = R.drawable.ic_baseline_account_circle_24
+                            str_photo =  "profile0"
                         }
 
                     }
@@ -118,8 +117,8 @@ class PersonalFragment : Fragment() {
         user_name.text = str_name
         user_id.text = str_id
         user_job.text = str_job + str_univ
-        profileImage.setImageResource(profileVal)
-
+        profile_src = this.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
+        profileImage.setImageResource(profile_src)
 
         // 프로필 변경
         profileBtn.setOnClickListener {
@@ -332,12 +331,12 @@ class PersonalFragment : Fragment() {
                 // 프로필 정보 가져오기
                 cursor2 = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
                 cursor2.moveToFirst()
-                if(profileVal != -1){
-                    now_profile = cursor2.getInt(cursor2.getColumnIndex("m_profile"))
+                if(str_photo != ""){
+                    now_profile = cursor2.getString(cursor2.getColumnIndex("m_profile"))
                 }
                 else{
-                    profileVal = cursor2.getInt(cursor2.getColumnIndex("m_profile"))
-                    now_profile =  cursor2.getInt(cursor2.getColumnIndex("m_profile"))
+                    str_photo = cursor2.getString(cursor2.getColumnIndex("m_profile"))
+                    now_profile =  cursor2.getString(cursor2.getColumnIndex("m_profile"))
                 }
 
             }
@@ -348,7 +347,7 @@ class PersonalFragment : Fragment() {
             dbManager.close()
         }
 
-        if(str_job != now_job || now_profile != profileVal){
+        if(str_job != now_job || now_profile != str_photo){
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
             ft.attach(this)

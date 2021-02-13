@@ -73,7 +73,8 @@ class BuildTeamListFragment : Fragment() {
 
                             if (cursor3.moveToNext())   //공모전 이름 가져오기
                             {
-
+                                /*var photo_src=this.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
+                                contestImg.setImageResource(photo_src)*/
                                 c_name = cursor3.getString(cursor3.getColumnIndex("c_name"))
                             }
 

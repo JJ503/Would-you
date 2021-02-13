@@ -42,7 +42,11 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
     // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: ProfileListAdapter.CustomViewHolder, position: Int) {
 
-        holder.profile.setImageResource(profileItemList.get(position).profile)
+
+        var str_photo =profileItemList.get(position).profile.toString()
+        var photo_src=holder.itemView.context.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
+
+        holder.profile.setImageResource(photo_src)
 
 
         holder.itemView.setOnClickListener {
@@ -54,7 +58,7 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
             builder.setNeutralButton("다시선택", null)
             builder.setPositiveButton("확인") { dialog, which ->
 
-                var profile = profileItemList.get(position).profile
+
 
 
                 // DB 저장
@@ -75,8 +79,9 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
                     if (sqlitedb != null) {
                         sqlitedb = dbManager.readableDatabase
                         sqlitedb.execSQL(
-                            "UPDATE member SET m_profile = '" + profile + "' WHERE m_id = '" + USER_ID + "';"
+                            "UPDATE member SET m_profile = '" + str_photo + "' WHERE m_id = '" + USER_ID + "';"
                         )
+                        Log.d("----profile---",str_photo)
                         sqlitedb.close()
                     }
                 } catch (e: Exception) {
