@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
@@ -12,6 +13,7 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 
@@ -37,7 +39,7 @@ class ResumeActivity : AppCompatActivity() {
     lateinit var str_name: String
     lateinit var str_year: String
     lateinit var str_job: String
-    var pofile_src=0
+    lateinit var pofile_src: String
     var t_num=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +67,7 @@ class ResumeActivity : AppCompatActivity() {
         jobTextView=findViewById(R.id.WjobTextView)
         editBtn=findViewById(R.id.WprofileEditButton)
         profileImg=findViewById(R.id.WimageView)
+        CloseKeyboard()
 
 
         // 상단 텍스트 뷰(공모전과 팀 이름) 내용을 이전 페이지에서 온 intent 값으로 설정
@@ -91,7 +94,7 @@ class ResumeActivity : AppCompatActivity() {
                         str_name=cursor.getString(cursor.getColumnIndex("m_name"))
                         str_year=cursor.getString(cursor.getColumnIndex("m_year"))
                         str_job=cursor.getString(cursor.getColumnIndex("m_job"))
-                        pofile_src=cursor.getInt(cursor.getColumnIndex("m_profile"))
+                        pofile_src=cursor.getString(cursor.getColumnIndex("m_profile"))
                     }
                     cursor.close()
                 }
@@ -116,7 +119,8 @@ class ResumeActivity : AppCompatActivity() {
         nameTextView.text=str_name
         ageTextView.text=age.toString()
         jobTextView.text=str_job
-        profileImg.setImageResource(pofile_src)
+        var profile_src_int=this.resources.getIdentifier(pofile_src,"drawable", "com.example.guru2_contestapp")
+        profileImg.setImageResource(profile_src_int)
 
         // 프로필에서 수정 버튼 클릭 -> 수정 페이지로 이동
         editBtn.setOnClickListener {
@@ -129,15 +133,19 @@ class ResumeActivity : AppCompatActivity() {
         // 빈칸 없는 경우 입력한 정보를 DB에 값을 입력하고 액티비티 종료
         submitBtn.setOnClickListener {
             val builder= AlertDialog.Builder(this)
-
+            this.CloseKeyboard()
             if(hopeET.text.toString()==""){
-                builder.setMessage("희망 분야를 입력해 주세요.")
-                //builder.setIcon(R.)
+                builder.setMessage("\t\t희망 분야를 입력해 주세요.")
+                builder.setTitle(" ")
+                builder.setIcon(R.drawable.logo_2_04)
+                builder.create()
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else if (selfIntroET.text.toString()==""){
-                builder.setMessage("자기소개를 해 주세요.")
-                //builder.setIcon(R.)
+                builder.setMessage("\t\t자기소개를 해 주세요.")
+                builder.setTitle(" ")
+                builder.setIcon(R.drawable.logo_2_04)
+                builder.create()
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else{
@@ -194,5 +202,15 @@ class ResumeActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun CloseKeyboard() {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }
