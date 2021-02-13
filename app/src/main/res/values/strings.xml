@@ -8,5 +8,12 @@
     <string name="action_developerSupport">개발자 문의</string>
     <string name="action_deleteAccount">회원 탈퇴</string>
 
+    <!-- 개인페이지 -->
+    <string name="action_setting">개인정보 설정</string>
+
+    <!-- 프로필 변경 -->
+    <string name="action_setProfile">프로필 변경</string>
+
+
 
 </resources>

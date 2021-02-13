@@ -6,8 +6,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
@@ -17,6 +20,12 @@ class DeleteAccountActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delete_account)
+
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_deleteAccount)+"</font>")
+
+
 
         val userPwEdit: EditText = findViewById(R.id.userPwEdit)
         val checkBtn: Button = findViewById(R.id.checkBtn)

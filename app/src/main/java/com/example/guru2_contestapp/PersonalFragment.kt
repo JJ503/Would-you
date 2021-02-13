@@ -55,6 +55,7 @@ class PersonalFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // 옵션 메뉴 사용 true
         setHasOptionsMenu(true)
 
