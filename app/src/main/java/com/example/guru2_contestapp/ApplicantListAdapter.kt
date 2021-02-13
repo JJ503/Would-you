@@ -78,7 +78,9 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${itemList.get(position).t_num};", null)
                 cursor.moveToFirst()
-                var rest_num = cursor.getInt(cursor.getColumnIndex("t_total_num")) - cursor.getInt(cursor.getColumnIndex("t_now_num"))
+                var total_num = cursor.getInt(cursor.getColumnIndex("t_total_num"))
+                var now_num = cursor.getInt(cursor.getColumnIndex("t_now_num"))
+                var rest_num = total_num - now_num
                 Log.d("=== rest_num ===", rest_num.toString())
 
                 if (rest_num > 0){
@@ -88,6 +90,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
 
                     if (cursor.getCount() == 1){
                         sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
+                        sqlitedb.execSQL("UPDATE team SET t_now_num = ${now_num + 1} WHERE t_num = ${itemList.get(position).t_num};")
                         holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
                         holder.btnAccept.visibility = GONE
                         holder.btnRefuse.visibility = GONE
@@ -144,16 +147,4 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             tvName.text = item.m_name
         }
     }
-
-    interface ItemClickListener {
-        fun onClick(view: View, position: Int)
-    }
-
-    private lateinit var itemClickListener: ItemClickListener
-
-    fun setItemClickListener(itemClickListener: ItemClickListener) {
-        this.itemClickListener = itemClickListener
-    }
-
-
 }
