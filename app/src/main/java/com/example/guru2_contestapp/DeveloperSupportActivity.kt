@@ -5,9 +5,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
@@ -18,6 +21,13 @@ class DeveloperSupportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_developer_support)
+
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_developerSupport)+"</font>")
+        supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
 
         var delevoper_supportBtn: Button = findViewById<Button>(R.id.delevoper_supportBtn)
         var bug_reportBtn: Button = findViewById<Button>(R.id.bug_reportBtn)

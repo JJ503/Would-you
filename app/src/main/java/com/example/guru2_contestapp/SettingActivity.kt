@@ -1,7 +1,10 @@
 package com.example.guru2_contestapp
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -18,6 +21,14 @@ class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_setting)+"</font>")
+        supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+
 
         tablayout=findViewById<TabLayout>(R.id.tabLayout)
         viewPager2_1=findViewById<ViewPager2>(R.id.viewPager2_1)
