@@ -24,7 +24,8 @@ class WishListAdapter (val wishlist:ArrayList<WishItem>): RecyclerView.Adapter <
 
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: WishListAdapter.CustomViewHolder, position: Int) {
-        holder.contestImg.setImageResource(wishlist.get(position).contestImg)
+        var photo_src = holder.itemView?.context.resources.getIdentifier(wishlist.get(position).contestImg,"drawable", "com.example.guru2_contestapp")
+        holder.contestImg.setImageResource(photo_src)
         holder.deadLine.text = wishlist.get(position).deadLine
         holder.contestName.text = wishlist.get(position).contestName
 

@@ -30,6 +30,7 @@ class WishListFragment : Fragment() {
         var c_num: Int = -1
         lateinit var c_name: String
         lateinit var c_end: String
+        lateinit var c_photo: String
 
 
         lateinit var wishlist: ArrayList<WishItem>
@@ -72,6 +73,7 @@ class WishListFragment : Fragment() {
                             // 공모전 사진도 가져와야됨
                             c_name = cursor2.getString(cursor2.getColumnIndex("c_name"))
                             c_end = cursor2.getString(cursor2.getColumnIndex("c_end"))
+                            c_photo = cursor2.getString(cursor2.getColumnIndex("c_photo"))
 
                             deadline = checkDays(c_end)
 
@@ -84,7 +86,7 @@ class WishListFragment : Fragment() {
 
                         }
                         wishlist.add(
-                                WishItem(c_num, deadlineTxt, R.drawable.ic_baseline_add_photo_alternate_24, c_name)
+                                WishItem(c_num, deadlineTxt, c_photo, c_name)
                         )
                     }
                 }
