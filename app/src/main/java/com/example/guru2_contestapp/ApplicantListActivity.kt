@@ -1,5 +1,9 @@
 package com.example.guru2_contestapp
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -210,10 +214,18 @@ class ApplicantListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId==android.R.id.home){
-            finish()
-            return true
+        if(item.itemId == R.id.teamComplete){
+            val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
+            val t_num = sharedPreferences.getInt("t_num", -1)
+            val t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
+
+            dbManager = DBManager(this, "ContestAppDB", null, 1)
+            sqlitedb = dbManager.readableDatabase
+
+            var cursor : Cursor
+            cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE ", null)
         }
         return super.onOptionsItemSelected(item)
     }
+
 }

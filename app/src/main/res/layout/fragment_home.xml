@@ -56,8 +56,8 @@
 
                         <ImageView
                             android:id="@+id/JuserProfile"
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
                             android:layout_marginStart="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -71,7 +71,7 @@
                             android:layout_marginTop="3dp"
                             android:text="안녕하세요 임정수 님"
                             android:textColor="@color/black"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             app:layout_constraintStart_toEndOf="@+id/JuserProfile"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,7 +83,7 @@
                             android:layout_marginTop="17dp"
                             android:text="참여한 공모전 : "
                             android:textColor="@color/black"
-                            android:textSize="15sp"
+                            android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@+id/JuserProfile"
                             app:layout_constraintTop_toBottomOf="@+id/JuserName2" />
 
@@ -95,7 +95,7 @@
                             android:layout_marginTop="17dp"
                             android:text="-1 개"
                             android:textColor="@color/indigo_700"
-                            android:textSize="15sp"
+                            android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@+id/textView7"
                             app:layout_constraintTop_toBottomOf="@+id/JuserName2" />
 
@@ -107,7 +107,7 @@
                             android:layout_marginTop="10dp"
                             android:text="지원한 공모전 : "
                             android:textColor="@color/black"
-                            android:textSize="15sp"
+                            android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@+id/JuserProfile"
                             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -115,11 +115,11 @@
                             android:id="@+id/JapplicantTeam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="7dp"
+                            android:layout_marginStart="8dp"
                             android:layout_marginTop="10dp"
                             android:text="-1 개"
                             android:textColor="@color/indigo_700"
-                            android:textSize="15sp"
+                            android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@+id/textView9"
                             app:layout_constraintTop_toBottomOf="@+id/JjoinTeam" />
                     </androidx.constraintlayout.widget.ConstraintLayout>

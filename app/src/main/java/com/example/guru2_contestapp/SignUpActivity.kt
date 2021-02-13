@@ -61,7 +61,7 @@ class SignUpActivity : AppCompatActivity() {
             Log.d("=== Image Resource ===", profile.toString())
             profileImage.setImageResource(profile)
         } else {
-            profile = 2131230836
+            profile = 2131230844
             profileImage.setImageResource(profile)
         }
 
