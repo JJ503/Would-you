@@ -239,7 +239,7 @@ class BuildTeamActivity : AppCompatActivity() {
 
                         // DB에 정보 넣기
                         sqlitedb = dbManager.writableDatabase
-                        sqlitedb.execSQL("INSERT INTO team (c_num, t_name, t_host, t_total_num, t_now_num, t_end_date, t_need_part, t_detail) VALUES ("+c_num+", '"+str_t_name+"', '"+ USER_ID + "'," +t_total_num+", "+1+", '"+str_t_end_date+"', '"+str_t_need_part+"', '"+str_t_detail+"')")
+                        sqlitedb.execSQL("INSERT INTO team (c_num, t_name, t_host, t_total_num, t_now_num, t_end_date, t_need_part, t_detail, t_complete) VALUES ("+c_num+", '"+str_t_name+"', '"+ USER_ID + "'," +t_total_num+", "+1+", '"+str_t_end_date+"', '"+str_t_need_part+"', '"+str_t_detail+"', 0)")
                         cursor=sqlitedb.rawQuery("SELECT t_num FROM team WHERE t_name = '"+str_t_name+"';", null)
                         if(cursor.count!=0){
                             if(cursor.moveToNext()){

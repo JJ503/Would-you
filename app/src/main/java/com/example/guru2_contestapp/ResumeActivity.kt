@@ -39,7 +39,7 @@ class ResumeActivity : AppCompatActivity() {
     lateinit var str_name: String
     lateinit var str_year: String
     lateinit var str_job: String
-    var pofile_src=0
+    lateinit var pofile_src: String
     var t_num=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +94,7 @@ class ResumeActivity : AppCompatActivity() {
                         str_name=cursor.getString(cursor.getColumnIndex("m_name"))
                         str_year=cursor.getString(cursor.getColumnIndex("m_year"))
                         str_job=cursor.getString(cursor.getColumnIndex("m_job"))
-                        pofile_src=cursor.getInt(cursor.getColumnIndex("m_profile"))
+                        pofile_src=cursor.getString(cursor.getColumnIndex("m_profile"))
                     }
                     cursor.close()
                 }
@@ -119,7 +119,8 @@ class ResumeActivity : AppCompatActivity() {
         nameTextView.text=str_name
         ageTextView.text=age.toString()
         jobTextView.text=str_job
-        profileImg.setImageResource(pofile_src)
+        var profile_src_int=this.resources.getIdentifier(pofile_src,"drawable", "com.example.guru2_contestapp")
+        profileImg.setImageResource(profile_src_int)
 
         // 프로필에서 수정 버튼 클릭 -> 수정 페이지로 이동
         editBtn.setOnClickListener {
@@ -134,13 +135,17 @@ class ResumeActivity : AppCompatActivity() {
             val builder= AlertDialog.Builder(this)
             this.CloseKeyboard()
             if(hopeET.text.toString()==""){
-                builder.setMessage("희망 분야를 입력해 주세요.")
-                //builder.setIcon(R.)
+                builder.setMessage("\t\t희망 분야를 입력해 주세요.")
+                builder.setTitle(" ")
+                builder.setIcon(R.drawable.logo_2_04)
+                builder.create()
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else if (selfIntroET.text.toString()==""){
-                builder.setMessage("자기소개를 해 주세요.")
-                //builder.setIcon(R.)
+                builder.setMessage("\t\t자기소개를 해 주세요.")
+                builder.setTitle(" ")
+                builder.setIcon(R.drawable.logo_2_04)
+                builder.create()
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else{

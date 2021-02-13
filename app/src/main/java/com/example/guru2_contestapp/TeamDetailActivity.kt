@@ -61,6 +61,7 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var str_cm_reg_date: String
     lateinit var str_cm_reg_detail: String
     lateinit var end_date: String
+    lateinit var cm_photo_src: String
     var photo_src=0
     var state=-1
     var total_num=-1
@@ -208,12 +209,12 @@ class TeamDetailActivity : AppCompatActivity() {
                         cursor2=sqlitedb.rawQuery("SELECT m_profile FROM member WHERE m_id = '"+ USER_ID +"' ;", null)
                         if(cursor2.count!=0){
                             if(cursor2.moveToNext()){
-                                photo_src=cursor2.getInt(cursor2.getColumnIndex("m_profile"))
+                                cm_photo_src=cursor2.getString(cursor2.getColumnIndex("m_profile"))
                             }
                         }
 
-                        Log.i("asfdasdf", photo_src.toString())
-                        commentItem= CommentListViewItem(photo_src, str_cm_id, str_cm_detail, str_cm_date)
+                        var cm_photo_src=this.resources.getIdentifier(cm_photo_src,"drawable", "com.example.guru2_contestapp")
+                        commentItem= CommentListViewItem(cm_photo_src, str_cm_id, str_cm_detail, str_cm_date)
                         commentListArray.add(commentItem)
                     }
                     cursor.close()
