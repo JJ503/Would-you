@@ -44,7 +44,7 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
 
         holder.profile.setImageResource(profileItemList.get(position).profile)
 
-        // item(teamItem)클릭시 배경색을 회색으로 한다.
+
         holder.itemView.setOnClickListener {
             val builder = AlertDialog.Builder(holder.itemView.context)
             builder.setTitle("프로필 선택")
@@ -55,13 +55,6 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
             builder.setPositiveButton("확인") { dialog, which ->
 
                 var profile = profileItemList.get(position).profile
-
-                //사진 전달
-                val mFragment: PersonalFragment = PersonalFragment()
-
-                var bundle = Bundle()
-                bundle.putInt("profile", profileItemList.get(position).profile)
-                mFragment.arguments = bundle
 
 
                 // DB 저장
@@ -93,18 +86,6 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
                     dbManager.close()
                 }
                 Toast.makeText(holder.itemView?.context,"프로필 변경에 성공했습니다.",Toast.LENGTH_SHORT).show()
-                //화면 이동
-                /*
-                var ft : FragmentTransaction = getSupportFragmentManager()
-                val supportFragmentManager
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment, LoginFragment())
-                    .commit()
-                        */
-
-                //화면 이동_메인으로
-                //val intent = Intent(holder.itemView?.context, NavigationActivity::class.java )
-                //startActivity(holder.itemView.context, intent, null)
             }
             builder.show()
 
