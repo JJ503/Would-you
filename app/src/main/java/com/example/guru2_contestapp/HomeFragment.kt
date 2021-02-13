@@ -52,6 +52,7 @@ class HomeFragment : Fragment() {
     var c_num : Int = -1
     lateinit var c_name : String
     lateinit var c_end : String
+    lateinit var c_photo : String
     var t_num : Int = -1
     lateinit var t_name : String
     lateinit var t_end_date : String
@@ -130,8 +131,15 @@ class HomeFragment : Fragment() {
                                 // 모집 기간이 종료된 경우 리스트에 추가 x
 
                             } else {
-                                t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
-                                myTeamList.add(WishItem(t_num, "팀장입니다", R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                c_num = myTeamInfo_cursor.getInt(myTeamInfo_cursor.getColumnIndex("c_num"))
+                                var con_cursor: Cursor
+                                con_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num};", null)
+
+                                if (con_cursor.getCount() == 1) {
+                                    t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+                                    var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
+                                    myTeamList.add(WishItem(t_num, "팀장입니다", c_photo, t_name))
+                                }
                             }
                         }
                     }
@@ -163,9 +171,15 @@ class HomeFragment : Fragment() {
                                     state = "팀원 수락"
                                 }
 
-                                t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+                                c_num = myTeamInfo_cursor.getInt(myTeamInfo_cursor.getColumnIndex("c_num"))
+                                var con_cursor: Cursor
+                                con_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num};", null)
 
-                                myTeamList.add(WishItem(t_num, state, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                if (con_cursor.getCount() == 1) {
+                                    t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
+                                    var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
+                                    myTeamList.add(WishItem(t_num, state, c_photo, t_name))
+                                }
                             }
                         }
                     }
@@ -201,6 +215,7 @@ class HomeFragment : Fragment() {
                             // 모집 기간 내에 있는 추천 공모전
                             c_num = recomContest_cursor.getInt(recomContest_cursor.getColumnIndex("c_num"))
                             c_name = recomContest_cursor.getString(recomContest_cursor.getColumnIndex("c_name"))
+                            c_photo = recomContest_cursor.getString(recomContest_cursor.getColumnIndex("c_photo"))
 
                             var conDeadlineText = "모집 " + conDeadline.toString() + "일 전"
 
@@ -220,20 +235,20 @@ class HomeFragment : Fragment() {
                                     t_num = recomTeam_cursor.getInt(recomTeam_cursor.getColumnIndex("t_num"))
                                     t_name = recomTeam_cursor.getString(recomTeam_cursor.getColumnIndex("t_name"))
 
+
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 팀 리스트에 추가
-                                    allTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                    allTeamList.add(WishItem(t_num, teamDeadlineText, c_photo, t_name))
                                 }
                             }
 
                             // 추천 공모전 리스트에 추가
-                            allConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
+                            allConList.add(WishItem(c_num, conDeadlineText, c_photo, c_name))
                         }
                     }
                 }
 
-                var rest_num = 5 - recomContest_cursor.getCount()
                 // usr의 관심 외의 공모전 (추천 공모전이 5개 미만일 때 필요)
                 var restContest_cursor : Cursor
                 restContest_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_section != '${m_interest}' ORDER BY random();", null)
@@ -254,6 +269,7 @@ class HomeFragment : Fragment() {
                             // 모집 기간 내에 있는 추천 공모전
                             c_num = restContest_cursor.getInt(restContest_cursor.getColumnIndex("c_num"))
                             c_name = restContest_cursor.getString(restContest_cursor.getColumnIndex("c_name"))
+                            c_photo = restContest_cursor.getString(restContest_cursor.getColumnIndex("c_photo"))
 
                             var conDeadlineText = "모집 " + conDeadline.toString() + "일 전"
 
@@ -276,12 +292,12 @@ class HomeFragment : Fragment() {
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 외의 남은 팀 리스트에 추가
-                                    allTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                    allTeamList.add(WishItem(t_num, teamDeadlineText, c_photo, t_name))
                                 }
                             }
 
                             // 추천 외의 남은 공모전 리스트에 추가
-                            allConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
+                            allConList.add(WishItem(c_num, conDeadlineText, c_photo, c_name))
                         }
                     }
                 }
