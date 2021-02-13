@@ -41,14 +41,15 @@ class PersonalFragment : Fragment() {
     lateinit var user_id : TextView
     lateinit var user_job : TextView
 
-
     lateinit var str_name :String
     lateinit var str_id :String
-    lateinit var str_job :String
     var str_univ :String =""
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    var str_job :String =""
 
+    var profileVal = -1
 
+    var now_job =""
+    var now_profile = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,8 +73,7 @@ class PersonalFragment : Fragment() {
 
         //현재 로그인 중인 사용자 지정
         var context: Context = requireContext()
-        val sharedPreferences: SharedPreferences =
-            context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
@@ -83,27 +83,29 @@ class PersonalFragment : Fragment() {
         try {
             if (sqlitedb != null) {
                 var cursor: Cursor
-                cursor =
-                    sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
+                cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
 
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
                         str_name = cursor.getString(cursor.getColumnIndex("m_name")) + " 님"
                         str_id = cursor.getString(cursor.getColumnIndex("m_id"))
                         str_job = cursor.getString(cursor.getColumnIndex("m_job"))
+
+                        str_univ=""
+
                         if (cursor.getString(cursor.getColumnIndex("m_univ")) != null) {
                             if (cursor.getString(cursor.getColumnIndex("m_univ")) != "")
-                                str_univ =
-                                    "(" + cursor.getString(cursor.getColumnIndex("m_univ")) + ")"
+                                str_univ = "(" + cursor.getString(cursor.getColumnIndex("m_univ")) + ")"
                         }
                         if (cursor.getString(cursor.getColumnIndex("m_profile")) != null) {
                             if (cursor.getString(cursor.getColumnIndex("m_profile")) != "") {
-                                Log.d(
-                                    "/----ㅇ00-----/",
-                                    cursor.getInt(cursor.getColumnIndex("m_profile")).toString()
-                                )
-                                profileImage.setImageResource(cursor.getInt(cursor.getColumnIndex("m_profile")))
+                                profileVal = cursor.getInt(cursor.getColumnIndex("m_profile"))
+                            }else{
+                                profileVal =  R.drawable.ic_baseline_account_circle_24
                             }
+                        }
+                        else{
+                              profileVal = R.drawable.ic_baseline_account_circle_24
                         }
                     }
                 }
@@ -119,18 +121,13 @@ class PersonalFragment : Fragment() {
         user_name.text = str_name
         user_id.text = str_id
         user_job.text = str_job + str_univ
+        profileImage.setImageResource(profileVal)
 
 
         // 프로필 변경
         profileBtn.setOnClickListener {
             val intent = Intent(activity, SetProfileActivity::class.java)
             startActivity(intent)
-            // 프로필 변경 후 넘어온 인자 값(사진)이 있으면 설정해준다.
-            var profile = arguments?.getInt("profile")
-            if (profile != null) {
-                Log.d("/----ㅇ-----/", profile.toString())
-                profileImage.setImageResource(profile)
-            }
         }
 
 
@@ -147,19 +144,6 @@ class PersonalFragment : Fragment() {
                 tab.customView = getTabView(position)
             }.attach()
 
-
-        /*
-            // 당겨서 새로고침
-            swipeRefreshLayout = v_personal.findViewById(R.id.WswipeRefresh)
-            swipeRefreshLayout.setOnRefreshListener {
-                val ft: FragmentTransaction = fragmentManager!!.beginTransaction()
-                ft.detach(this)
-                ft.attach(this)
-                ft.commit()
-                swipeRefreshLayout.isRefreshing = false
-            }
-
-         */
 
 
             return v_personal
@@ -315,23 +299,50 @@ class PersonalFragment : Fragment() {
 
             return super.onOptionsItemSelected(item)
         }
-/*
+
+
+    // 직업 정보 혹은 프로필이 변경된 경우 새로고침되도록 한다.
     override fun onResume() {
         super.onResume()
-        // 팀 추가 버튼으로 팀을 생성하고 다시 돌아왔을 때, 추가한 팀에 대한 정보가 바로 리스트에 적용되도록
-        // DB에 있는 레코드 수와 현재 리스트 Item 수를 비교해 레코드 수가 많으면 현재 Fragment를 새로고침 하도록 한다.
+
+        //현재 로그인 중인 사용자 지정
+        var context: Context = requireContext()
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
-        val cursor: Cursor
+        val cursor1: Cursor
+        val cursor2: Cursor
+
+
+
         try {
-            if(sqlitedb!=null){
-                if(str_search!=""){
-                    cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+tc_num+"';", null)
-                }else{
-                    cursor=sqlitedb.rawQuery("SELECT * FROM team ORDER BY t_end_date DESC;", null)
+            if (sqlitedb != null) {
+
+                // 직업 정보 가져오기
+                cursor1 = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
+                cursor1.moveToFirst()
+                if(str_job!= null) {
+                    now_job = cursor1.getString(cursor1.getColumnIndex("m_job"))
                 }
-                select_num=cursor.count
-                cursor.close()
+                else{
+                    now_job = cursor1.getString(cursor1.getColumnIndex("m_job"))
+                    str_job = cursor1.getString(cursor1.getColumnIndex("m_job"))
+                }
+
+
+                // 프로필 정보 가져오기
+                cursor2 = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
+                cursor2.moveToFirst()
+                if(profileVal != -1){
+                    now_profile = cursor2.getInt(cursor2.getColumnIndex("m_profile"))
+                }
+                else{
+                    profileVal = cursor2.getInt(cursor2.getColumnIndex("m_profile"))
+                    now_profile =  cursor2.getInt(cursor2.getColumnIndex("m_profile"))
+                }
+
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())
@@ -340,14 +351,16 @@ class PersonalFragment : Fragment() {
             dbManager.close()
         }
 
-        if((search_num+1)<=select_num){
+        if(str_job != now_job || now_profile != profileVal){
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
             ft.attach(this)
             ft.commit()
         }
     }
-*/
+
+
+
 
 
     }

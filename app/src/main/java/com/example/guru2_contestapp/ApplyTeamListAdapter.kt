@@ -48,10 +48,9 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
         holder.needPartTextivew.text = applyTeamList.get(position).t_need_part
 
 
-
-        /////////////
-
-
+        // 팀 상태에 따라 조정 필요
+        var apply_state : Int = applyTeamList.get(position).state
+        var str_apply_state : String =""
 
         // 마감일과 현재의 날짜차이 계산
         val today= Calendar.getInstance().apply{
@@ -63,7 +62,6 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
 
         val dateString= holder.endDateTextView.text.toString()
         val token=dateString.split(".")
-        //Log.d("----------",token[0])
         val deadline= Calendar.getInstance().apply {
             set(Calendar.YEAR, token[0].toInt())
             set(Calendar.MONTH, (token[1].toInt())-1)
@@ -76,19 +74,19 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
 
         val calcDate=(deadline-today) / (24*60*60*1000)
 
+
         // 마감일이 1일 남은 경우 -> 글자색 변경
-        if(calcDate.toInt()<=1){
+        if(calcDate.toInt()<=1) {
             holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
-            //magam.setTextColor(ContextCompat.getColor(context, R.color.impend))
         }
 
         // 마감일이 지난 경우 -> 날짜 TextView 숨김
         if(calcDate.toInt()<0){
             holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
             holder.endDateTextView.text="모집 종료"
-            //magam.visibility=View.GONE
-           //view.setBackgroundColor(ContextCompat.getColor(context, R.color.non_click))
-
+            str_apply_state = "탈락"
+            holder.apply_state.text = str_apply_state
+            apply_state = -1
 
             // 모집종료면 자동으로  팀원 탈락됨.
             lateinit var dbManager: DBManager
@@ -103,38 +101,13 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
         }
 
         // 남은 인원이 1명 -> 글자색 변경
-
         val possible_num = applyTeamList.get(position).t_total_num - applyTeamList.get(position).t_now_num
         if(possible_num==1){
             holder.nowNumTextView.setTextColor(Color.parseColor("#F15F5F"))
             holder.slash.setTextColor(Color.parseColor("#F15F5F"))
             holder.totalNumTextView.setTextColor(Color.parseColor("#F15F5F"))
         }
-/*
-        // 남은 인원이 0명 -> 모집 종료, 글자색 변경
-        else if (possible_num==0){
-            holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
-            holder.endDateTextView.text="모집 종료"
 
-            // 인원이 꽉 차 모집종료면 자동으로  팀원 탈락됨.
-            lateinit var dbManager: DBManager
-            lateinit var sqlitedb: SQLiteDatabase
-
-            dbManager = DBManager(holder.itemView.context, "ContestAppDB", null, 1)
-            sqlitedb = dbManager.writableDatabase
-
-            sqlitedb.execSQL("UPDATE TeamManage SET state = -1 WHERE m_id = '" + USER_ID + "'  AND state >= 0  AND state < 2;")
-            sqlitedb.close()
-
-            //magam.visibility=View.GONE
-        }
-*/
-
-
-
-        // 팀 상태에 따라 조정 필요
-        val apply_state : Int = applyTeamList.get(position).state
-        var str_apply_state : String =""
 
         when(apply_state){
             -1 -> {
@@ -162,8 +135,6 @@ class ApplyTeamListAdapter (val applyTeamList :ArrayList<ApplyTeamItem>): Recycl
 
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
-
-
 
 
     }
