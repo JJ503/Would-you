@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -11,6 +12,7 @@ import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import java.lang.Exception
@@ -67,6 +69,7 @@ class BuildTeamActivity : AppCompatActivity() {
         personNumET=findViewById(R.id.WpersonNumEditText)
         needPartET=findViewById(R.id.WneedPartEditText)
         teamIntroET=findViewById(R.id.WteamIntroEditText)
+        CloseKeyboard()
 
         calenderView.visibility= View.GONE
 
@@ -129,7 +132,7 @@ class BuildTeamActivity : AppCompatActivity() {
 
         // 팀 생성 완료 버튼 클릭하면 누락된 정보 없는지 확인하고 없으면 DB에 정보 넣고, 액티비티 종료
         reg_finishBtn.setOnClickListener {
-
+            CloseKeyboard()
             fun calcDate(): Int {
                 // 오늘 날짜, 캘린더에서 선택한 날짜 차이 계산
                 val today= Calendar.getInstance().apply{
@@ -255,6 +258,7 @@ class BuildTeamActivity : AppCompatActivity() {
                 this.finish()
             }
         }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -263,5 +267,18 @@ class BuildTeamActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+
+    fun CloseKeyboard()
+    {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
@@ -12,6 +13,7 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 
@@ -65,6 +67,7 @@ class ResumeActivity : AppCompatActivity() {
         jobTextView=findViewById(R.id.WjobTextView)
         editBtn=findViewById(R.id.WprofileEditButton)
         profileImg=findViewById(R.id.WimageView)
+        CloseKeyboard()
 
 
         // 상단 텍스트 뷰(공모전과 팀 이름) 내용을 이전 페이지에서 온 intent 값으로 설정
@@ -129,7 +132,7 @@ class ResumeActivity : AppCompatActivity() {
         // 빈칸 없는 경우 입력한 정보를 DB에 값을 입력하고 액티비티 종료
         submitBtn.setOnClickListener {
             val builder= AlertDialog.Builder(this)
-
+            this.CloseKeyboard()
             if(hopeET.text.toString()==""){
                 builder.setMessage("희망 분야를 입력해 주세요.")
                 //builder.setIcon(R.)
@@ -194,5 +197,15 @@ class ResumeActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun CloseKeyboard() {
+        var view = this.currentFocus
+
+        if(view != null)
+        {
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }
