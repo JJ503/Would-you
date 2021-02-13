@@ -105,23 +105,31 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
 
         holder.btnAccept.setOnClickListener {
             try {
-                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
-                cursor.moveToFirst()
+                cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${itemList.get(position).t_num};", null)
+                var rest_num = cursor.getInt(cursor.getColumnIndex("t_total_num")) - cursor.getInt(cursor.getColumnIndex("t_now_num"))
 
-                if (cursor.getCount() == 1){
-                    sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
-                    holder.announText.text = "수락한 신청자입니다. 취소 하시겠습니까?"
-                    holder.btnCancel.text = "수락 취소"
-                    holder.announText.visibility = VISIBLE
-                    holder.btnCancel.visibility = VISIBLE
-                    holder.btnInfo2.visibility = VISIBLE
+                if (rest_num > 0){
+                    cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
+                    cursor.moveToFirst()
 
-                    holder.btnInfo.visibility = GONE
-                    holder.btnAccept.visibility = GONE
-                    holder.btnRefuse.visibility = GONE
+                    if (cursor.getCount() == 1){
+                        sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
+                        holder.announText.text = "수락한 신청자입니다. 취소 하시겠습니까?"
+                        holder.btnCancel.text = "수락 취소"
+                        holder.announText.visibility = VISIBLE
+                        holder.btnCancel.visibility = VISIBLE
+                        holder.btnInfo2.visibility = VISIBLE
+
+                        holder.btnInfo.visibility = GONE
+                        holder.btnAccept.visibility = GONE
+                        holder.btnRefuse.visibility = GONE
+                    } else {
+                        Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
                 }
+
             } catch(e: Exception){
                 Log.e("Error", e.message.toString())
             } finally{

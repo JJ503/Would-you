@@ -70,17 +70,25 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
 
         holder.btnAccept.setOnClickListener {
             try {
-                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
-                cursor.moveToFirst()
+                cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${itemList.get(position).t_num};", null)
+                var rest_num = cursor.getInt(cursor.getColumnIndex("t_total_num")) - cursor.getInt(cursor.getColumnIndex("t_now_num"))
 
-                if (cursor.getCount() == 1){
-                    sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
-                    holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
-                    holder.btnAccept.visibility = GONE
-                    holder.btnRefuse.visibility = GONE
+                if (rest_num > 0){
+                    cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
+                    cursor.moveToFirst()
+
+                    if (cursor.getCount() == 1){
+                        sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
+                        holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
+                        holder.btnAccept.visibility = GONE
+                        holder.btnRefuse.visibility = GONE
+                    } else {
+                        Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, "수락 가능 인원이 꽉찼습니다.", Toast.LENGTH_SHORT).show()
                 }
+
             } catch(e: Exception){
                 Log.e("Error", e.message.toString())
             } finally{

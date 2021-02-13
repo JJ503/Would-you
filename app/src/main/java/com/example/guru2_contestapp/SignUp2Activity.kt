@@ -73,12 +73,17 @@ class SignUp2Activity : AppCompatActivity() {
                     cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_tel = '${input_phone}';", null)
                     cursor.moveToFirst()
 
-                    if (cursor.getCount() != 1){
-                        overlap2 = true
-                        Toast.makeText(this, "사용할 수 있는 전화번호입니다.", Toast.LENGTH_SHORT).show()
-                    } else{
-                        Toast.makeText(this, "이미 가입한 전화번호입니다.", Toast.LENGTH_SHORT).show()
+                    if (phoneEditText.text.toString().length < 11){
+                        Toast.makeText(this, "전화번호를 확인해 주세요", Toast.LENGTH_SHORT).show()
                         phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
+                    } else {
+                        if (cursor.getCount() != 1){
+                            overlap2 = true
+                            Toast.makeText(this, "사용할 수 있는 전화번호입니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "이미 가입한 전화번호입니다.", Toast.LENGTH_SHORT).show()
+                            phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
+                        }
                     }
                 }
             } catch (e: Exception){
@@ -113,9 +118,6 @@ class SignUp2Activity : AppCompatActivity() {
                 Toast.makeText(this, "메일의 도메인 주소를 선택해 주세요", Toast.LENGTH_SHORT).show()
             } else if(overlap2 == false) {
                 Toast.makeText(this, "중복 확인 버튼을 눌러 주세요", Toast.LENGTH_SHORT).show()
-            } else if (phoneEditText.text.toString().length < 11){
-                Toast.makeText(this, "전화번호를 확인해 주세요", Toast.LENGTH_SHORT).show()
-                phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
             } else if (birthEditText.text.toString().length < 6){
                 Toast.makeText(this, " 생년월일을 확인해 주세요", Toast.LENGTH_SHORT).show()
                 birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))

@@ -220,10 +220,21 @@ class ApplicantListActivity : AppCompatActivity() {
             val t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
 
             dbManager = DBManager(this, "ContestAppDB", null, 1)
-            sqlitedb = dbManager.readableDatabase
+            sqlitedb = dbManager.writableDatabase
 
-            //var cursor : Cursor
-            //cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE ", null)
+            var cursor : Cursor
+            cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num};", null)
+
+            if (cursor.getCount() == 1){
+                sqlitedb.execSQL("UPDATE team SET t_complete = 1 WHERE t_num = ${t_num};")
+
+                sqlitedb.execSQL("UPDATE teamManage SET state = 5 WHERE t_num = ${t_num} AND state = 1;")
+
+                sqlitedb.execSQL("UPDATE teamManage SET state = -1 WHERE t_num = ${t_num} AND state = 0;")
+
+            } else {
+                Toast.makeText(this, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
