@@ -315,8 +315,17 @@ class HomeFragment : Fragment() {
             if (WishListAdapter != null) {
                 WishListAdapter.notifyDataSetChanged()
             }
+
+            myContestRecycler = view.findViewById(R.id.JmyContestRecycler)
+            myContestRecycler.setHasFixedSize(true)
             myContestRecycler.adapter = WishListAdapter(myTeamList)
+
+            recomTeamtRecycler = view.findViewById(R.id.JrecomTeamtRecycler)
+            recomTeamtRecycler.setHasFixedSize(true)
             recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
+
+            recomContestRecycler = view.findViewById(R.id.JrecomContestRecycler)
+            recomContestRecycler.setHasFixedSize(true)
             recomContestRecycler.adapter = WishListAdapter(recomConList)
 
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
