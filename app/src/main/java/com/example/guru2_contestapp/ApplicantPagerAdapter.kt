@@ -106,6 +106,7 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
         holder.btnAccept.setOnClickListener {
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${itemList.get(position).t_num};", null)
+                cursor.moveToFirst()
                 var rest_num = cursor.getInt(cursor.getColumnIndex("t_total_num")) - cursor.getInt(cursor.getColumnIndex("t_now_num"))
 
                 if (rest_num > 0){

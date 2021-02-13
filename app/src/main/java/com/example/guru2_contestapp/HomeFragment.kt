@@ -140,12 +140,11 @@ class HomeFragment : Fragment() {
                                 con_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = ${c_num};", null)
 
                                 if (con_cursor.getCount() == 1) {
-                                    con_cursor.moveToNext()
+                                    con_cursor.moveToFirst()
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
                                     Log.d("c_photo",c_photo)
                                     myTeamList.add(WishItem(t_num, "팀장입니다", c_photo, t_name))
-                                    Log.d("==== my team ===", t_num.toString())
                                 }
                             }
                         }
@@ -183,7 +182,7 @@ class HomeFragment : Fragment() {
                                 con_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = ${c_num};", null)
 
                                 if (con_cursor.getCount() == 1) {
-                                    con_cursor.moveToNext()
+                                    con_cursor.moveToFirst()
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
                                     myTeamList.add(WishItem(t_num, state, c_photo, t_name))

@@ -84,6 +84,9 @@ class ContestDetailActivity : AppCompatActivity() {
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
+
+        var recTeamList : ArrayList<WishItem> = ArrayList()
+
         var cursor: Cursor
         try {
             if(sqlitedb!=null){
@@ -101,13 +104,39 @@ class ContestDetailActivity : AppCompatActivity() {
                         str_address=cursor.getString(cursor.getColumnIndex("c_address"))
                     }
                 }
+
+                // 해당 공모전에 대한 신청 가능한 팀 추천
+                cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num} ORDER BY random();", null)
+                Log.d("=== cursor ===", c_num.toString())
+
+                if (cursor.getCount() > 0) {
+                    while (cursor.moveToNext()) {
+                        var t_end_date = cursor.getString(cursor.getColumnIndex("t_end_date"))
+                        var teamDeadline = checkDays(t_end_date)
+
+                        if (teamDeadline < 0) {
+                            // 모집 기간이 종료된 경우 리스트에 추가 x
+
+                        } else {
+                            // 모집 기간 내에 있는 추천 공모전 팀
+                            var t_num = cursor.getInt(cursor.getColumnIndex("t_num"))
+                            var t_name = cursor.getString(cursor.getColumnIndex("t_name"))
+
+                            var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
+
+                            // 추천 팀 리스트에 추가
+                            recTeamList.add(WishItem(t_num, teamDeadlineText, str_photo, t_name))
+                            Log.d("=== add ===", "success")
+                        }
+                    }
+                }
                 cursor.close()
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())
         } finally {
-            sqlitedb.close()
-            dbManager.close()
+            dbManager = DBManager(this, "ContestAppDB", null, 1)
+            sqlitedb = dbManager.readableDatabase
         }
 
         var photo_src=this.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
@@ -118,6 +147,9 @@ class ContestDetailActivity : AppCompatActivity() {
         start.text = str_start
         end.text = str_end
         detail.text= str_detail
+
+        contestRecyclerList.setHasFixedSize(true)
+        contestRecyclerList.adapter = WishListAdapter(recTeamList)
 
 
         // 현재 로그인 된 계정에 대한 wishlist 정보를 가져와 해당 공모전에 state가 1이면 노란별,
@@ -213,41 +245,7 @@ class ContestDetailActivity : AppCompatActivity() {
             }
         }
 
-        var recTeamList : ArrayList<WishItem> = ArrayList()
 
-        // 해당 공모전에 대한 신청 가능한 팀 추천
-        try {
-            cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '${c_num}' ORDER BY random();", null)
-
-            if (cursor.getCount() > 0) {
-                while(cursor.moveToNext()){
-                    var t_end_date = cursor.getString(cursor.getColumnIndex("t_end_date"))
-                    var teamDeadline = checkDays(t_end_date)
-
-                    if (teamDeadline < 0) {
-                        // 모집 기간이 종료된 경우 리스트에 추가 x
-
-                    } else {
-                        // 모집 기간 내에 있는 추천 공모전 팀
-                        var t_num = cursor.getInt(cursor.getColumnIndex("t_num"))
-                        var t_name = cursor.getString(cursor.getColumnIndex("t_name"))
-
-                        var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
-
-                        // 추천 팀 리스트에 추가
-                        recTeamList.add(WishItem(t_num, teamDeadlineText, str_photo, t_name))
-                    }
-                }
-            }
-
-        } catch (e: Exception){
-            Log.e("Error", e.message.toString())
-        } finally {
-            sqlitedb.close()
-        }
-
-        contestRecyclerList.setHasFixedSize(true)
-        contestRecyclerList.adapter = WishListAdapter(recTeamList)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
