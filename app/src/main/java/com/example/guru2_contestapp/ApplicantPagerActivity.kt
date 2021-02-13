@@ -65,13 +65,12 @@ class ApplicantPagerActivity : AppCompatActivity() {
 
             // 완료된 팀 : 팀원만 보임
             if (t_complete == 1){
-                var tm_cursor : Cursor
-                tm_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state = 5", null)
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state = 5", null)
 
-                if (tm_cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
                     t_endStatus = 5
 
-                    var m_id = tm_cursor.getString(tm_cursor.getColumnIndex("m_id")).toString()
+                    var m_id = cursor.getString(cursor.getColumnIndex("m_id")).toString()
 
                     var m_cursor: Cursor
                     m_cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${m_id}'", null)
@@ -95,9 +94,6 @@ class ApplicantPagerActivity : AppCompatActivity() {
                     var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
 
                     pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
-
-                } else {
-                    Toast.makeText(this, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
