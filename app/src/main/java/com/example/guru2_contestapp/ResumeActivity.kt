@@ -48,8 +48,7 @@ class ResumeActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resume)
-
-
+        // 액션바 설정
         supportActionBar?.elevation = 3f
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_resume)+"</font>")
@@ -71,18 +70,19 @@ class ResumeActivity : AppCompatActivity() {
         val it_name=intent.getStringExtra("intent_t_name")
         info.text=it_name+"("+ic_name+")"
 
-        // DB에서 팀 이름 가지고 팀 번호를 찾아 t_num에 저장
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
         try {
             if(sqlitedb!=null){
+                // DB에서 팀 이름 가지고 팀 번호를 찾아 t_num에 저장
                 cursor=sqlitedb.rawQuery("SELECT t_num FROM team WHERE t_name = '"+it_name+"';", null)
                 if(cursor.count!=0){
                     if(cursor.moveToNext()){
                         t_num=cursor.getInt(cursor.getColumnIndex("t_num"))
                     }
                 }
+                // DB에서 이름, 나이, 직업, 프로필 사진을 가져옴
                 cursor=sqlitedb.rawQuery("SELECT m_name, m_year, m_job, m_profile FROM member WHERE m_id = '"+USER_ID+"';", null)
                 if(cursor.count!=0){
                     if(cursor.moveToNext()){
@@ -101,6 +101,7 @@ class ResumeActivity : AppCompatActivity() {
             dbManager.close()
         }
 
+        // DB에서 생년을 가져와 나이 계산
         val this_year = Calendar.getInstance().get(Calendar.YEAR)
         var birth_year = 0
         if (str_year.toInt() > this_year){

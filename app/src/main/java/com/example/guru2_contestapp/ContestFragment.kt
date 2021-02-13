@@ -1,6 +1,5 @@
 package com.example.guru2_contestapp
 
-import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -41,7 +40,7 @@ class ContestFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        // 공모전 목록 배열
         contestListArray= arrayListOf<ContestListViewItem>()
         val v_contest = inflater.inflate(R.layout.fragment_contest, null)
 
@@ -64,7 +63,6 @@ class ContestFragment : Fragment() {
             ft.attach(this)
             ft.commit()
         }
-
         contestSearchArray=ArrayList<String>()
 
         //공모전 목록 가져와 자동완성 목록에 추가
@@ -148,18 +146,6 @@ class ContestFragment : Fragment() {
             ft.commit()
             swipeRefreshLayout.isRefreshing=false
         }
-
-
-        /*
-        // adapter로 이동시킴 -JJ-
-        contestListView=v_contest.findViewById<ListView>(R.id.WcontestListView)
-        contestListView.setOnItemClickListener { parent, view, position, id ->
-            activity?.let {
-                val intent= Intent(activity, ContestDetailActivity::class.java)
-                intent.putExtra("intent_c_num", contestListArray[position].num)
-                startActivity(intent)
-            }
-        }*/
 
         // 검색 결과 수 TextView 값 = Item 수
         searchNum=v_contest.findViewById(R.id.WsearchNumTextView)

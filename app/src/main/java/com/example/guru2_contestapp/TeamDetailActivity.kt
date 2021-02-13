@@ -40,7 +40,6 @@ class TeamDetailActivity : AppCompatActivity() {
     lateinit var commentListView: ListView
     lateinit var commentRegET: EditText
     lateinit var commentRegBtn: Button
-    //lateinit var 사진?
     lateinit var cm_name: TextView
     lateinit var cm_date: TextView
     lateinit var cm_detail: TextView
@@ -70,7 +69,7 @@ class TeamDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_team_detail)
-
+        // 액션바 설정
         supportActionBar?.elevation = 3f
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_teamDetail)+"</font>")

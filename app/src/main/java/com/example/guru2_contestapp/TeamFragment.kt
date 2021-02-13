@@ -203,19 +203,6 @@ class TeamFragment : Fragment() {
             swipeRefreshLayout.isRefreshing=false
         }
 
-        /*
-        // adapter로 이동시킴 -JJ-
-        // 팀 목록에서 팀을 선택하면 intent로 팀 번호를 팀 상세 페이지로 넘긴다.
-        teamListView.setOnItemClickListener { parent, view, position, id ->
-            activity?.let {
-                val intent= Intent(activity, TeamDetailActivity::class.java)
-                intent.putExtra("intent_t_num", teamListArray[position].teamNum)
-                startActivity(intent)
-            }
-        }
-
-         */
-
         // 팀 추가 버튼(FloatingActionButton)을 누르면 팀 생성페이지로 이동
         addTeamFAb.setOnClickListener {
             val intent= Intent(activity, BuildTeamActivity::class.java)
