@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         signUpText.setOnClickListener {
             var pref = this.getSharedPreferences("join", 0)
             var editor = pref.edit()
+            editor.remove("JOIN_PROFILE")
             editor.remove("JOIN_NAME")
             editor.remove("JOIN_ID")
             editor.remove("JOIN_PASSWORD")

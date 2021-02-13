@@ -134,7 +134,7 @@ class SignUp3Activity : AppCompatActivity() {
 
                 try {
                     if (sqlitedb != null) {
-                        sqlitedb.execSQL("INSERT INTO member VALUES ('${name}', '${id}', '${pw}', ${profile}, '${phone}', '${year}', '${month}', '${date}', '${user_email}', '${job}', '${univer}', '${area}', '${interest}');")
+                        sqlitedb.execSQL("INSERT INTO member VALUES ('${name}', '${id}', '${pw}', '${profile}', '${phone}', '${year}', '${month}', '${date}', '${user_email}', '${job}', '${univer}', '${area}', '${interest}');")
                         Toast.makeText(this, "회원가입에 성공했습니다", Toast.LENGTH_SHORT).show()
 
                         editor.remove("JOIN_NAME")
