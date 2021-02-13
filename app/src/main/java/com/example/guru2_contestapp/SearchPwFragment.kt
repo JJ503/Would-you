@@ -66,6 +66,7 @@ class SearchPwFragment : Fragment() {
                                 "임시 비밀번호로 로그인하시고 비밀번호를 변경해주세요."
 
                         builder.setTitle("비밀번호 찾기")
+                        builder.setIcon(R.drawable.logo_2_04)
                         builder.setMessage(dialogBody)
                         builder.setPositiveButton("확인", null)
                         builder.show()

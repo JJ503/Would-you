@@ -1,14 +1,20 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
 class SignUp2Activity : AppCompatActivity() {
@@ -26,12 +32,17 @@ class SignUp2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up2)
 
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_signUp)+"</font>"))
+
         phoneEditText = findViewById<EditText>(R.id.JphoneEditTextText)
         overlapButton2 = findViewById<Button>(R.id.JoverlapButton2)
         birthEditText = findViewById<EditText>(R.id.JbirthEditText)
         emailEditText = findViewById<EditText>(R.id.JemailEditText)
         emailSpinner = findViewById<Spinner>(R.id.JemailSpinner)
         nextButton2 = findViewById<Button>(R.id.JnextButton2)
+
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
@@ -41,9 +52,11 @@ class SignUp2Activity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
 
             }
+
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
             }
@@ -68,7 +81,7 @@ class SignUp2Activity : AppCompatActivity() {
                         phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
                     }
                 }
-            } catch(e: Exception){
+            } catch (e: Exception){
                 Log.e("Error", e.message.toString())
             } finally{
                 sqlitedb.close()
@@ -79,15 +92,15 @@ class SignUp2Activity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
 
             }
+
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
             }
         })
-
-
 
         nextButton2.setOnClickListener {
             if (phoneEditText.text.toString() == ""){
@@ -108,9 +121,9 @@ class SignUp2Activity : AppCompatActivity() {
                 birthEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.error))
             } else {
                 saveData(phoneEditText.text.toString(),
-                    birthEditText.text.toString(),
-                    emailEditText.text.toString(),
-                    emailSpinner.selectedItem.toString())
+                        birthEditText.text.toString(),
+                        emailEditText.text.toString(),
+                        emailSpinner.selectedItem.toString())
 
                 val intent = Intent(this, SignUp3Activity::class.java)
                 startActivity(intent)
@@ -121,9 +134,11 @@ class SignUp2Activity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
 
             }
+
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
+
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 phoneEditText.setTextColor(ContextCompat.getColor(this@SignUp2Activity, R.color.normal))
             }

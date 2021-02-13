@@ -3,8 +3,11 @@ package com.example.guru2_contestapp
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
@@ -29,6 +32,10 @@ class ApplicantPagerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_applicant_pager)
+
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_applicantPager)+"</font>"))
 
         pagerArray = ArrayList()
 

@@ -1,14 +1,20 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
 @Suppress("DEPRECATION")
@@ -29,7 +35,10 @@ class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        setTitle("회원가입")
+
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_signUp)+"</font>"))
 
         profileImage = findViewById(R.id.JprofileImage)
         profileChangeText = findViewById(R.id.JprofileChangeTextView)
@@ -41,17 +50,19 @@ class SignUpActivity : AppCompatActivity() {
 
         nextButton = findViewById<Button>(R.id.JnextButton)
 
+
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
         loadData()
 
         var profile : Int ?= null
         if (intent.hasExtra("profile")) {
-            var profile = intent.getIntExtra("profile", -1)
-            Log.d("image resorce", profile.toString())
+            profile = intent.getIntExtra("profile", -1)
+            Log.d("=== Image Resource ===", profile.toString())
             profileImage.setImageResource(profile)
         } else {
-            // 기본 이미지
+            profile = 2131230836
+            profileImage.setImageResource(profile)
         }
 
 
@@ -149,6 +160,8 @@ class SignUpActivity : AppCompatActivity() {
 
         if (profile != null) {
             editor.putInt("JOIN_PROFILE", profile).apply()
+        } else {
+            editor.putInt("JOIN_PROFILE", 2131230836).apply()  // 기본 이미지
         }
         editor.putString("JOIN_NAME", name).apply()
         editor.putString("JOIN_ID", id).apply()

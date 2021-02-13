@@ -44,6 +44,7 @@ class SearchIdFragment : Fragment() {
 
                     if (cursor != null){
                         builder.setTitle("아이디 찾기")
+                        builder.setIcon(R.drawable.logo_2_04)
                         var message = cursor.getString(cursor.getColumnIndex("m_name")).toString() + "님의 아이디는 " + cursor.getString(cursor.getColumnIndex("m_id")).toString() + " 입니다"
                         builder.setMessage(message)
                         builder.setPositiveButton("확인", null)

@@ -1,15 +1,20 @@
 package com.example.guru2_contestapp
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
@@ -25,12 +30,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // actionbar 설정해주기
-        //getSupportActionBar()?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#FFFFFFFF")))
-        getSupportActionBar()?.setTitle("로고와 로그인")
-        getSupportActionBar()?.setIcon(R.drawable.logo_2_04)
-        getSupportActionBar()?.setDisplayUseLogoEnabled(true)
-        getSupportActionBar()?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.app_title)+"</font>"))
 
         idEditText = findViewById(R.id.JidEditText)
         pwEditText = findViewById(R.id.JpwEditText)
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         loginButton = findViewById<Button>(R.id.JloginButton)
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
+
 
         signUpText.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this, "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } catch(e: Exception){
+            } catch (e: Exception){
                 Log.e("Error", e.message.toString())
             } finally{
                 sqlitedb.close()
@@ -102,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if(System.currentTimeMillis() - lastTimeBackPressed >= 1500){
             lastTimeBackPressed = System.currentTimeMillis()
-            Toast.makeText(this,"'뒤로' 버튼을 한번 더 누르시면 종료됩니다.",Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_LONG).show()
         }
         else {
             finishAffinity();
@@ -110,5 +113,4 @@ class MainActivity : AppCompatActivity() {
             System.exit(0)
         }
     }
-
 }

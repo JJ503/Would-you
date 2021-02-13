@@ -3,6 +3,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="app_title">Would You - 우주</string>
+    <string name="app_subTitle">우주</string>
+    <string name="action_signUp">회원가입</string>
+    <string name="action_applicantList">신청자 목록</string>
+    <string name="action_applicantPager">신청자 정보</string>
+
     <!-- fragment_Personal(개인페이지)의 메뉴 아이템 -->
     <string name="action_logout">로그아웃</string>
     <string name="action_developerSupport">개발자 문의</string>
