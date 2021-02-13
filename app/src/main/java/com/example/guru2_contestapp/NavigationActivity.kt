@@ -20,9 +20,9 @@ class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
-        supportActionBar?.elevation = 3f
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-        supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.app_name)+"</font>"))
+        supportActionBar?.setIcon(R.drawable.logo_2_04)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         bottomNavigation=findViewById(R.id.WbottomNavigationView)
         initNavigationBar()
