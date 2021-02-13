@@ -21,7 +21,8 @@ class SetProfileActivity : AppCompatActivity() {
         supportActionBar?.elevation = 3f
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_setProfile)+"</font>")
-    
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
 
 
         //현재 로그인 중인 사용자 지정

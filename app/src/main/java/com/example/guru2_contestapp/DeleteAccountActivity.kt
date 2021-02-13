@@ -25,7 +25,8 @@ class DeleteAccountActivity : AppCompatActivity() {
         supportActionBar?.elevation = 3f
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_deleteAccount)+"</font>")
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
 
         val userPwEdit: EditText = findViewById(R.id.userPwEdit)
         val checkBtn: Button = findViewById(R.id.checkBtn)
