@@ -2,8 +2,11 @@ package com.example.guru2_contestapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 
 class NavigationActivity : AppCompatActivity() {
 
@@ -55,5 +58,4 @@ class NavigationActivity : AppCompatActivity() {
             .replace(R.id.frameLayoutContainer, fragment)
             .commit()
     }
-
 }

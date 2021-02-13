@@ -44,13 +44,18 @@ class SearchIdFragment : Fragment() {
 
                     if (cursor != null){
                         builder.setTitle("아이디 찾기")
-                        builder.setMessage(cursor.getString(cursor.getColumnIndex("m_id")))
+                        var message = cursor.getString(cursor.getColumnIndex("m_name")).toString() + "님의 아이디는 " + cursor.getString(cursor.getColumnIndex("m_id")).toString() + " 입니다"
+                        builder.setMessage(message)
                         builder.setPositiveButton("확인", null)
                         builder.show()
                     } else{
                         Toast.makeText(activity, "해당 계정은 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
+
+                searchnameEditText.setText("")
+                searchtelEditText.setText("")
+
             } catch(e: Exception){
                 Log.e("Error", e.message.toString())
             } finally{

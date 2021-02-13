@@ -44,8 +44,8 @@ class HomeFragment : Fragment() {
     lateinit var recomConList : ArrayList<WishItem>    // 추천 공모전 리스트
     lateinit var recomTeamList : ArrayList<WishItem>   // 추천 팀 리스트
 
-    //lateinit var restConList : ArrayList<WishItem>     // 추천 외의 공모전 리스트
-    //lateinit var restTeamList : ArrayList<WishItem>    // 추천 외의 팀 리스트
+    lateinit var allConList : ArrayList<WishItem>     // 모든 추천 외의 공모전 리스트
+    lateinit var allTeamList : ArrayList<WishItem>    // 모든 추천 외의 팀 리스트
 
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
@@ -61,16 +61,14 @@ class HomeFragment : Fragment() {
 
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        //val intent = Intent(this, MainActivity::class.java)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        //startActivity(intent)
-
         var context: Context = requireContext()
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
 
         myTeamList = ArrayList()
         recomConList = ArrayList()
         recomTeamList = ArrayList()
+        allConList = ArrayList()
+        allTeamList = ArrayList()
 
         userName = view.findViewById(R.id.userName)
         joinTeam = view.findViewById(R.id.JjoinTeam)
@@ -103,7 +101,7 @@ class HomeFragment : Fragment() {
 
                 // user가 지원한 공모전
                 var appli_cursor: Cursor
-                appli_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 0 OR state = 1;", null)
+                appli_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 0 OR state = 1 OR state = -1;", null)
                 applicantTeam.text = appli_cursor.getCount().toString() + " 개"
 
 
@@ -180,7 +178,7 @@ class HomeFragment : Fragment() {
 
                 // user가 관심있어 하는 공모전
                 var recomContest_cursor: Cursor
-                recomContest_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_section = '${m_interest}';", null)
+                recomContest_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_section = '${m_interest}' ORDER BY random();", null)
 
                 // user가 관심있어 하는 공모전 팀
                 lateinit var recomTeam_cursor: Cursor
@@ -202,7 +200,7 @@ class HomeFragment : Fragment() {
                             var conDeadlineText = "모집 " + conDeadline.toString() + "일 전"
 
                             // user가 관심있어 하는 공모전 중 신청 가능한 팀
-                            recomTeam_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num};", null)
+                            recomTeam_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num} ORDER BY random();", null)
 
                             while (recomTeam_cursor.moveToNext()) {
                                 t_end_date = recomTeam_cursor.getString(recomTeam_cursor.getColumnIndex("t_end_date"))
@@ -220,20 +218,20 @@ class HomeFragment : Fragment() {
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 팀 리스트에 추가
-                                    recomTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                    allTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
                                 }
                             }
 
                             // 추천 공모전 리스트에 추가
-                            recomConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
+                            allConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
                         }
                     }
                 }
 
-
+                var rest_num = 5 - recomContest_cursor.getCount()
                 // usr의 관심 외의 공모전 (추천 공모전이 5개 미만일 때 필요)
                 var restContest_cursor : Cursor
-                restContest_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_section != '${m_interest}';", null)
+                restContest_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_section != '${m_interest}' ORDER BY random();", null)
 
                 // user가 관심있어 하는 공모전외의 공모전 중 신청 가능한 팀
                 lateinit var restTeam_cursor: Cursor
@@ -255,7 +253,7 @@ class HomeFragment : Fragment() {
                             var conDeadlineText = "모집 " + conDeadline.toString() + "일 전"
 
                             // user가 관심있어 하는 공모전외의 공모전 중 신청 가능한 팀
-                            restTeam_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num};", null)
+                            restTeam_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num} ORDER BY random();", null)
 
                             while (restTeam_cursor.moveToNext()) {
                                 t_end_date = restTeam_cursor.getString(restTeam_cursor.getColumnIndex("t_end_date"))
@@ -273,13 +271,26 @@ class HomeFragment : Fragment() {
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 외의 남은 팀 리스트에 추가
-                                    recomTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
+                                    allTeamList.add(WishItem(t_num, teamDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, t_name))
                                 }
                             }
 
                             // 추천 외의 남은 공모전 리스트에 추가
-                            recomConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
+                            allConList.add(WishItem(c_num, conDeadlineText, R.drawable.ic_baseline_add_photo_alternate_24, c_name))
                         }
+                    }
+                }
+
+
+                var conNum = allConList.size
+                var teamNum = allTeamList.size
+                for (i in 0..4){
+                    if (i < conNum){
+                        recomConList.add(allConList[i])
+                    }
+
+                    if (i < teamNum){
+                        recomTeamList.add(allTeamList[i])
                     }
                 }
 
@@ -304,7 +315,7 @@ class HomeFragment : Fragment() {
             if (WishListAdapter != null) {
                 WishListAdapter.notifyDataSetChanged()
             }
-            myContestRecycler.adapter = WishListAdapter
+            myContestRecycler.adapter = WishListAdapter(myTeamList)
             recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
             recomContestRecycler.adapter = WishListAdapter(recomConList)
 

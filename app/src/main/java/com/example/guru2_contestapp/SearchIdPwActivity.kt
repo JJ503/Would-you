@@ -10,13 +10,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class SearchIdPwActivity : AppCompatActivity() {
-    lateinit var searchTabLaout: TabLayout
+    lateinit var searchTabLayout: TabLayout
     lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_id_pw)
-        searchTabLaout = findViewById(R.id.searchTabLayout)
+        searchTabLayout = findViewById(R.id.searchTabLayout)
         viewPager = findViewById(R.id.viewPager)
 
         viewPager.adapter = ViewPagerAdapter(this)
@@ -24,9 +24,8 @@ class SearchIdPwActivity : AppCompatActivity() {
         val searchTabArray = arrayOf("아이디 찾기", "비밀번호 찾기")
 
         // TabLayoutMediator : tablayout과 viewPager 연결
-        TabLayoutMediator(searchTabLaout, viewPager){tab,position->
+        TabLayoutMediator(searchTabLayout, viewPager){tab,position->
             tab.text = searchTabArray[position]
-            //   tab.setIcon(tabLayoutIconArray[position])
         }.attach()
     }
 

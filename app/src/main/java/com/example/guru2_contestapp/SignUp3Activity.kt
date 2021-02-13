@@ -81,6 +81,8 @@ class SignUp3Activity : AppCompatActivity() {
                 var area = areaSpinner.selectedItem.toString()
                 var interest = interestSpinner.selectedItem.toString()
 
+                Toast.makeText(this, year + month + date, Toast.LENGTH_SHORT).show()
+
                 sqlitedb = dbManager.writableDatabase
 
                 try {

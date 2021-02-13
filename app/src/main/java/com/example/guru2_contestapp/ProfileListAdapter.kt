@@ -76,8 +76,6 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
                 var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
-
-
                 dbManager = DBManager(holder.itemView?.context, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.readableDatabase
                 try {

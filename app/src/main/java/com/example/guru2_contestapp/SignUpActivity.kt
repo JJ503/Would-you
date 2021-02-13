@@ -48,6 +48,7 @@ class SignUpActivity : AppCompatActivity() {
         var profile : Int ?= null
         if (intent.hasExtra("profile")) {
             var profile = intent.getIntExtra("profile", -1)
+            Log.d("image resorce", profile.toString())
             profileImage.setImageResource(profile)
         } else {
             // 기본 이미지
@@ -133,7 +134,8 @@ class SignUpActivity : AppCompatActivity() {
             } else {
                 saveData(profile,
                         nameEditText.text.toString(),
-                        idEditText.text.toString())
+                        idEditText.text.toString(),
+                        passwordEditText.text.toString())
 
                 val intent = Intent(this, SignUp2Activity::class.java)
                 startActivity(intent)
@@ -141,7 +143,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveData(profile: Int?, name: String, id: String){
+    private fun saveData(profile: Int?, name: String, id: String, pw: String){
         var pref = this.getSharedPreferences("join", 0)
         var editor = pref.edit()
 
@@ -150,6 +152,7 @@ class SignUpActivity : AppCompatActivity() {
         }
         editor.putString("JOIN_NAME", name).apply()
         editor.putString("JOIN_ID", id).apply()
+        editor.putString("JOIN_PASSWORD", pw).apply()
         editor.commit()
     }
 

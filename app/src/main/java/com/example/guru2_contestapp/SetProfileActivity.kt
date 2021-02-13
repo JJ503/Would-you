@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -69,6 +70,7 @@ class SetProfileActivity : AppCompatActivity() {
         if (intent.hasExtra("from")) {
             if (intent.getStringExtra("from") == "SingUp"){
                 rv_profile.adapter = SignUpProfileAdapter(profileItemList)
+                Toast.makeText(this, "sign up", Toast.LENGTH_SHORT).show()
             }
 
         } else {
