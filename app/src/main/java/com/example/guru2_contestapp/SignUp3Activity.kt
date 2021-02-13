@@ -126,7 +126,7 @@ class SignUp3Activity : AppCompatActivity() {
                 var name = pref.getString("JOIN_NAME", "")
                 var id = pref.getString("JOIN_ID", "")
                 var pw = pref.getString("JOIN_PASSWORD", "")
-                var profile = pref.getInt("JOIN_PROFILE", 2131230836)
+                var profile = pref.getString("JOIN_PROFILE", "")
                 var phone = pref.getString("JOIN_PHONE", "")
                 var birth = pref.getString("JOIN_BIRTH", "").toString()
                 var year = birth.substring(0, 2)

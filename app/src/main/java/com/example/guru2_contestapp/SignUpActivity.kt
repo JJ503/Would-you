@@ -37,6 +37,8 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         supportActionBar?.elevation = 3f
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_signUp)+"</font>"))
 
@@ -50,21 +52,20 @@ class SignUpActivity : AppCompatActivity() {
 
         nextButton = findViewById<Button>(R.id.JnextButton)
 
-
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
         loadData()
 
-        var profile : Int ?= null
+        var profile : String = ""
         if (intent.hasExtra("profile")) {
-            profile = intent.getIntExtra("profile", -1)
-            Log.d("=== Image Resource ===", profile.toString())
-            profileImage.setImageResource(profile)
+            profile = intent.getStringExtra("profile").toString()
+            Log.d("=== Image Resource ===", profile)
         } else {
-            profile = 2131230844
-            profileImage.setImageResource(profile)
+            profile = "profile0"
         }
 
+        var profile_src = this.resources.getIdentifier(profile,"drawable", "com.example.guru2_contestapp")
+        profileImage.setImageResource(profile_src)
 
         profileChangeText.setOnClickListener {
             val intent = Intent(this, SetProfileActivity::class.java)
@@ -154,15 +155,11 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveData(profile: Int?, name: String, id: String, pw: String){
+    private fun saveData(profile: String, name: String, id: String, pw: String){
         var pref = this.getSharedPreferences("join", 0)
         var editor = pref.edit()
 
-        if (profile != null) {
-            editor.putInt("JOIN_PROFILE", profile).apply()
-        } else {
-            editor.putInt("JOIN_PROFILE", 2131230836).apply()  // 기본 이미지
-        }
+        editor.putString("JOIN_PROFILE", profile).apply()
         editor.putString("JOIN_NAME", name).apply()
         editor.putString("JOIN_ID", id).apply()
         editor.putString("JOIN_PASSWORD", pw).apply()
@@ -172,12 +169,13 @@ class SignUpActivity : AppCompatActivity() {
     private fun loadData(){
         var pref = this.getSharedPreferences("join", 0)
 
-        var profile = pref.getInt("JOIN_PROFILE", -1)
+        var profile = pref.getString("JOIN_PROFILE", "profile0")
         var name = pref.getString("JOIN_NAME", "")
         var id = pref.getString("JOIN_ID", "")
 
-        if (profile != -1 && name != "" && id != ""){
-            profileImage.setImageResource(profile)
+        if (profile != "" && name != "" && id != ""){
+            var profile_src = this.resources.getIdentifier(profile,"drawable", "com.example.guru2_contestapp")
+            profileImage.setImageResource(profile_src)
             nameEditText.setText(name.toString())
             idEditText.setText(id.toString())
         }

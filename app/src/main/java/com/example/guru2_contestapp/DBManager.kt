@@ -39,10 +39,10 @@ class DBManager(
 
         // member 테이블
         db!!.execSQL("CREATE TABLE member (" +
-                "m_name text NOT NULL," +
+                "m_name TEXT NOT NULL," +
                 "m_id TEXT NOT NULL," +
                 "m_pw TEXT NOT NULL," +
-                "m_profile BLOB," +
+                "m_profile TEXT," +
                 "m_tel TEXT NOT NULL," +
                 "m_year TEXT NOT NULL," +
                 "m_month TEXT NOT NULL," +

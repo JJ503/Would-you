@@ -41,6 +41,16 @@ class MainActivity : AppCompatActivity() {
 
 
         signUpText.setOnClickListener {
+            var pref = this.getSharedPreferences("join", 0)
+            var editor = pref.edit()
+            editor.remove("JOIN_NAME")
+            editor.remove("JOIN_ID")
+            editor.remove("JOIN_PASSWORD")
+            editor.remove("JOIN_PHONE")
+            editor.remove("JOIN_BIRTH")
+            editor.remove("JOIN_EMAIL")
+            editor.commit()
+
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }

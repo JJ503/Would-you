@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
     lateinit var applicantTeam : TextView
     lateinit var nonMyTeam : TextView
 
-    lateinit var myTeamList : ArrayList<WishItem>
+    lateinit var myTeamList : ArrayList<WishItem>      // 내 공모전 (만든 팀 & 신청한 팀)
 
     lateinit var recomConList : ArrayList<WishItem>    // 추천 공모전 리스트
     lateinit var recomTeamList : ArrayList<WishItem>   // 추천 팀 리스트
@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
     lateinit var allConList : ArrayList<WishItem>     // 모든 추천 외의 공모전 리스트
     lateinit var allTeamList : ArrayList<WishItem>    // 모든 추천 외의 팀 리스트
 
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout   // 새로고침에 필요
 
     var c_num : Int = -1
     lateinit var c_name : String
@@ -57,14 +57,15 @@ class HomeFragment : Fragment() {
     lateinit var t_name : String
     lateinit var t_end_date : String
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_home, container, false)
-
         var context: Context = requireContext()
-        val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
 
+        // 키로 저장해둔 사용자 id 불러오기
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
+        // 배열 초기화
         myTeamList = ArrayList()
         recomConList = ArrayList()
         recomTeamList = ArrayList()
@@ -77,8 +78,6 @@ class HomeFragment : Fragment() {
         applicantTeam = view.findViewById(R.id.JapplicantTeam)
         nonMyTeam = view.findViewById(R.id.JnonMyTeam)
 
-        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
-
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
@@ -90,11 +89,16 @@ class HomeFragment : Fragment() {
             if (cursor.getCount() != 1) {
                 Toast.makeText(activity, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                var m_profile = cursor.getInt(cursor.getColumnIndex("m_profile"))
+                var m_profile = cursor.getString(cursor.getColumnIndex("m_profile"))
                 var m_name = cursor.getString(cursor.getColumnIndex("m_name"))
                 var m_interest = cursor.getString(cursor.getColumnIndex("m_interest"))
 
-                userProfile.setImageResource(m_profile)
+                if (m_profile == null || m_profile == ""){
+                    m_profile = "profile0"
+                }
+
+                var profile_src = this.resources.getIdentifier(m_profile,"drawable", "com.example.guru2_contestapp")
+                userProfile.setImageResource(profile_src)
 
 
                 name = "안녕하세요 " + m_name + " 님"

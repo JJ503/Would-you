@@ -2,7 +2,6 @@ package com.example.guru2_contestapp
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,9 +17,8 @@ class SignUpProfileAdapter (val profileItemList: ArrayList<ProfileItem>): Recycl
 
     override fun onBindViewHolder(holder: SignUpProfileAdapter.CustomViewHolder, position: Int) {
 
-        //여기 추가 수정 _혜민
-        var str_photo =profileItemList.get(position).profile.toString()
-        var photo_src=holder.itemView.context.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
+        var str_photo = profileItemList.get(position).profile
+        var photo_src = holder.itemView.context.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
 
         holder.profile.setImageResource(photo_src)
 
@@ -38,7 +36,7 @@ class SignUpProfileAdapter (val profileItemList: ArrayList<ProfileItem>): Recycl
                 var profile = profileItemList.get(position).profile
 
                 val intent = Intent(holder.itemView?.context, SignUpActivity::class.java)
-                intent.putExtra("profile", str_photo) // 여기 수정 _혜민
+                intent.putExtra("profile", str_photo)
 
                 ContextCompat.startActivity(holder.itemView.context, intent, null)
             }
