@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CareerTeamListAdapter (val careerTeamList :ArrayList<TeamItem>): RecyclerView.Adapter <CareerTeamListAdapter.CustomViewHolder>() {
 
-    // 뷰 연동
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
@@ -20,7 +19,6 @@ class CareerTeamListAdapter (val careerTeamList :ArrayList<TeamItem>): RecyclerV
         return CustomViewHolder(view)
     }
 
-    // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: CareerTeamListAdapter.CustomViewHolder, position: Int) {
         holder.adverImageView.setImageResource(careerTeamList.get(position).c_photo)
         holder.adverTitleTextView.text = careerTeamList.get(position).t_name
@@ -29,6 +27,7 @@ class CareerTeamListAdapter (val careerTeamList :ArrayList<TeamItem>): RecyclerV
         holder.totalNumTextView.text = careerTeamList.get(position).t_total_num.toString()
         holder.endDateTextView.text = careerTeamList.get(position).t_end_date
         holder.needPartTextivew.text = careerTeamList.get(position).t_need_part
+
 
         // item(TeamItem)클릭시 TeamDetailActivity(팀 소개)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
@@ -40,12 +39,12 @@ class CareerTeamListAdapter (val careerTeamList :ArrayList<TeamItem>): RecyclerV
 
     }
 
-    //리스트 총 개수
+
     override fun getItemCount(): Int {
         return careerTeamList.size
     }
 
-    // 뷰를 잡아줌
+
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val adverImageView = itemView.findViewById<ImageView>(R.id.adverImageView)
         val adverTitleTextView = itemView.findViewById<TextView>(R.id.adverTitleTextView)
@@ -54,15 +53,6 @@ class CareerTeamListAdapter (val careerTeamList :ArrayList<TeamItem>): RecyclerV
         val totalNumTextView = itemView.findViewById<TextView>(R.id.totalNumTextView)
         val endDateTextView = itemView.findViewById<TextView>(R.id.endDateTextView)
         val needPartTextivew = itemView.findViewById<TextView>(R.id.needPartTextivew)
-
-
-    }
-
-    // 뒤로 가기 설정
-    private fun loadImage(){
-        val intent= Intent()
-        intent.type="image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
     }
 }
 

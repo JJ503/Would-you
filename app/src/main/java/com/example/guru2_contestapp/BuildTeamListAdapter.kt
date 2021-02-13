@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +20,6 @@ import kotlin.collections.ArrayList
 
 class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.Adapter <BuildTeamListAdapter.CustomViewHolder>() {
 
-    // 뷰 연동
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -30,15 +28,7 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         return CustomViewHolder(view)
     }
 
-
-
-    // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: BuildTeamListAdapter.CustomViewHolder, position: Int) {
-
-        //현재 로그인 중인 사용자 지정
-        var context: Context = holder.itemView.context
-        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
-        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
         holder.adverImageView.setImageResource(buildTeamList.get(position).c_photo)
         holder.adverTitleTextView.text = buildTeamList.get(position).t_name
@@ -48,7 +38,12 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         holder.endDateTextView.text = buildTeamList.get(position).t_end_date
         holder.needPartTextivew.text = buildTeamList.get(position).t_need_part
 
-        //모집 종료면 0, 모집 중이면 1
+        // 현재 로그인 중인 사용자 정보 가져오기
+        var context: Context = holder.itemView.context
+        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+        var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
+
+        // 모집 종료면 0, 모집 중이면 1
         var t_endStatus = 1
 
 
@@ -99,15 +94,14 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         }
 
 
-        // item(teamItem)클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
+        // teamItem(만든 팀) 클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
-            //t_num, t_endStatus 넘겨주기
+            //t_num, t_endStatus 를
             val sharedPreferences : SharedPreferences = holder.itemView?.context.getSharedPreferences("t_num", MODE_PRIVATE)
             val editor : SharedPreferences.Editor = sharedPreferences.edit()
             editor.putInt("t_num", buildTeamList.get(position).t_num)
             editor.putInt("t_endStatus", t_endStatus)
             editor.commit()
-
 
             //페이지 이동
             val intent = Intent(holder.itemView?.context,ApplicantListActivity::class.java )
@@ -116,12 +110,12 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
 
     }
 
-    //리스트 총 개수
+
     override fun getItemCount(): Int {
         return buildTeamList.size
     }
 
-    // 뷰를 잡아줌
+
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val adverImageView = itemView.findViewById<ImageView>(R.id.adverImageView)
         val adverTitleTextView = itemView.findViewById<TextView>(R.id.adverTitleTextView)
