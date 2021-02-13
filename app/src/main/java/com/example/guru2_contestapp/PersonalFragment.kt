@@ -92,22 +92,18 @@ class PersonalFragment : Fragment() {
                         str_id = cursor.getString(cursor.getColumnIndex("m_id"))
                         str_job = cursor.getString(cursor.getColumnIndex("m_job"))
 
-                        str_univ=""
+                        str_univ = ""
 
                         if (cursor.getString(cursor.getColumnIndex("m_univ")) != null) {
                             if (cursor.getString(cursor.getColumnIndex("m_univ")) != "")
                                 str_univ = "(" + cursor.getString(cursor.getColumnIndex("m_univ")) + ")"
                         }
-                        if (cursor.getString(cursor.getColumnIndex("m_profile")) != null) {
-                            if (cursor.getString(cursor.getColumnIndex("m_profile")) != "") {
-                                profileVal = cursor.getInt(cursor.getColumnIndex("m_profile"))
-                            }else{
-                                profileVal =  R.drawable.ic_baseline_account_circle_24
-                            }
+                        if (cursor.getInt(cursor.getColumnIndex("m_profile")) != null) {
+                            profileVal = cursor.getInt(cursor.getColumnIndex("m_profile"))
+                        } else {
+                            profileVal = R.drawable.ic_baseline_account_circle_24
                         }
-                        else{
-                              profileVal = R.drawable.ic_baseline_account_circle_24
-                        }
+
                     }
                 }
                 cursor.close()
