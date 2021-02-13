@@ -52,6 +52,8 @@ class ContestDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_contest_detail)
 
         supportActionBar?.elevation = 3f
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_contestDetail)+"</font>")
 
