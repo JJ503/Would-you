@@ -4,9 +4,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.MenuItem
 import android.widget.*
@@ -45,6 +48,12 @@ class ResumeActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resume)
+
+
+        supportActionBar?.elevation = 3f
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_resume)+"</font>")
+
 
         info=findViewById(R.id.WresumeInfoTextView)
         submitBtn=findViewById(R.id.WsubmitButton)

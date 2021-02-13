@@ -21,5 +21,10 @@
     <string name="action_setProfile">프로필 변경</string>
 
 
+    <string name="action_resume">팀 지원</string>
+    <string name="action_buildTeam">팀 생성</string>
+    <string name="action_teamDetail">공모전 상세</string>
+    <string name="action_contestDetail">팀 상세</string>
+
 
 </resources>
