@@ -16,6 +16,22 @@ import androidx.recyclerview.widget.RecyclerView
 
 class BuildTeamListFragment : Fragment() {
 
+    // DB에서 정보 불러오기(리사이클러뷰)
+    lateinit var dbManager: DBManager
+    lateinit var sqlitedb: SQLiteDatabase
+
+    //만든 팀 목록 저장
+    lateinit var t_name: String
+    lateinit var c_name: String
+    lateinit var t_end_date: String
+    lateinit var t_need_part: String
+    lateinit var c_photo : String
+    var photo_src= -1// 사진 경로
+
+    var t_now_num: Int = -1
+    var t_total_num: Int = -1
+    var c_num: Int = -1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,20 +39,6 @@ class BuildTeamListFragment : Fragment() {
     ): View? {
 
         var v_buildTeamList = inflater.inflate(R.layout.fragment_team_list, container, false)
-
-        // DB에서 정보 불러오기(리사이클러뷰)
-        lateinit var dbManager: DBManager
-        lateinit var sqlitedb: SQLiteDatabase
-
-        //만든 팀 목록 저장
-        lateinit var t_name: String
-        lateinit var c_name: String
-        lateinit var t_end_date: String
-        lateinit var t_need_part: String
-        var t_now_num: Int = -1
-        var t_total_num: Int = -1
-        var c_num: Int = -1
-        var c_photo : Int = -1
 
         lateinit var buildTeamList: ArrayList<TeamItem>
         buildTeamList = ArrayList()
@@ -73,8 +75,7 @@ class BuildTeamListFragment : Fragment() {
 
                             if (cursor3.moveToNext())   //공모전 이름 가져오기
                             {
-                                /*var photo_src=this.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
-                                contestImg.setImageResource(photo_src)*/
+                                c_photo =  cursor3.getString(cursor3.getColumnIndex("c_photo"))
                                 c_name = cursor3.getString(cursor3.getColumnIndex("c_name"))
                             }
 
@@ -85,8 +86,10 @@ class BuildTeamListFragment : Fragment() {
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
 
                         }
+
+                        photo_src =  this.resources.getIdentifier(c_photo,"drawable", "com.example.guru2_contestapp")
                         buildTeamList.add(
-                                TeamItem(t_num, R.drawable.poster_img, t_name, c_name,
+                                TeamItem(t_num, photo_src, t_name, c_name,
                                         t_now_num, t_total_num, t_end_date, t_need_part)
                         )
                     }
