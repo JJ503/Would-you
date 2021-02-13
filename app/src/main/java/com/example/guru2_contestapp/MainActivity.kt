@@ -1,6 +1,6 @@
 package com.example.guru2_contestapp
 
-import android.content.Context
+
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
@@ -10,11 +10,8 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager

@@ -55,16 +55,16 @@
                         android:padding="20dp">
 
                         <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
+                            android:id="@+id/JuserProfile"
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
                             android:layout_marginStart="10dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:srcCompat="@tools:sample/avatars" />
+                            app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
                         <TextView
-                            android:id="@+id/userName"
+                            android:id="@+id/JuserName2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
@@ -72,7 +72,7 @@
                             android:text="안녕하세요 임정수 님"
                             android:textColor="@color/black"
                             android:textSize="20sp"
-                            app:layout_constraintStart_toEndOf="@+id/imageView2"
+                            app:layout_constraintStart_toEndOf="@+id/JuserProfile"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -84,8 +84,8 @@
                             android:text="참여한 공모전 : "
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:layout_constraintStart_toEndOf="@+id/imageView2"
-                            app:layout_constraintTop_toBottomOf="@+id/userName" />
+                            app:layout_constraintStart_toEndOf="@+id/JuserProfile"
+                            app:layout_constraintTop_toBottomOf="@+id/JuserName2" />
 
                         <TextView
                             android:id="@+id/JjoinTeam"
@@ -97,7 +97,7 @@
                             android:textColor="@color/indigo_700"
                             android:textSize="15sp"
                             app:layout_constraintStart_toEndOf="@+id/textView7"
-                            app:layout_constraintTop_toBottomOf="@+id/userName" />
+                            app:layout_constraintTop_toBottomOf="@+id/JuserName2" />
 
                         <TextView
                             android:id="@+id/textView9"
@@ -108,7 +108,7 @@
                             android:text="지원한 공모전 : "
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:layout_constraintStart_toEndOf="@+id/imageView2"
+                            app:layout_constraintStart_toEndOf="@+id/JuserProfile"
                             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
                         <TextView

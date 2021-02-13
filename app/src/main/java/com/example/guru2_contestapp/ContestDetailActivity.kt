@@ -13,7 +13,10 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ContestDetailActivity : AppCompatActivity() {
@@ -197,6 +200,39 @@ class ContestDetailActivity : AppCompatActivity() {
                 dbManager.close()
             }
         }
+
+        var recTeamList : ArrayList<WishItem> = ArrayList()
+
+        // 해당 공모전에 대한 신청 가능한 팀 추천
+        try {
+            cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '${c_num}' ORDER BY random();", null)
+
+            if (cursor.getCount() > 0) {
+                while(cursor.moveToNext()){
+                    var t_end_date = cursor.getString(cursor.getColumnIndex("t_end_date"))
+                    var teamDeadline = checkDays(t_end_date)
+
+                    if (teamDeadline < 0) {
+                        // 모집 기간이 종료된 경우 리스트에 추가 x
+
+                    } else {
+                        // 모집 기간 내에 있는 추천 공모전 팀
+                        var t_num = cursor.getInt(cursor.getColumnIndex("t_num"))
+                        var t_name = cursor.getString(cursor.getColumnIndex("t_name"))
+
+                        var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
+
+                        // 추천 팀 리스트에 추가
+                        recTeamList.add(WishItem(t_num, teamDeadlineText, str_photo, t_name))
+                    }
+                }
+            }
+
+        } catch (e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally {
+            sqlitedb.close()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -205,5 +241,30 @@ class ContestDetailActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    // 날짜 차이 구하기
+    private fun checkDays(t_end_date: String): Int {
+
+        var Eday_arr = t_end_date.split(".")
+        val deadline = Calendar.getInstance().apply {
+            set(Calendar.YEAR, Eday_arr[0].toInt())
+            set(Calendar.MONTH, Eday_arr[1].toInt() - 1)
+            set(Calendar.DAY_OF_MONTH, Eday_arr[2].toInt())
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        var today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+
+        val calcDate = (deadline - today) / (24 * 60 * 60 * 1000)
+        return calcDate.toInt()
     }
 }

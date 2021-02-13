@@ -1,7 +1,6 @@
 package com.example.guru2_contestapp
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -13,11 +12,11 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import java.util.*
@@ -33,6 +32,7 @@ class HomeFragment : Fragment() {
     lateinit var recomContestRecycler : RecyclerView   // 추천 공모전 리스트
 
 
+    lateinit var userProfile : ImageView
     lateinit var userName : TextView
     lateinit var name : String
     lateinit var joinTeam : TextView
@@ -70,7 +70,8 @@ class HomeFragment : Fragment() {
         allConList = ArrayList()
         allTeamList = ArrayList()
 
-        userName = view.findViewById(R.id.userName)
+        userProfile = view.findViewById(R.id.JuserProfile)
+        userName = view.findViewById(R.id.JuserName2)
         joinTeam = view.findViewById(R.id.JjoinTeam)
         applicantTeam = view.findViewById(R.id.JapplicantTeam)
         nonMyTeam = view.findViewById(R.id.JnonMyTeam)
@@ -88,8 +89,12 @@ class HomeFragment : Fragment() {
             if (cursor.getCount() != 1) {
                 Toast.makeText(activity, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             } else {
+                var m_profile = cursor.getInt(cursor.getColumnIndex("m_profile"))
                 var m_name = cursor.getString(cursor.getColumnIndex("m_name"))
                 var m_interest = cursor.getString(cursor.getColumnIndex("m_interest"))
+
+                userProfile.setImageResource(m_profile)
+
 
                 name = "안녕하세요 " + m_name + " 님"
                 userName.text = name
