@@ -399,5 +399,4 @@ class TeamDetailActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }
