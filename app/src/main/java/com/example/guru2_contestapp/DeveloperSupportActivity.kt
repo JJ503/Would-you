@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 
 
 class DeveloperSupportActivity : AppCompatActivity() {
@@ -36,7 +37,6 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
         var delevoper_supportBtn: Button = findViewById<Button>(R.id.delevoper_supportBtn)
         var bug_reportBtn: Button = findViewById<Button>(R.id.bug_reportBtn)
-
 
 
         //현재 로그인 중인 사용자 지정

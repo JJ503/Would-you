@@ -128,5 +128,6 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         val teamItem_cardView = itemView.findViewById<CardView>(R.id.teamItem_cardView)
     }
 
+
 }
 

@@ -7,10 +7,16 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Html
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
@@ -52,7 +58,6 @@ class PersonalFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         // 옵션 메뉴 사용 true
         setHasOptionsMenu(true)
@@ -135,12 +140,10 @@ class PersonalFragment : Fragment() {
                 startActivity(intent)
             }
 
-
             // TabLayoutMediator : tablayout과 viewPager 연결
             TabLayoutMediator(tablayout, viewpager2) { tab, position ->
                 tab.customView = getTabView(position)
             }.attach()
-
 
 
             return v_personal
@@ -338,7 +341,8 @@ class PersonalFragment : Fragment() {
                     str_photo = cursor2.getString(cursor2.getColumnIndex("m_profile"))
                     now_profile =  cursor2.getString(cursor2.getColumnIndex("m_profile"))
                 }
-
+                cursor1.close()
+                cursor2.close()
             }
         } catch(e: Exception){
             Log.e("Error", e.message.toString())
@@ -354,8 +358,6 @@ class PersonalFragment : Fragment() {
             ft.commit()
         }
     }
-
-
 
 
 

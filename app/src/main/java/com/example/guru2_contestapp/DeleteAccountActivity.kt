@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import java.security.AccessController.getContext
 
 class DeleteAccountActivity : AppCompatActivity() {
@@ -33,9 +34,12 @@ class DeleteAccountActivity : AppCompatActivity() {
 
         val userPwEdit: EditText = findViewById(R.id.userPwEdit)
         val checkBtn: Button = findViewById(R.id.checkBtn)
-        CloseKeyboard()
+        var main: ConstraintLayout = findViewById(R.id.main)
+        main.setOnClickListener {
+            CloseKeyboard()
+        }
 
-        
+
         // 현재 로그인 중인 사용자 정보 가져오기
         var context: Context = this
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
@@ -98,10 +102,10 @@ class DeleteAccountActivity : AppCompatActivity() {
                     builder.setNeutralButton("취소", null)
                     builder.setPositiveButton("탈퇴") { dialog, which ->
 
-                         // 현재 로그인 사용자를 저장해놓은 SharedPreferences 값 clear
+                        // 현재 로그인 사용자를 저장해놓은 SharedPreferences 값 clear
                         var context: Context = this
-                        val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
-                        val editor : SharedPreferences.Editor = sharedPreferences.edit()
+                        val sharedPreferences: SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
                         editor.putString("USER_ID", "")
                         editor.commit()
 
@@ -142,23 +146,19 @@ class DeleteAccountActivity : AppCompatActivity() {
 
     //뒤로가기 설정
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId==android.R.id.home){
+        if (item.itemId == android.R.id.home) {
             finish()
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun CloseKeyboard()
-    {
+    fun CloseKeyboard() {
         var view = this.currentFocus
 
-        if(view != null)
-        {
+        if (view != null) {
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
-
-
 }
