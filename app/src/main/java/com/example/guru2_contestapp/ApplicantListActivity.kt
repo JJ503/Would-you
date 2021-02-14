@@ -179,6 +179,8 @@ class ApplicantListActivity : AppCompatActivity() {
 
                 sqlitedb.execSQL("UPDATE teamManage SET state = -1 WHERE t_num = ${t_num} AND state = 0;")
 
+                this.recreate()
+
             } else {
                 Toast.makeText(this, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
             }
