@@ -16,6 +16,8 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.Exception
 import java.util.*
@@ -242,6 +244,8 @@ class ContestDetailActivity : AppCompatActivity() {
                 dbManager.close()
             }
         }
+
+
     }
 
     override fun onResume() {
@@ -265,6 +269,8 @@ class ContestDetailActivity : AppCompatActivity() {
             dbManager.close()
         }
 
+        Log.i("adatper",contestRecyclerList.adapter?.itemCount.toString() )
+        Log.i("adatper",contestRecyclerList.adapter?.itemCount.toString() )
         if(((contestRecyclerList.adapter?.itemCount)?.plus(1))!! <= select_num){
             this.recreate()
         }
