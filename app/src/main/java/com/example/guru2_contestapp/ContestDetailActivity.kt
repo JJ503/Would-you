@@ -247,6 +247,11 @@ class ContestDetailActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        this.recreate()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==android.R.id.home){
             finish()

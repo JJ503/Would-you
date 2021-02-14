@@ -240,31 +240,7 @@ class TeamDetailActivity : AppCompatActivity() {
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
                 builder.show()
-            } /*else if(USER_ID.equals(str_host)){ // 댓글 작성자가 팀장이면 아이디 대신 '팀장'
-                val currentDateTime= Calendar.getInstance().time
-                val dateFormat= SimpleDateFormat("yyyy.MM.dd  HH:mm", Locale.KOREA).format(currentDateTime)
-                str_cm_reg_date=dateFormat
-                str_cm_reg_detail=commentRegET.text.toString()
-
-                dbManager = DBManager(this, "ContestAppDB", null, 1)
-                sqlitedb = dbManager.writableDatabase
-                try {
-                    if(sqlitedb!=null){
-                        sqlitedb.execSQL("INSERT INTO comment (t_num, m_id, cm_date, cm_detail) VALUES(" + t_num + ", '팀장' , '" + str_cm_reg_date + "', '" + str_cm_reg_detail + "')")
-                    }
-                } catch(e: Exception){
-                    Log.e("Error", e.message.toString())
-                } finally{
-                    sqlitedb.close()
-                    dbManager.close()
-                }
-
-                // 입력한 댓글이 바로 보일 수 있게 새로고침
-                val intent = getIntent()
-                finish()
-                startActivity(intent)
-            }*/
-            else {
+            } else {
                 val currentDateTime= Calendar.getInstance().time
                 val dateFormat= SimpleDateFormat("yyyy.MM.dd  HH:mm", Locale.KOREA).format(currentDateTime)
                 str_cm_reg_date=dateFormat
@@ -293,7 +269,6 @@ class TeamDetailActivity : AppCompatActivity() {
 
         val commentListAdapter=CommentListViewAdapter(this, commentListArray)
         commentListView.adapter=commentListAdapter
-
 
         // 댓글 listView 길이에 따라 화면 길이 조정 --> Scroll 안에 ListView가 있는 것이라 이렇게 해주지 않으면 스크롤이 안 됨
         var totalHeight=0
@@ -369,18 +344,24 @@ class TeamDetailActivity : AppCompatActivity() {
 
             val builder= AlertDialog.Builder(this)
             if(state==2){
-                builder.setMessage("당신은 이 팀의 팀장입니다.")
-                //builder.setIcon(R.)
+                builder.setMessage("\t\t당신은 이 팀의 팀장입니다.")
+                builder.setTitle(" ")
+                builder.setIcon(R.drawable.logo_2_04)
+                builder.create()
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else if(possible_num==0){
-                builder.setMessage("인원이 가득 찼습니다.")
-                //builder.setIcon(R.)
+                builder.setMessage("\t\t인원이 가득 찼습니다.")
+                builder.setTitle(" ")
+                builder.setIcon(R.drawable.logo_2_04)
+                builder.create()
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else if(calcDate<0){
-                builder.setMessage("모집일이 지났습니다.")
-                //builder.setIcon(R.)
+                builder.setMessage("\t\t모집일이 지났습니다.")
+                builder.setTitle(" ")
+                builder.setIcon(R.drawable.logo_2_04)
+                builder.create()
                 builder.setPositiveButton("확인", null)
                 builder.show()
             } else{
