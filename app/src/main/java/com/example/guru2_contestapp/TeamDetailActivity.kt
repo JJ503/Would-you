@@ -206,7 +206,7 @@ class TeamDetailActivity : AppCompatActivity() {
                         str_cm_detail=cursor.getString(cursor.getColumnIndex("cm_detail"))
 
                         var cursor2: Cursor
-                        cursor2=sqlitedb.rawQuery("SELECT m_profile FROM member WHERE m_id = '"+ USER_ID +"' ;", null)
+                        cursor2=sqlitedb.rawQuery("SELECT m_profile FROM member WHERE m_id = '"+ str_cm_id +"' ;", null)
                         if(cursor2.count!=0){
                             if(cursor2.moveToNext()){
                                 cm_photo_src=cursor2.getString(cursor2.getColumnIndex("m_profile"))
