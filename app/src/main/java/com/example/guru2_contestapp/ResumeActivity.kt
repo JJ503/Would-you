@@ -115,8 +115,10 @@ class ResumeActivity : AppCompatActivity() {
 
         // DB에서 생년을 가져와 나이 계산
         val this_year = Calendar.getInstance().get(Calendar.YEAR)
+        val this_year_last = this_year.toString().substring(2, 4)
+
         var birth_year = 0
-        if (str_year.toInt() > this_year){
+        if (str_year.toInt() > this_year_last.toInt()){
             birth_year = ("19" + str_year).toInt()
         } else{
             birth_year = ("20" + str_year).toInt()
