@@ -36,7 +36,7 @@ class BuildTeamListFragment : Fragment() {
     var t_total_num: Int = -1
     var c_num: Int = -1
 
-    lateinit var swipeRefresh: SwipeRefreshLayout
+    //lateinit var swipeRefresh: SwipeRefreshLayout
     lateinit var  rv_applyTeam: RecyclerView
 
     // 리사이클러뷰 어댑터에 넘겨줄 리스트로, 만든 팀 목록이 담김
@@ -96,7 +96,6 @@ class BuildTeamListFragment : Fragment() {
                             t_total_num = cursor2.getInt(cursor2.getColumnIndex("t_total_num"))
                             t_end_date = cursor2.getString(cursor2.getColumnIndex("t_end_date"))
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
-
                         }
 
                         photo_src =  this.resources.getIdentifier(c_photo,"drawable", "com.example.guru2_contestapp")
@@ -120,7 +119,7 @@ class BuildTeamListFragment : Fragment() {
 
 
 
-         rv_applyTeam = v_buildTeamList.findViewById<RecyclerView>(R.id.rv_team)
+        rv_applyTeam = v_buildTeamList.findViewById<RecyclerView>(R.id.rv_team)
 
         rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         rv_applyTeam.setHasFixedSize(true)
@@ -149,7 +148,7 @@ class BuildTeamListFragment : Fragment() {
 
         return v_buildTeamList
     }
-
+/*
     // 직업 정보 혹은 프로필이 변경된 경우 새로고침되도록 한다.
     override fun onResume() {
         super.onResume()
@@ -277,5 +276,5 @@ class BuildTeamListFragment : Fragment() {
 
     }
 
-
+*/
 }

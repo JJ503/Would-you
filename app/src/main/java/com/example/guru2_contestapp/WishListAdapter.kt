@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.RecyclerView
 class WishListAdapter (val wishlist:ArrayList<WishItem>): RecyclerView.Adapter <WishListAdapter.CustomViewHolder>()
 
 {
-    // 뷰 연동
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishListAdapter.CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_wishlist_item,parent,false)
         return CustomViewHolder(view)
     }
 
-    // 뷰의 데이터 매치 (스크롤 등 때 계속 지원)
 
     @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: WishListAdapter.CustomViewHolder, position: Int) {
@@ -61,7 +60,7 @@ class WishListAdapter (val wishlist:ArrayList<WishItem>): RecyclerView.Adapter <
 
     }
 
-    //리스트 총 개수
+
     override fun getItemCount(): Int {
         return wishlist.size
     }
