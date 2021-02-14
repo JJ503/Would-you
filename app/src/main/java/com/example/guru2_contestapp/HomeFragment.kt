@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
 
     lateinit var myContestRecycler : RecyclerView       // 내 공모전 리스트
     lateinit var recomTeamtRecycler : RecyclerView      // 추천 공모전 팀 리스트
-    lateinit var recomContestRecycler : RecyclerView   // 추천 공모전 리스트
+    lateinit var recomContestRecycler : RecyclerView    // 추천 공모전 리스트
 
 
     lateinit var userProfile : ImageView
@@ -38,16 +38,18 @@ class HomeFragment : Fragment() {
     lateinit var joinTeam : TextView
     lateinit var applicantTeam : TextView
     lateinit var nonMyTeam : TextView
+    lateinit var nonRecTeam : TextView
+    lateinit var nonRecCon : TextView
 
-    lateinit var myTeamList : ArrayList<WishItem>      // 내 공모전 (만든 팀 & 신청한 팀)
+    lateinit var myTeamList : ArrayList<WishItem>          // 내 공모전 (만든 팀 & 신청한 팀)
 
-    lateinit var recomConList : ArrayList<WishItem>    // 추천 공모전 리스트
-    lateinit var recomTeamList : ArrayList<WishItem>   // 추천 팀 리스트
+    lateinit var recomConList : ArrayList<WishItem>        // 추천 공모전 리스트
+    lateinit var recomTeamList : ArrayList<WishItem>       // 추천 팀 리스트
 
-    lateinit var allConList : ArrayList<WishItem>     // 모든 추천 외의 공모전 리스트
-    lateinit var allTeamList : ArrayList<WishItem>    // 모든 추천 외의 팀 리스트
+    lateinit var allConList : ArrayList<WishItem>          // 모든 추천 외의 공모전 리스트
+    lateinit var allTeamList : ArrayList<WishItem>         // 모든 추천 외의 팀 리스트
 
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout   // 새로고침에 필요
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout    // 새로고침에 필요
 
     var c_num : Int = -1
     lateinit var c_name : String
@@ -77,10 +79,14 @@ class HomeFragment : Fragment() {
         joinTeam = view.findViewById(R.id.JjoinTeam)
         applicantTeam = view.findViewById(R.id.JapplicantTeam)
         nonMyTeam = view.findViewById(R.id.JnonMyTeam)
+        nonRecTeam = view.findViewById(R.id.JnonRecTeam)
+        nonRecCon = view.findViewById(R.id.JnonRecCon)
 
+        // DB 연결
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
+        // DB에서 회원의 정보를 가져와 관련된 정보들을 보여줌
         try {
             var cursor: Cursor
             cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${USER_ID}';", null)
@@ -93,33 +99,33 @@ class HomeFragment : Fragment() {
                 var m_name = cursor.getString(cursor.getColumnIndex("m_name"))
                 var m_interest = cursor.getString(cursor.getColumnIndex("m_interest"))
 
-                if (m_profile == null || m_profile == ""){
+                // 회원의 프로필, 이름, 참여한 공모전, 지원한 공모전의 개수를 가져와 보여준다
+                if (m_profile == null || m_profile == "") {
                     m_profile = "profile0"
                 }
 
-                var profile_src = this.resources.getIdentifier(m_profile,"drawable", "com.example.guru2_contestapp")
+                var profile_src = this.resources.getIdentifier(m_profile, "drawable", "com.example.guru2_contestapp")
                 userProfile.setImageResource(profile_src)
-
 
                 name = "안녕하세요 " + m_name + " 님"
                 userName.text = name
 
                 // user가 참여한 공모전 (경력)
                 var join_cursor: Cursor
-                join_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 5;", null )
+                join_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 5;", null)
                 joinTeam.text = join_cursor.getCount().toString() + " 개"
 
                 // user가 지원한 공모전
                 var appli_cursor: Cursor
-                appli_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 0 OR state = 1 OR state = -1;", null)
+                appli_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND (state = 0 OR state = 1 OR state = -1);", null)
                 applicantTeam.text = appli_cursor.getCount().toString() + " 개"
 
 
-                // user의 내 팀 리스트 (호스트 & 신청 & 팀 완성 전 수락 상태)
+                // user의 내 팀 리스트 (호스트)
                 var myTeam_cursor: Cursor
                 myTeam_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 2;", null)
-                if (myTeam_cursor.getCount() > 0){
-                    while(myTeam_cursor.moveToNext()){
+                if (myTeam_cursor.getCount() > 0) {
+                    while (myTeam_cursor.moveToNext()) {
                         t_num = myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("t_num"))
 
                         var myTeamInfo_cursor: Cursor
@@ -143,7 +149,6 @@ class HomeFragment : Fragment() {
                                     con_cursor.moveToFirst()
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
-                                    Log.d("c_photo",c_photo)
                                     myTeamList.add(WishItem("team", t_num, "팀장입니다", c_photo, t_name))
                                 }
                             }
@@ -151,10 +156,11 @@ class HomeFragment : Fragment() {
                     }
                 }
 
-                myTeam_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND state = 0 OR state = 1;", null)
+                // user의 내 팀 리스트 (신청 & 팀 완성 전 수락 상태)
+                myTeam_cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '${USER_ID}' AND (state = 0 OR state = 1);", null)
 
-                if (myTeam_cursor.getCount() != 0){
-                    while(myTeam_cursor.moveToNext()){
+                if (myTeam_cursor.getCount() != 0) {
+                    while (myTeam_cursor.moveToNext()) {
                         t_num = myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("t_num"))
 
                         var myTeamInfo_cursor: Cursor
@@ -171,7 +177,7 @@ class HomeFragment : Fragment() {
 
                             } else {
                                 var state = ""
-                                if (myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("state")) == 0){
+                                if (myTeam_cursor.getInt(myTeam_cursor.getColumnIndex("state")) == 0) {
                                     state = "대기 중"
                                 } else {
                                     state = "팀원 수락"
@@ -186,14 +192,15 @@ class HomeFragment : Fragment() {
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
                                     myTeamList.add(WishItem("team", t_num, state, c_photo, t_name))
-                                    Log.d("==== my team ===", t_num.toString())
                                 }
                             }
                         }
                     }
                 }
 
-                if (myTeamList.size > 0){
+                // 내 팀이 있다면 adapter와 연결해 보여주고
+                // 내 팀이 없다면 미리 만들어 둔 TextView를 보여주며 내 팀이 없음을 알린다
+                if (myTeamList.size > 0) {
                     nonMyTeam.visibility = GONE
                     myContestRecycler = view.findViewById(R.id.JmyContestRecycler)
                     myContestRecycler.setHasFixedSize(true)
@@ -258,14 +265,14 @@ class HomeFragment : Fragment() {
                 }
 
                 // usr의 관심 외의 공모전 (추천 공모전이 5개 미만일 때 필요)
-                var restContest_cursor : Cursor
+                var restContest_cursor: Cursor
                 restContest_cursor = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_section != '${m_interest}' ORDER BY random();", null)
 
                 // user가 관심있어 하는 공모전외의 공모전 중 신청 가능한 팀
                 lateinit var restTeam_cursor: Cursor
 
-                if (restContest_cursor.getCount() > 0){
-                    while(restContest_cursor.moveToNext()) {
+                if (restContest_cursor.getCount() > 0) {
+                    while (restContest_cursor.moveToNext()) {
                         c_end = restContest_cursor.getString(restContest_cursor.getColumnIndex("c_end"))
 
                         var conDeadline = checkDays(c_end)
@@ -311,31 +318,46 @@ class HomeFragment : Fragment() {
                 }
 
 
+                // 위에서 추가한 공모전과 팀들 중 5개만 보이게 하기
                 var conNum = allConList.size
                 var teamNum = allTeamList.size
-                for (i in 0..4){
-                    if (i < conNum){
+                for (i in 0..4) {
+                    if (i < conNum) {
                         recomConList.add(allConList[i])
                     }
 
-                    if (i < teamNum){
+                    if (i < teamNum) {
                         recomTeamList.add(allTeamList[i])
                     }
                 }
 
-                recomTeamtRecycler = view.findViewById(R.id.JrecomTeamtRecycler)
-                recomTeamtRecycler.setHasFixedSize(true)
-                recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
+                // 추천 공모전 팀이 있다면 adapter와 연결해 보여주고
+                // 추천 공모전 팀이 없다면 미리 만들어 둔 TextView를 보여주며 추천 공모전 팀이 없음을 알린다
+                if (recomTeamList.size > 0) {
+                    nonRecTeam.visibility = GONE
+                    recomTeamtRecycler = view.findViewById(R.id.JrecomTeamtRecycler)
+                    recomTeamtRecycler.setHasFixedSize(true)
+                    recomTeamtRecycler.adapter = WishListAdapter(recomTeamList)
+                } else {
+                    nonRecTeam.visibility = VISIBLE
+                }
 
-                recomContestRecycler = view.findViewById(R.id.JrecomContestRecycler)
-                recomContestRecycler.setHasFixedSize(true)
-                recomContestRecycler.adapter = WishListAdapter(recomConList)
+                // 추천 공모전 있다면 adapter와 연결해 보여주고
+                // 추천 공모전 없다면 미리 만들어 둔 TextView를 보여주며 추천 공모전이 없음을 알린다
+                if (recomTeamList.size > 0) {
+                    nonRecCon.visibility = GONE
+                    recomContestRecycler = view.findViewById(R.id.JrecomContestRecycler)
+                    recomContestRecycler.setHasFixedSize(true)
+                    recomContestRecycler.adapter = WishListAdapter(recomConList)
+                } else {
+                    nonRecCon.visibility = VISIBLE
+                }
             }
-            } catch (e: Exception){
-                Log.e("Error", e.message.toString())
-            } finally {
-                sqlitedb.close()
-            }
+        } catch (e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally {
+            sqlitedb.close()
+        }
 
         // 당겨서 새로고침
         swipeRefreshLayout=view.findViewById(R.id.JswipeRefresh)

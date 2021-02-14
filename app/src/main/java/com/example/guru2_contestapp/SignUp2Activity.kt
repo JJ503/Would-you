@@ -164,6 +164,7 @@ class SignUp2Activity : AppCompatActivity() {
         })
     }
 
+    // 입력한 정보들 저장
     private fun saveData(phone: String, birth: String, email: String, domain: String){
         var pref = this.getSharedPreferences("join", 0)
         var editor = pref.edit()
@@ -175,6 +176,7 @@ class SignUp2Activity : AppCompatActivity() {
         editor.commit()
     }
 
+    // 다음 페이지에 갔다가 돌아오면 정보를 그대로 입력해줌
     private fun loadData(){
         var pref = this.getSharedPreferences("join", 0)
         var phone = pref.getString("JOIN_PHONE", "")
@@ -189,6 +191,7 @@ class SignUp2Activity : AppCompatActivity() {
         }
     }
 
+    // 키보드 내리기 함수
     fun CloseKeyboard()
     {
         var view = this.currentFocus

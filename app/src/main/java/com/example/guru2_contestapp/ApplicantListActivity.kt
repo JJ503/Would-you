@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
+// 팀 신청자 목록 페이지
 class ApplicantListActivity : AppCompatActivity() {
     lateinit var dbManager: DBManager
     lateinit var sqlitedb : SQLiteDatabase
@@ -40,18 +41,22 @@ class ApplicantListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_applicant_list)
 
+        // 액션바 설정
         supportActionBar?.elevation = 3f
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_applicantList)+"</font>"))
 
+        // 현재 팀 번호와 팀 상태의 키 값을 불러옴
         val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
         val t_num = sharedPreferences.getInt("t_num", -1)
-        var t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
+        var t_endStatus = sharedPreferences.getInt("t_endStatus", -1)   //모집 종료면 0, 모집 중이면 1
 
+        // 리스트 배열 초기화
         listArray = ArrayList()
 
+        // DB 연결
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
@@ -59,11 +64,12 @@ class ApplicantListActivity : AppCompatActivity() {
         announStatusText = findViewById(R.id.JannounStatusText)
 
 
+        // 선택한 팀의 신청자 목록 출력
         try {
             var t_cursor : Cursor
             t_cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${t_num}", null)
             t_cursor.moveToFirst()
-            val t_complete :Int = t_cursor.getInt(t_cursor.getColumnIndex("t_complete"))  // 완료 전인 팀은 0, 완료된 팀은 1
+            val t_complete :Int = t_cursor.getInt(t_cursor.getColumnIndex("t_complete"))
 
             // 완료된 팀 : 팀원만 보임
             if (t_complete == 1){

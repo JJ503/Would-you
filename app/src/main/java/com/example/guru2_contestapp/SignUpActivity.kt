@@ -200,6 +200,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    // 키보드 내리기 함수
     fun CloseKeyboard()
     {
         var view = this.currentFocus

@@ -61,6 +61,7 @@ class SignUp3Activity : AppCompatActivity() {
         // DB 연결
         dbManager = DBManager(this, "ContestAppDB", null, 1)
 
+        // 직업으로 대학생을 선택하면 대학교 입력 칸 보이기
         jobSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (jobSpinner.getItemAtPosition(position)){
@@ -80,6 +81,7 @@ class SignUp3Activity : AppCompatActivity() {
 
         }
 
+        // 개인정보 처리 방침을 누르면 대화상자를 통해 방침을 볼 수 있다
         infoPolicy.setOnClickListener{
             var builder = AlertDialog.Builder(this)
             builder.setTitle("개인정보 처리 방침")
@@ -107,6 +109,8 @@ class SignUp3Activity : AppCompatActivity() {
             builder.show()
         }
 
+        // 회원가입 버튼을 누르면 위에서 입력한 정보들이 execSQL을 통해 DB에 INSERT함 & 이전에 저장한 키들 모두 삭제
+        // 만약 하나라도 입력하지 않은 정보가 있다면 넘어갈 수 없음
         signUpButton.setOnClickListener {
             if (jobSpinner.selectedItem.toString() == "직업을 선택해주세요") {
                 Toast.makeText(this, "직업을 선택해 주세요.", Toast.LENGTH_SHORT).show()
@@ -169,6 +173,7 @@ class SignUp3Activity : AppCompatActivity() {
         }
     }
 
+    // 키보드 내리기 함수
     fun CloseKeyboard()
     {
         var view = this.currentFocus
