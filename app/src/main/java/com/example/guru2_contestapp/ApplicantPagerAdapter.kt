@@ -31,16 +31,19 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.onBind(itemList[position])
 
+        // DB 연결
         var dbManager: DBManager =  DBManager(holder.itemView.context, "ContestAppDB", null, 1)
         var sqlitedb : SQLiteDatabase = dbManager.writableDatabase
 
+        // 팀의 정보 불러오기
         var cursor : Cursor
         cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
         cursor.moveToFirst()
         var state = cursor.getInt(cursor.getColumnIndex("state"))
 
+        // 신청자 상태에 따라 다르게 보임, 상태가 0(신청상태)는 기본 아이템 사용
         when(state){
-            -1 -> {
+            -1 -> {   // 거절 : 수락 거절 버튼이 사라지고 정보 보기와 복구 버튼, 안내 문구만 보임
                 holder.announText.text = "거절한 신청자입니다. 복구 하시겠습니까?"
                 holder.btnCancel.text = "복구"
                 holder.announText.visibility = VISIBLE
@@ -52,7 +55,7 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
                 holder.btnRefuse.visibility = GONE
             }
 
-            1 -> {
+            1 -> {   // 수락 : 수락 거절 버튼이 사라지고 정보 보기와 취소 버튼, 안내 문구만 보임
                 holder.announText.text = "수락한 신청자입니다. 취소 하시겠습니까?"
                 holder.btnCancel.text = "수락 취소"
                 holder.announText.visibility = VISIBLE
@@ -64,7 +67,7 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
                 holder.btnRefuse.visibility = GONE
             }
 
-            5 -> {
+            5 -> {   // 완료 : 수락 거절 버튼이 사라지고 정보 보기와 안내 문구만 보임
                 holder.announText.text = "팀 모집이 완료되었습니다."
                 holder.announText.visibility = VISIBLE
                 holder.btnInfo.visibility = VISIBLE
@@ -86,6 +89,7 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
             }
         }
 
+        // 모집이 종료된 경우
         if (itemList.get(position).t_endStatus == 0){
             holder.announText.text = "팀 모집이 종료되었습니다."
             holder.announText.visibility = VISIBLE
@@ -95,16 +99,22 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
             holder.btnRefuse.visibility = GONE
         }
 
+        // 정보보기 버튼을 누르면 커스텀한 대화상자를 통해 신청자의 정보를 볼 수 있다
         holder.btnInfo.setOnClickListener {
             val dialog = ApplicantInfoDialog(holder.itemView.context, itemList.get(position).m_id, itemList.get(position).t_num)
             dialog.infoDlg()
         }
 
+        // 위 버튼과 같은 역할로 수락 거절이 없어지고 버튼이 두 개일 때는 이 버튼이 보인다
         holder.btnInfo2.setOnClickListener {
             val dialog = ApplicantInfoDialog(holder.itemView.context, itemList.get(position).m_id, itemList.get(position).t_num)
             dialog.infoDlg()
         }
 
+        // 수락 버튼을 누른 경우
+        // 정상적으로 처리 되면 수락 거절 버튼 없어지고 안내 문구와 취소 버튼이 생긴다
+        // 그리고 상태가 0에서 1로 바뀜
+        // 만약 이미 인원이 꽉 찬 상태라면 '수락 가능 인원이 꽉찼습니다.' 경고 문구 출력
         holder.btnAccept.setOnClickListener {
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${itemList.get(position).t_num};", null)
@@ -133,7 +143,7 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
                         Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(holder.itemView.context, "수락 가능 인원이 꽉찼습니다.", Toast.LENGTH_SHORT).show()
                 }
 
             } catch(e: Exception){
@@ -143,6 +153,9 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
             }
         }
 
+        // 거절 버튼을 누른 경우
+        // 정상적으로 처리 되면 수락 거절 버튼 없어지고 안내 문구와 복구 버튼이 생긴다
+        // 상태가 0에서 -1로 바뀜
         holder.btnRefuse.setOnClickListener {
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
@@ -169,6 +182,10 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
             }
         }
 
+        // 수락 취소 or 거절 복구 버튼
+        // 수락 취소 : 신청자의 상태를 1에서 0으로 바뀌게 만든다
+        // 거절 복구 : 신청자의 상태를 -1에서 0으로 바뀌게 만든다
+        // 공통적으로 취소/복구 버튼이 사라지고 다시 수락 거절 버튼이 생긴다
         holder.btnCancel.setOnClickListener{
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)

@@ -34,12 +34,14 @@ class ApplicantPagerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_applicant_pager)
 
+        // 액션바 설정
         supportActionBar?.elevation = 3f
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.setTitle(Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_applicantPager)+"</font>"))
 
+        // 페이지 리스트 배열
         pagerArray = ArrayList()
 
         applicantPager = findViewById(R.id.applicantPager)
@@ -49,13 +51,16 @@ class ApplicantPagerActivity : AppCompatActivity() {
         btnLeft = findViewById(R.id.btnLeft)
         personNumTv = findViewById(R.id.personNumTv)
 
+        // DB 연동
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
+        // 현재 팀 번호와 팀 상태의 키 값을 불러옴
         val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
         val t_num = sharedPreferences.getInt("t_num", -1)
         var t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
 
+        // 신청자 정보 리스트 (pager 버전)
         var cursor : Cursor? = null
         try {
             var t_cursor : Cursor
@@ -85,17 +90,11 @@ class ApplicantPagerActivity : AppCompatActivity() {
                     var m_age = calcAge(m_year)
 
                     var r_hope = r_cursor.getString(r_cursor.getColumnIndex("r_hope")).toString()
-                    var m_tel = m_cursor.getString(m_cursor.getColumnIndex("m_tel")).toString()
-                    var m_email = m_cursor.getString(m_cursor.getColumnIndex("m_email")).toString()
-                    var m_job = m_cursor.getString(m_cursor.getColumnIndex("m_job")).toString()
-                    var m_area = m_cursor.getString(m_cursor.getColumnIndex("m_area")).toString()
-                    var m_interest = m_cursor.getString(m_cursor.getColumnIndex("m_interest")).toString()
-                    var r_self_intro = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
-                    var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
 
-                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
+                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope))
                 }
-            } else {
+            } else {   // 모집 중인 팀 : 수락, 거절, 신청 상태 모두 보임
+                // 수락(1), 신청(0), 거절(-1) 상태 순서대로 나오도록 state의 역순으로 출력
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${t_num} AND state != 2 ORDER BY state DESC", null)
 
                 while (cursor.moveToNext()) {
@@ -114,15 +113,8 @@ class ApplicantPagerActivity : AppCompatActivity() {
                     var m_age = calcAge(m_year)
 
                     var r_hope = r_cursor.getString(r_cursor.getColumnIndex("r_hope")).toString()
-                    var m_tel = m_cursor.getString(m_cursor.getColumnIndex("m_tel")).toString()
-                    var m_email = m_cursor.getString(m_cursor.getColumnIndex("m_email")).toString()
-                    var m_job = m_cursor.getString(m_cursor.getColumnIndex("m_job")).toString()
-                    var m_area = m_cursor.getString(m_cursor.getColumnIndex("m_area")).toString()
-                    var m_interest = m_cursor.getString(m_cursor.getColumnIndex("m_interest")).toString()
-                    var r_self_intro = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
-                    var r_etc = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
 
-                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_tel, m_email, m_job, m_area, m_interest, r_self_intro, r_etc))
+                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope))
                 }
             }
         } catch(e: Exception){
@@ -131,13 +123,16 @@ class ApplicantPagerActivity : AppCompatActivity() {
             sqlitedb.close()
         }
 
+        // 리사이클러 뷰에 어댑터 설정
         applicantPager.adapter = ApplicantPagerAdapter(pagerArray)
 
+        // 상단에 몇 명 중 몇 번 째 신청자 정보 페이지인지 보여줌
         var current = applicantPager.currentItem
         var person_num = "1 / " + cursor?.getCount()
         personNumTv.setText(person_num)
 
 
+        // position이 전달되면 해당 사람부터 보이도록 설정
         if (intent.hasExtra("pos")) {
             current = intent.getIntExtra("pos", -1)
             applicantPager.setCurrentItem(current, false)
@@ -148,6 +143,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
         }
 
 
+        // 오른쪽 버튼을 누른 경우 오른쪽 페이지로 이동
         btnRight.setOnClickListener {
             current++
 
@@ -161,6 +157,7 @@ class ApplicantPagerActivity : AppCompatActivity() {
             }
         }
 
+        // 왼쪽 버튼을 누른 경우 왼쪽 페이지로 이동
         btnLeft.setOnClickListener {
             current--
 

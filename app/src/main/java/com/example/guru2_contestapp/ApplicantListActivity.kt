@@ -150,6 +150,7 @@ class ApplicantListActivity : AppCompatActivity() {
         }
     }
 
+    // 모집 중인 팀만 상단에 완료 버튼이 뜸
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
         val t_endStatus = sharedPreferences.getInt("t_endStatus", -1)  //모집 종료면 0, 모집 중이면 1
@@ -160,6 +161,7 @@ class ApplicantListActivity : AppCompatActivity() {
         return true
     }
 
+    // 완료 버튼을 누르면 수락 상태의 사람들은 상태를 0에서 5(경력)로 변경하고 거절 혹은 아무 처리도 안 된 사람들은 -1로 변경한다
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.teamComplete){
             val sharedPreferences: SharedPreferences = getSharedPreferences("t_num", AppCompatActivity.MODE_PRIVATE)
@@ -179,6 +181,7 @@ class ApplicantListActivity : AppCompatActivity() {
 
                 sqlitedb.execSQL("UPDATE teamManage SET state = -1 WHERE t_num = ${t_num} AND state = 0;")
 
+                // 바로 반영될 수 있도록 새로고침
                 this.recreate()
 
             } else {
