@@ -35,7 +35,13 @@ class BuildTeamListFragment : Fragment() {
     var t_now_num: Int = -1
     var t_total_num: Int = -1
     var c_num: Int = -1
+
     var last_now_num=0
+
+    // 혜민
+    var total_now_num=0
+    var check_now_num=0
+
 
     //lateinit var swipeRefresh: SwipeRefreshLayout
     lateinit var  rv_applyTeam: RecyclerView
@@ -50,6 +56,9 @@ class BuildTeamListFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+
+        //
+        total_now_num=0
 
         var v_buildTeamList = inflater.inflate(R.layout.fragment_team_list, container, false)
 
@@ -99,7 +108,12 @@ class BuildTeamListFragment : Fragment() {
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
                         }
 
+                        //gayeon
                         last_now_num=t_now_num
+
+
+                        //혜민
+                        total_now_num+=t_now_num
 
                         photo_src =  this.resources.getIdentifier(c_photo,"drawable", "com.example.guru2_contestapp")
                         buildTeamList.add(
@@ -125,38 +139,24 @@ class BuildTeamListFragment : Fragment() {
         rv_applyTeam = v_buildTeamList.findViewById<RecyclerView>(R.id.rv_team)
 
         rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        rv_applyTeam.setHasFixedSize(true)
+        //rv_applyTeam.setHasFixedSize(true)
         rv_applyTeam.adapter = BuildTeamListAdapter(buildTeamList)
 
-
-/*
-        // 당겨서 새로고침
-        swipeRefreshLayout=v_buildTeamList.findViewById(R.id.swipeRefresh)
-        swipeRefreshLayout.setOnRefreshListener {
-            rv_applyTeam = v_buildTeamList.findViewById<RecyclerView>(R.id.rv_team)
-
-            rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            rv_applyTeam.setHasFixedSize(true)
-            rv_applyTeam.adapter = BuildTeamListAdapter(buildTeamList)
-
-            val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
-            ft.detach(this)
-            ft.attach(this)
-            ft.commit()
-            swipeRefreshLayout.isRefreshing=false
-        }
-
-*/
+        rv_applyTeam.adapter?.notifyDataSetChanged()
 
 
         return v_buildTeamList
     }
+
 
     // 직업 정보 혹은 프로필이 변경된 경우 새로고침되도록 한다.
     override fun onResume() {
         super.onResume()
 
         var select_now_num=0
+
+        //헤민
+        check_now_num =0
 
         //현재 로그인 중인 사용자 지정
         var context: Context = requireContext()
@@ -166,18 +166,27 @@ class BuildTeamListFragment : Fragment() {
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         var cursor: Cursor
+        lateinit var cursor1 : Cursor
+        lateinit var cursor2 :Cursor
 
         try {
-            if (sqlitedb != null) {
-                lateinit var cursor1: Cursor
-                cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_host = '" + USER_ID + "' ;", null)
-                if (cursor.count != 0) {
-                    while(cursor.moveToNext()){
-                        select_now_num = cursor.getInt(cursor.getColumnIndex("t_now_num"))
-                    }
+            if(sqlitedb!=null) {
+                cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 2;", null)
 
+                var t_num: Int = -1
+
+                if (cursor1.getCount() != 0) {
+                    while (cursor1.moveToNext()) {
+                        t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))
+                        cursor2 = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = " + t_num + ";", null)
+
+                        if (cursor2.moveToNext()) {
+                            check_now_num +=cursor2.getInt(cursor2.getColumnIndex("t_now_num"))
+                        }
+                    }
                 }
-                cursor.close()
+                cursor1.close()
+                cursor2.close()
             }
         }catch(e: Exception){
             Log.e("Error", e.message.toString())
@@ -186,9 +195,13 @@ class BuildTeamListFragment : Fragment() {
             dbManager.close()
         }
 
-        Log.i("select", select_now_num.toString())
-        Log.i("last", last_now_num.toString())
-        if(select_now_num>last_now_num) {
+
+       // Log.d("===total===",total_now_num.toString())
+       // Log.d("===check===",check_now_num.toString())
+        if(total_now_num!=check_now_num) {
+          //  Log.d("ㅇㄹㅇㄹㅇ","ㅇㄹㅇㄹㅇㄹ")
+
+            rv_applyTeam.adapter?.notifyDataSetChanged()
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
             ft.attach(this)

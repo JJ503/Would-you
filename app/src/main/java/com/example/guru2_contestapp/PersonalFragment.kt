@@ -54,6 +54,20 @@ class PersonalFragment : Fragment() {
     var now_job =""
     var now_profile :String = "" // 확인용(새로고침용) 사진이름
 
+    // 탭에 넣을 팀 목록 개수
+    var BuildTeam_num: Int = 0
+    var ApplyTeam_num: Int = 0
+    var Carreer_num: Int = 0
+    var Wish_num: Int = 0
+
+
+    //refresh용
+    var last_now_num1=0
+    var last_now_num2=0
+    var last_now_num3=0
+    var last_now_num4=0
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -131,8 +145,6 @@ class PersonalFragment : Fragment() {
             val intent = Intent(activity, SetProfileActivity::class.java)
             startActivity(intent)
         }
-
-
             // 설정 화면으로  전환
             settingBtn = v_personal.findViewById(R.id.settingBtn)
             settingBtn.setOnClickListener {
@@ -154,16 +166,12 @@ class PersonalFragment : Fragment() {
 
         // 커스텀 탭 뷰 inflate
         private fun getTabView(position: Int): View? {
-            val inflater =
-                getActivity()?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val inflater = getActivity()?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val view = inflater.inflate(R.layout.custom_tab_button, null, false)
             val tab_num = view.findViewById<TextView>(R.id.tab_num)
             val tab_title = view.findViewById<TextView>(R.id.tab_title)
 
-            var BuildTeam_num: Int = 0
-            var ApplyTeam_num: Int = 0
-            var Carreer_num: Int = 0
-            var Wish_num: Int = 0
+
 
             // DB에서 정보 불러오기(리사이클러뷰)
             var context: Context = requireContext()
@@ -181,24 +189,28 @@ class PersonalFragment : Fragment() {
                 null
             )
             BuildTeam_num = cursor.getCount()
+            last_now_num1 = BuildTeam_num
 
             cursor = sqlitedb.rawQuery(
                 "SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state >= -1  AND state < 2;",
                 null
             )
             ApplyTeam_num = cursor.getCount()
+            last_now_num2 = ApplyTeam_num
 
             cursor = sqlitedb.rawQuery(
                 "SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 5;",
                 null
             )  //  쿼리1
             Carreer_num = cursor.getCount()
+            last_now_num2 = Carreer_num
 
             cursor = sqlitedb.rawQuery(
                 "SELECT * FROM wishlist WHERE m_id = '" + USER_ID + "' and state == 1 ;",
                 null
             )
             Wish_num = cursor.getCount()
+            last_now_num2 = Wish_num
 
             cursor.close()
 
@@ -311,13 +323,31 @@ class PersonalFragment : Fragment() {
 
         dbManager= DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb=dbManager.readableDatabase
+        var cursor : Cursor
         val cursor1: Cursor
         val cursor2: Cursor
 
 
-
         try {
             if (sqlitedb != null) {
+
+                // 팀 tab  목록 개수 가져오기
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 2;", null)
+                last_now_num1  = cursor.getCount()
+
+
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state >= -1  AND state < 2;", null)
+                last_now_num2 = cursor.getCount()
+
+
+                cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 5;", null)
+                last_now_num3  = cursor.getCount()
+
+                cursor = sqlitedb.rawQuery("SELECT * FROM wishlist WHERE m_id = '" + USER_ID + "' and state == 1 ;", null)
+                last_now_num4  = cursor.getCount()
+
+                cursor.close()
+
 
                 // 직업 정보 가져오기
                 cursor1 = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '" + USER_ID + "';", null)
@@ -351,7 +381,8 @@ class PersonalFragment : Fragment() {
             dbManager.close()
         }
 
-        if(str_job != now_job || now_profile != str_photo){
+        if(str_job != now_job || now_profile != str_photo ||
+                BuildTeam_num!= last_now_num1 || ApplyTeam_num!= last_now_num2 || Carreer_num!= last_now_num3 || Wish_num!= last_now_num4){
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)
             ft.attach(this)

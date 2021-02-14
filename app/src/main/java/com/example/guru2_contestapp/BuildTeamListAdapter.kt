@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -94,9 +97,45 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         }
 
 
+        lateinit var dbManager: DBManager
+        lateinit var sqlitedb: SQLiteDatabase
+
+        dbManager = DBManager(holder.itemView?.context, "ContestAppDB", null, 1)
+        sqlitedb = dbManager.readableDatabase
+
+
+        try {
+            if(sqlitedb!=null) {
+                var cursor1: Cursor
+                cursor1 = sqlitedb.rawQuery("SELECT * FROM team WHERE t_host = '" + USER_ID + "' ;", null)
+                if(cursor1.getCount() != 0) {
+                    while(cursor1.moveToNext())
+                        Log.d("dfdf",cursor1.getInt(cursor1.getColumnIndex("t_complete")).toString())
+                        if( cursor1.getInt(cursor1.getColumnIndex("t_complete"))==1){
+                            holder.endDateTextView.setTextColor(Color.parseColor("#F15F5F"))
+                            holder.endDateTextView.text="모집 종료"
+                            holder.teamItem_cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.non_click))
+                        }
+                }
+                cursor1.close()
+            }
+        }catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
+        }
+
+
+
+
+
+
+
+
         // teamItem(만든 팀) 클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
-            //t_num, t_endStatus 를
+
             val sharedPreferences : SharedPreferences = holder.itemView?.context.getSharedPreferences("t_num", MODE_PRIVATE)
             val editor : SharedPreferences.Editor = sharedPreferences.edit()
             editor.putInt("t_num", buildTeamList.get(position).t_num)
