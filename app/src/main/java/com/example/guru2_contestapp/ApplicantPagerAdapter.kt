@@ -9,10 +9,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
@@ -224,6 +221,7 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
     }
 
     class CustomViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val profile = v.findViewById<ImageView>(R.id.appProfile)
         val tvUserName = v.findViewById<TextView>(R.id.JuserName)
         val ageText = v.findViewById<TextView>(R.id.JageText)
         val hopeText = v.findViewById<TextView>(R.id.JhopeText)
@@ -235,6 +233,8 @@ class ApplicantPagerAdapter(val itemList : List<ApplicantPagerItem>) : RecyclerV
         val btnCancel = v.findViewById<Button>(R.id.JbtnCancel)
 
         fun onBind(item: ApplicantPagerItem) {
+            var profile_src = itemView.context.resources.getIdentifier(item.m_profile, "drawable", "com.example.guru2_contestapp")
+            profile.setImageResource(profile_src)
             tvUserName.text = item.m_name
             ageText.text = item.m_age.toString()
             hopeText.text = item.r_hope

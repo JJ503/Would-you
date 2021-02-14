@@ -85,13 +85,14 @@ class ApplicantPagerActivity : AppCompatActivity() {
                     r_cursor = sqlitedb.rawQuery("SELECT * FROM resume WHERE m_id = '${m_id}' AND t_num = ${t_num}", null)
                     r_cursor.moveToFirst()
 
+                    var m_profile = m_cursor.getString(m_cursor.getColumnIndex("m_profile"))
                     var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
                     var m_year = m_cursor.getString(m_cursor.getColumnIndex("m_year")).toString()
                     var m_age = calcAge(m_year)
 
                     var r_hope = r_cursor.getString(r_cursor.getColumnIndex("r_hope")).toString()
 
-                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope))
+                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_profile))
                 }
             } else {   // 모집 중인 팀 : 수락, 거절, 신청 상태 모두 보임
                 // 수락(1), 신청(0), 거절(-1) 상태 순서대로 나오도록 state의 역순으로 출력
@@ -108,13 +109,14 @@ class ApplicantPagerActivity : AppCompatActivity() {
                     r_cursor = sqlitedb.rawQuery("SELECT * FROM resume WHERE m_id = '${m_id}' AND t_num = ${t_num}", null)
                     r_cursor.moveToFirst()
 
+                    var m_profile = m_cursor.getString(m_cursor.getColumnIndex("m_profile"))
                     var m_name = m_cursor.getString(m_cursor.getColumnIndex("m_name")).toString()
                     var m_year = m_cursor.getString(m_cursor.getColumnIndex("m_year")).toString()
                     var m_age = calcAge(m_year)
 
                     var r_hope = r_cursor.getString(r_cursor.getColumnIndex("r_hope")).toString()
 
-                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope))
+                    pagerArray.add(ApplicantPagerItem(t_num, t_endStatus, m_id, m_name, m_age, r_hope, m_profile))
                 }
             }
         } catch(e: Exception){
