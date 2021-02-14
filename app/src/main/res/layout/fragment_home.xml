@@ -169,6 +169,17 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
+                    <TextView
+                        android:id="@+id/JnonRecTeam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_horizontal"
+                        android:text="추천 공모전 팀이 없습니다"
+                        android:textColor="@color/impend"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/JrecomTeamtRecycler"
                         android:layout_width="match_parent"
@@ -189,6 +200,17 @@
                         android:text="추천 공모전"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/JnonRecCon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_horizontal"
+                        android:text="추천 공모전이 없습니다"
+                        android:textColor="@color/impend"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/JrecomContestRecycler"

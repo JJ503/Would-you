@@ -181,9 +181,10 @@ class ApplicantPagerActivity : AppCompatActivity() {
     private fun calcAge(m_year: String): Int {
 
         val this_year = Calendar.getInstance().get(Calendar.YEAR)
+        val this_year_last = this_year.toString().substring(2, 4)
 
         var birth_year = 0
-        if (m_year.toInt() > this_year){
+        if (m_year.toInt() > this_year_last.toInt()){
             birth_year = ("19" + m_year).toInt()
         } else{
             birth_year = ("20" + m_year).toInt()
