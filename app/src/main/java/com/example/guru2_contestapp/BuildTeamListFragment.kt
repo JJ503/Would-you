@@ -10,17 +10,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
 
 class BuildTeamListFragment : Fragment() {
 
-
-    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     lateinit var dbManager: DBManager
     lateinit var sqlitedb: SQLiteDatabase
@@ -38,25 +35,23 @@ class BuildTeamListFragment : Fragment() {
 
     var last_now_num=0
 
-    // 혜민
+    //refresh(새로고침)를 위한 변수
+    // 현재 DB의 팀원 수와 화면에 띄워진 팀원의 총
     var total_now_num=0
     var check_now_num=0
 
-
-    //lateinit var swipeRefresh: SwipeRefreshLayout
-    lateinit var  rv_applyTeam: RecyclerView
+    // 리사이클러뷰
+   lateinit var  rv_applyTeam: RecyclerView
 
     // 리사이클러뷰 어댑터에 넘겨줄 리스트로, 만든 팀 목록이 담김
     var buildTeamList: ArrayList<TeamItem> = ArrayList<TeamItem>()
-
     var build_t_now_num : ArrayList<Int> =  ArrayList<Int>()
-    var check_t_now_num : ArrayList<Int> =  ArrayList<Int>() //새로고침을 위한 변수
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
         //
         total_now_num=0
 
@@ -80,7 +75,6 @@ class BuildTeamListFragment : Fragment() {
             if (sqlitedb != null) {
                 lateinit var cursor1: Cursor
                 cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 2;", null)
-
 
                 lateinit var cursor2: Cursor
                 var t_num: Int = -1
@@ -108,18 +102,14 @@ class BuildTeamListFragment : Fragment() {
                             t_need_part = cursor2.getString(cursor2.getColumnIndex("t_need_part"))
                         }
 
-                        //gayeon
-                        last_now_num=t_now_num
-
-
-                        //혜민
+                        //새로고침을 위해 현재 모인 모든 팀원의 수를 구한다.
                         total_now_num+=t_now_num
 
+                        // DB에는 사진 이름이 저장되어있으므로, 적용시키기 위해서는 resource 경로를 얻어온다.
                         photo_src =  this.resources.getIdentifier(c_photo,"drawable", "com.example.guru2_contestapp")
-                        buildTeamList.add(
-                                TeamItem(t_num, photo_src, t_name, c_name,
-                                        t_now_num, t_total_num, t_end_date, t_need_part)
-                        )
+                        // 리스트에 db에서 불러온 내용들을 담는다.
+                        buildTeamList.add(TeamItem(t_num, photo_src, t_name, c_name,
+                                        t_now_num, t_total_num, t_end_date, t_need_part))
                        build_t_now_num.add(t_now_num)
                     }
                 }
@@ -135,27 +125,27 @@ class BuildTeamListFragment : Fragment() {
         }
 
 
-
+        // 리사이클러뷰로 띄우기 위해, 만든 커스텀 어댑터 BuildTeamListAdapter와 연결해준다.
         rv_applyTeam = v_buildTeamList.findViewById<RecyclerView>(R.id.rv_team)
 
         rv_applyTeam.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        //rv_applyTeam.setHasFixedSize(true)
         rv_applyTeam.adapter = BuildTeamListAdapter(buildTeamList)
-
         rv_applyTeam.adapter?.notifyDataSetChanged()
+
 
 
         return v_buildTeamList
     }
 
 
-    // 직업 정보 혹은 프로필이 변경된 경우 새로고침되도록 한다.
+
+
+    // 신청한 팀 정보가 달라진 경우 새로고침을 해준다.
     override fun onResume() {
         super.onResume()
 
-        var select_now_num=0
 
-        //헤민
+        // 현재 db의 팀원 총 명수를 가져온다.
         check_now_num =0
 
         //현재 로그인 중인 사용자 지정
@@ -196,11 +186,9 @@ class BuildTeamListFragment : Fragment() {
         }
 
 
-       // Log.d("===total===",total_now_num.toString())
-       // Log.d("===check===",check_now_num.toString())
+        //만약 현재 화면에 띄워진 팀원 총 명수와, 현재 db에 가져온 팀원 총 명수가 다르다면
+        // 새로 고침을 해준다.
         if(total_now_num!=check_now_num) {
-          //  Log.d("ㅇㄹㅇㄹㅇ","ㅇㄹㅇㄹㅇㄹ")
-
             rv_applyTeam.adapter?.notifyDataSetChanged()
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)

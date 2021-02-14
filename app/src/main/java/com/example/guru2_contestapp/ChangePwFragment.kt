@@ -15,7 +15,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 
 
@@ -42,8 +41,6 @@ class ChangePwFragment : Fragment() {
         var context: Context = requireContext()
         val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
-
-
 
 
         // 사용자의 pw를 db에서 가져온다.
@@ -123,15 +120,5 @@ class ChangePwFragment : Fragment() {
 
         return preView
     }
-    /*
-    fun closeKeyboard() {
-        val activity = activity as FeedActivity
 
-        val view = activity.currentFocus
-        if (view != null) {
-            val imm = ContextCompat.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm!!.hideSoftInputFromWindow(view!!.getWindowToken(), 0)
-        }
-    }
-*/
 }

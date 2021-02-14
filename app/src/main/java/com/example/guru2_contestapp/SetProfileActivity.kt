@@ -30,19 +30,15 @@ class SetProfileActivity : AppCompatActivity() {
         val sharedPreferences : SharedPreferences = context.getSharedPreferences("userid", AppCompatActivity.MODE_PRIVATE)
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
-
-
         // 리사이클러뷰
         var profileItemList: ArrayList<ProfileItem> = ArrayList()
 
 
+        // 사진 이름 저장 ( profile0 ~ profil 16의 이름으로 drawable 폴더에 저장되어 있다.)
         try {
-
             for(i in 0..16){
                 profileItemList.add(ProfileItem("profile"+i.toString()))
             }
-
-            
         }catch(e: Exception){
             Log.e("Error", e.message.toString())
         } finally{
@@ -73,7 +69,5 @@ class SetProfileActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 
 }

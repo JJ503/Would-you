@@ -50,6 +50,8 @@ class DeleteAccountActivity : AppCompatActivity() {
         lateinit var dbManager: DBManager
         lateinit var sqlitedb: SQLiteDatabase
 
+
+        // 회원탈퇴 시엔, 비밀번호를 입력받아야 됨으로, DB에서 현재 사용자 pw를 불러온다.
         var USER_PW: String = ""
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
@@ -153,6 +155,7 @@ class DeleteAccountActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // 화면의 다른 곳을 터치했을때 키보드가 내려가도록 설정
     fun CloseKeyboard() {
         var view = this.currentFocus
 

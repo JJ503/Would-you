@@ -96,14 +96,13 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
             holder.totalNumTextView.setTextColor(Color.parseColor("#F15F5F"))
         }
 
-
         lateinit var dbManager: DBManager
         lateinit var sqlitedb: SQLiteDatabase
 
         dbManager = DBManager(holder.itemView?.context, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
-
+        // 팀 모집이 마감됐다면, 날짜를 모집종료로 변경한다.
         try {
             if(sqlitedb!=null) {
                 var cursor1: Cursor
@@ -125,12 +124,6 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
             sqlitedb.close()
             dbManager.close()
         }
-
-
-
-
-
-
 
 
         // teamItem(만든 팀) 클릭시 ApplicantListActivitiy(팀 신청자)페이지로 넘어간다.
@@ -166,7 +159,6 @@ class BuildTeamListAdapter(val buildTeamList: ArrayList<TeamItem>):RecyclerView.
         val slash = itemView.findViewById<TextView>(R.id.slash)
         val teamItem_cardView = itemView.findViewById<CardView>(R.id.teamItem_cardView)
     }
-
 
 }
 

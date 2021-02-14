@@ -65,7 +65,7 @@ class WishListAdapter (val wishlist:ArrayList<WishItem>): RecyclerView.Adapter <
         return wishlist.size
     }
 
-    // 뷰를 잡아줌
+
     class CustomViewHolder(itemView : View): RecyclerView.ViewHolder(itemView){
         val contestImg = itemView.findViewById<ImageView>(R.id.contestImg)
         val deadLine = itemView.findViewById<TextView>(R.id.deadLine)

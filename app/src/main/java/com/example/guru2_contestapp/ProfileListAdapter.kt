@@ -27,7 +27,7 @@ import kotlin.collections.ArrayList
 
 class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerView.Adapter <ProfileListAdapter.CustomViewHolder>() {
 
-    // 뷰 연동
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,9 +39,7 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
 
 
 
-    // 뷰의 데이터 매치 (스크롤 등때 계속 지원)
     override fun onBindViewHolder(holder: ProfileListAdapter.CustomViewHolder, position: Int) {
-
 
         var str_photo =profileItemList.get(position).profile.toString()
         var photo_src=holder.itemView.context.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
@@ -71,6 +69,8 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
                 var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
+                // DB쿼리로 바로 사용자 프로필을 저장한다.
+                // 이름 personnalFragment에서 db를 감지하여, 지정한 프로필로 사진을 띄운다.
                 dbManager = DBManager(holder.itemView?.context, "ContestAppDB", null, 1)
                 sqlitedb = dbManager.readableDatabase
                 try {
@@ -97,12 +97,12 @@ class ProfileListAdapter(val profileItemList: ArrayList<ProfileItem>):RecyclerVi
 
 
     }
-    //리스트 총 개수
+
     override fun getItemCount(): Int {
         return profileItemList.size
     }
 
-    // 뷰를 잡아줌
+
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val profile = itemView.findViewById<ImageView>(R.id.profile)
     }

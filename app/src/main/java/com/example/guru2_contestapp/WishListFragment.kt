@@ -69,15 +69,13 @@ class WishListFragment : Fragment() {
 
                         cursor2 = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = " + c_num + ";", null) //쿼리2
                         if (cursor2.moveToNext()) {
-                            // team에서 해당 팀 정보 가져오기
-                            // 공모전 사진도 가져와야됨
                             c_name = cursor2.getString(cursor2.getColumnIndex("c_name"))
                             c_end = cursor2.getString(cursor2.getColumnIndex("c_end"))
                             c_photo = cursor2.getString(cursor2.getColumnIndex("c_photo"))
 
                             deadline = checkDays(c_end)
 
-                            // 마감 -인 것은 따로 전처리 필요함
+                            // 마감 인 것은 따로 전처리 필요함
                             if (deadline < 0) {
                                 deadlineTxt = "모집 종료"
                             } else {
@@ -101,8 +99,7 @@ class WishListFragment : Fragment() {
         }
 
 
-
-
+        // 리사이클러뷰 어댑터에 화면에 띄울 데이터를 넘긴다.
         var rv_wishlist: RecyclerView = v_wishList.findViewById<RecyclerView>(R.id.rv_wishlist)
         rv_wishlist.layoutManager = GridLayoutManager(requireContext(), 3)
         rv_wishlist.setHasFixedSize(true)

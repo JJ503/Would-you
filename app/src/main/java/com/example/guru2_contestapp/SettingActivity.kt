@@ -24,6 +24,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
+        // 상단바 스타일 지정
         supportActionBar?.elevation = 3f
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_setting)+"</font>")
@@ -32,14 +33,16 @@ class SettingActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_left_arrow2)
 
 
-
+        // tablayout과 viewpager를 연결시키기 위해 id를 불러온다.
         tablayout=findViewById<TabLayout>(R.id.tabLayout)
         viewPager2_1=findViewById<ViewPager2>(R.id.viewPager2_1)
-        viewPager2_1.adapter =ViewPagerAdapter_setting(this)  // 어댑터 지정해주자.. 이거 안하면 오류남 ㅋㅋ
+        viewPager2_1.adapter =ViewPagerAdapter_setting(this)
+
+        // 키보드 외 다른 화면 터치시, 키보드가 내려간다.
         CloseKeyboard()
 
-        val tabLayoutTextArray = arrayOf("개인정보 수정","비밀번호 변경")
 
+        val tabLayoutTextArray = arrayOf("개인정보 수정","비밀번호 변경")
 
         // TabLayoutMediator : tablayout과 viewPager 연결
         TabLayoutMediator(tablayout,viewPager2_1){tab,position->
@@ -47,11 +50,10 @@ class SettingActivity : AppCompatActivity() {
         }.attach()
 
 
-
-        ////////아이템 선택
     }
 
     var PAGE_CNT=2
+
     // FragmentStateAdapter : Fragment 와 Viewpager연결
     private inner class ViewPagerAdapter_setting(fa: FragmentActivity): FragmentStateAdapter(fa){
         override fun createFragment(position: Int): Fragment {
@@ -64,7 +66,7 @@ class SettingActivity : AppCompatActivity() {
         override fun getItemCount():Int = PAGE_CNT
     }
 
-
+    // 뒤로가기 설정
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId==android.R.id.home){
             finish()
@@ -74,6 +76,7 @@ class SettingActivity : AppCompatActivity() {
     }
 
 
+    // 키보드 외 다른 화면 터치시, 키보드가 내려간다.
     fun CloseKeyboard()
     {
         var view = this.currentFocus

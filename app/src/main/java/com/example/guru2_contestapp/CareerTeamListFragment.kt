@@ -62,7 +62,7 @@ class CareerTeamListFragment : Fragment() {
                 lateinit var cursor1: Cursor
                 cursor1 = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE m_id = '" + USER_ID + "' AND state == 5;", null)  //  쿼리1
 
-                // refresh
+                // refresh를 위해 필요한 변수
                 last_now_num=cursor1.getCount()
 
                 var t_num: Int = 0
@@ -75,7 +75,6 @@ class CareerTeamListFragment : Fragment() {
                         cursor2 = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = " + t_num + ";", null) //쿼리2
 
                         if (cursor2.moveToNext()) {
-                            // 사진 추가도 해야됨 .
                             c_num = cursor2.getInt(cursor2.getColumnIndex("c_num"))
                             cursor3 = sqlitedb.rawQuery("SELECT * FROM contest WHERE c_num = " + c_num + ";", null)
 
@@ -153,7 +152,7 @@ class CareerTeamListFragment : Fragment() {
             dbManager.close()
         }
 
-
+        // 현재 화면에 띄워진 데이터 수와 db에서 불러온 데이터수가 다르다면  새로고침해준다.
         if(select_now_num>last_now_num) {
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()
             ft.detach(this)

@@ -12,10 +12,9 @@ import android.os.Bundle
 import android.text.Html
 import android.util.Log
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
+
 
 
 class DeveloperSupportActivity : AppCompatActivity() {
@@ -34,7 +33,6 @@ class DeveloperSupportActivity : AppCompatActivity() {
         supportActionBar?.title = Html.fromHtml("<font color=\"#000000\">" + getString(R.string.action_developerSupport)+"</font>")
 
 
-
         var delevoper_supportBtn: Button = findViewById<Button>(R.id.delevoper_supportBtn)
         var bug_reportBtn: Button = findViewById<Button>(R.id.bug_reportBtn)
 
@@ -46,6 +44,7 @@ class DeveloperSupportActivity : AppCompatActivity() {
 
 
         // 개발자 문의 버튼 클릭시, 메일 화면으로 넘어감
+        // intent를 이용해 메일을 보낸다.
         delevoper_supportBtn.setOnClickListener {
             try {
                 var dbManager: DBManager = DBManager(this, "ContestAppDB", null, 1)

@@ -95,7 +95,7 @@ class PersonalFragment : Fragment() {
         var USER_ID = sharedPreferences.getString("USER_ID", "sorry")
 
 
-        //DB연결
+        //프로필에 사용자 정보를 띄우기 위해 DB연결
         dbManager = DBManager(activity, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
         try {
@@ -140,7 +140,8 @@ class PersonalFragment : Fragment() {
         profile_src = this.resources.getIdentifier(str_photo,"drawable", "com.example.guru2_contestapp")
         profileImage.setImageResource(profile_src)
 
-        // 프로필 변경
+
+        // 프로필 변경 - SetProfileActivity로 이동하여 변경한다.
         profileBtn.setOnClickListener {
             val intent = Intent(activity, SetProfileActivity::class.java)
             startActivity(intent)
@@ -381,6 +382,7 @@ class PersonalFragment : Fragment() {
             dbManager.close()
         }
 
+        // 직업이 바뀌었거나, 프로필이 바뀌었거나, 개인 페이지의 4개의 탭의 각 팀/공모전 개수가 달라진 경우 새로고침 해준다.
         if(str_job != now_job || now_profile != str_photo ||
                 BuildTeam_num!= last_now_num1 || ApplyTeam_num!= last_now_num2 || Carreer_num!= last_now_num3 || Wish_num!= last_now_num4){
             val ft: FragmentTransaction =fragmentManager!!.beginTransaction()

@@ -36,7 +36,6 @@ class ApplyTeamListFragment : Fragment() {
     lateinit var applyTeamList : ArrayList<ApplyTeamItem>
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
