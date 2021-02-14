@@ -1,6 +1,7 @@
 package com.example.guru2_contestapp
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,11 @@ class  CommentListViewAdapter(val context: Context, val commentList: ArrayList<C
         comment.text = commentlist.comment
         date.text = commentlist.date
 
-        if(name.text.equals("팀장")){
+        Log.i("host", commentlist.host)
+        Log.i("name", name.text.toString())
+
+        if(name.text.equals(commentlist.host)){
+            name.text="팀장"
             name.setTextColor(ContextCompat.getColor(context, R.color.indigo_700))
         }
 

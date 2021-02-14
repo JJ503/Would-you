@@ -214,7 +214,7 @@ class TeamDetailActivity : AppCompatActivity() {
                         }
 
                         var cm_photo_src=this.resources.getIdentifier(cm_photo_src,"drawable", "com.example.guru2_contestapp")
-                        commentItem= CommentListViewItem(cm_photo_src, str_cm_id, str_cm_detail, str_cm_date)
+                        commentItem= CommentListViewItem(cm_photo_src, str_cm_id, str_cm_detail, str_cm_date, str_host)
                         commentListArray.add(commentItem)
                     }
                     cursor.close()
@@ -240,7 +240,7 @@ class TeamDetailActivity : AppCompatActivity() {
                 //builder.setIcon(R.)
                 builder.setPositiveButton("확인", null)
                 builder.show()
-            } else if(USER_ID.equals(str_host)){ // 댓글 작성자가 팀장이면 아이디 대신 '팀장'
+            } /*else if(USER_ID.equals(str_host)){ // 댓글 작성자가 팀장이면 아이디 대신 '팀장'
                 val currentDateTime= Calendar.getInstance().time
                 val dateFormat= SimpleDateFormat("yyyy.MM.dd  HH:mm", Locale.KOREA).format(currentDateTime)
                 str_cm_reg_date=dateFormat
@@ -263,7 +263,7 @@ class TeamDetailActivity : AppCompatActivity() {
                 val intent = getIntent()
                 finish()
                 startActivity(intent)
-            }
+            }*/
             else {
                 val currentDateTime= Calendar.getInstance().time
                 val dateFormat= SimpleDateFormat("yyyy.MM.dd  HH:mm", Locale.KOREA).format(currentDateTime)
