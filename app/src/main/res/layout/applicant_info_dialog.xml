@@ -36,6 +36,7 @@
                     android:src="@drawable/ic_baseline_clear_24" />
 
                 <ImageView
+                    android:id="@+id/Jprofile"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="30dp"

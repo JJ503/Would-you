@@ -21,6 +21,7 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
     lateinit var sqlitedb: SQLiteDatabase
 
     lateinit var btnClose : ImageView
+    lateinit var profile : ImageView
     lateinit var infoName : TextView
     lateinit var infoAge : TextView
     lateinit var infoHope : TextView
@@ -47,6 +48,7 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
         dbManager = DBManager(dlg.context, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
 
+        profile = dlg.findViewById(R.id.Jprofile)
         infoName = dlg.findViewById(R.id.JinfoName)
         infoAge = dlg.findViewById(R.id.JinfoAge)
         infoHope = dlg.findViewById(R.id.JinfoHope)
@@ -83,6 +85,10 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
                 infoInterest.text = m_cursor.getString(m_cursor.getColumnIndex("m_interest")).toString()
                 infoIntro.text = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
                 infoEtc.text = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
+
+                var m_profile = m_cursor.getString(m_cursor.getColumnIndex("m_profile")).toString()
+                var profile_src = dlg.context.resources.getIdentifier(m_profile, "drawable", "com.example.guru2_contestapp")
+                profile.setImageResource(profile_src)
 
                 // 수락후 확인 가능한 정보들 처리
                 if (tm_cursor.getInt(tm_cursor.getColumnIndex("state")) == 1 || tm_cursor.getInt(tm_cursor.getColumnIndex("state")) == 5){
