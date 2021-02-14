@@ -144,7 +144,7 @@ class HomeFragment : Fragment() {
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
                                     Log.d("c_photo",c_photo)
-                                    myTeamList.add(WishItem(t_num, "팀장입니다", c_photo, t_name))
+                                    myTeamList.add(WishItem("team", t_num, "팀장입니다", c_photo, t_name))
                                 }
                             }
                         }
@@ -185,7 +185,7 @@ class HomeFragment : Fragment() {
                                     con_cursor.moveToFirst()
                                     t_name = myTeamInfo_cursor.getString(myTeamInfo_cursor.getColumnIndex("t_name"))
                                     var c_photo = con_cursor.getString(con_cursor.getColumnIndex("c_photo"))
-                                    myTeamList.add(WishItem(t_num, state, c_photo, t_name))
+                                    myTeamList.add(WishItem("team", t_num, state, c_photo, t_name))
                                     Log.d("==== my team ===", t_num.toString())
                                 }
                             }
@@ -247,12 +247,12 @@ class HomeFragment : Fragment() {
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 팀 리스트에 추가
-                                    allTeamList.add(WishItem(t_num, teamDeadlineText, c_photo, t_name))
+                                    allTeamList.add(WishItem("team", t_num, teamDeadlineText, c_photo, t_name))
                                 }
                             }
 
                             // 추천 공모전 리스트에 추가
-                            allConList.add(WishItem(c_num, conDeadlineText, c_photo, c_name))
+                            allConList.add(WishItem("contest", c_num, conDeadlineText, c_photo, c_name))
                         }
                     }
                 }
@@ -300,12 +300,12 @@ class HomeFragment : Fragment() {
                                     var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                                     // 추천 외의 남은 팀 리스트에 추가
-                                    allTeamList.add(WishItem(t_num, teamDeadlineText, c_photo, t_name))
+                                    allTeamList.add(WishItem("team", t_num, teamDeadlineText, c_photo, t_name))
                                 }
                             }
 
                             // 추천 외의 남은 공모전 리스트에 추가
-                            allConList.add(WishItem(c_num, conDeadlineText, c_photo, c_name))
+                            allConList.add(WishItem("contest", c_num, conDeadlineText, c_photo, c_name))
                         }
                     }
                 }

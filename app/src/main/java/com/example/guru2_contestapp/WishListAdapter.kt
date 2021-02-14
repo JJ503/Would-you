@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
@@ -40,11 +41,22 @@ class WishListAdapter (val wishlist:ArrayList<WishItem>): RecyclerView.Adapter <
             holder.deadLine.setBackgroundColor(Color.parseColor("#8DEAEAEA"))
         }
 
-        // item(WishItem)클릭시 ContestDetailActivity(공모전 소개)페이지로 넘어간다.
+        // item(WishItem)클릭시 contest라면 ContestDetailActivity(공모전 소개)페이지로 넘어간다.
+        // team이라면 TeamDetailActivity(팀 소개)페이지로 넘어간다.
         holder.itemView.setOnClickListener {
-            val intent = Intent(holder.itemView?.context,ContestDetailActivity::class.java )
-            intent.putExtra("intent_c_num", wishlist.get(position).c_num)
-            ContextCompat.startActivity(holder.itemView.context, intent, null)
+            if (wishlist.get(position).which == "contest"){
+                val intent = Intent(holder.itemView?.context,ContestDetailActivity::class.java )
+                intent.putExtra("intent_c_num", wishlist.get(position).c_num)
+                ContextCompat.startActivity(holder.itemView.context, intent, null)
+
+            } else if (wishlist.get(position).which == "team"){
+                val intent = Intent(holder.itemView?.context,TeamDetailActivity::class.java )
+                intent.putExtra("intent_t_num", wishlist.get(position).c_num)
+                ContextCompat.startActivity(holder.itemView.context, intent, null)
+            } else {
+                Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
     }

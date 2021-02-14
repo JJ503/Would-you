@@ -86,7 +86,7 @@ class WishListFragment : Fragment() {
 
                         }
                         wishlist.add(
-                                WishItem(c_num, deadlineTxt, c_photo, c_name)
+                                WishItem("contest", c_num, deadlineTxt, c_photo, c_name)
                         )
                     }
                 }

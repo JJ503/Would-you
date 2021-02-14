@@ -125,8 +125,7 @@ class ContestDetailActivity : AppCompatActivity() {
                             var teamDeadlineText = "모집 " + teamDeadline.toString() + "일 전"
 
                             // 추천 팀 리스트에 추가
-                            recTeamList.add(WishItem(t_num, teamDeadlineText, str_photo, t_name))
-                            Log.d("=== add ===", "success")
+                            recTeamList.add(WishItem("team", t_num, teamDeadlineText, str_photo, t_name))
                         }
                     }
                 }
