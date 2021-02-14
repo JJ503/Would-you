@@ -138,7 +138,5 @@ class WishListFragment : Fragment() {
         val calcDate = (deadline - today) / (24 * 60 * 60 * 1000)
         return calcDate.toInt()
 
-
     }
-
 }

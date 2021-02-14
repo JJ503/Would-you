@@ -58,6 +58,7 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
         infoIntro = dlg.findViewById(R.id.JinfoIntro)
         infoEtc = dlg.findViewById(R.id.JinfoEtc)
 
+        // 신청자의 지원서와 정보 가져오기
         try {
             var m_cursor : Cursor
             m_cursor = sqlitedb.rawQuery("SELECT * FROM member WHERE m_id = '${m_id}';", null)
@@ -83,6 +84,7 @@ class ApplicantInfoDialog(context : Context, val m_id : String, val t_num : Int)
                 infoIntro.text = r_cursor.getString(r_cursor.getColumnIndex("r_self_intro")).toString()
                 infoEtc.text = r_cursor.getString(r_cursor.getColumnIndex("r_etc")).toString()
 
+                // 수락후 확인 가능한 정보들 처리
                 if (tm_cursor.getInt(tm_cursor.getColumnIndex("state")) == 1 || tm_cursor.getInt(tm_cursor.getColumnIndex("state")) == 5){
                     infoTel.text = m_cursor.getString(m_cursor.getColumnIndex("m_tel")).toString()
                     infoTel.setTextColor(Color.parseColor("#302A2A"))

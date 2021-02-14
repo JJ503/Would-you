@@ -30,9 +30,12 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.onBind(itemList[position])
 
+        // DB 연결
         var dbManager: DBManager =  DBManager(holder.itemView.context, "ContestAppDB", null, 1)
         var sqlitedb : SQLiteDatabase = dbManager.writableDatabase
 
+        // 공모전이 모집 중이라면 수락 거절 버튼이 보이고
+        // 모집이 종료됐다면 수락 거절 버튼이 보이지 않음
         var cursor : Cursor
         cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
         cursor.moveToFirst()
@@ -42,20 +45,21 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             holder.btnRefuse.visibility = GONE
         }
 
+        // 신청자 상태에 따라 다르게 보임, 상태가 0(신청상태)는 기본 아이템 사용
         when(state){
-            -1 -> {
+            -1 -> {   // 거절 : 붉은 배경, 수락 거절 버튼 없음
                 holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.refusal))
                 holder.btnAccept.visibility = GONE
                 holder.btnRefuse.visibility = GONE
             }
 
-            1 -> {
+            1 -> {    // 수락 : 푸른 배경, 수락 거절 버튼 없음
                 holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
                 holder.btnAccept.visibility = GONE
                 holder.btnRefuse.visibility = GONE
             }
 
-            5 -> {
+            5 -> {    // 수락 후 완료(경력) : 푸른 배경, 수락 거절 버튼 없음
                 holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
                 holder.btnAccept.visibility = GONE
                 holder.btnRefuse.visibility = GONE
@@ -66,7 +70,7 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             }
         }
 
-
+        // 아이템을 선택한 경우 해당 사람부터 시작할 수 있도록 position을 ApplicantPagerActivity로 넘겨주고 이동
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView?.context, ApplicantPagerActivity::class.java)
             intent.putExtra("pos", position)
@@ -74,6 +78,9 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
 
+        // 수락 버튼을 누른 경우
+        // 정상적으로 처리 되면 푸른 배경, 수락 거절 버튼 없어지고 상태가 0에서 1로 바뀜
+        // 만약 이미 인원이 꽉 찬 상태라면 '수락 가능 인원이 꽉찼습니다.' 경고 문구 출력
         holder.btnAccept.setOnClickListener {
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE t_num = ${itemList.get(position).t_num};", null)
@@ -81,12 +88,10 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
                 var total_num = cursor.getInt(cursor.getColumnIndex("t_total_num"))
                 var now_num = cursor.getInt(cursor.getColumnIndex("t_now_num"))
                 var rest_num = total_num - now_num
-                Log.d("=== rest_num ===", rest_num.toString())
 
                 if (rest_num > 0){
                     cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
                     cursor.moveToFirst()
-                    Log.d("=== cursor ===", "ok")
 
                     if (cursor.getCount() == 1){
                         sqlitedb.execSQL("UPDATE teamManage SET state = 1 WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';")
@@ -94,7 +99,6 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
                         holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.approval))
                         holder.btnAccept.visibility = GONE
                         holder.btnRefuse.visibility = GONE
-                        Log.d("=== cursor ===", "ok")
                     } else {
                         Toast.makeText(holder.itemView.context, "오류가 발생했습니다. 문의 부탁드립니다.", Toast.LENGTH_SHORT).show()
                     }
@@ -110,6 +114,9 @@ class ApplicantListAdapter(val itemList: ArrayList<ApplicantListItem>) : Recycle
             }
         }
 
+        // 거절 버튼을 누른 경우
+        // 정상적으로 처리 되면 붉은 배경, 수락 거절 버튼 없어짐
+        // 상태가 0에서 -1로 바뀜
         holder.btnRefuse.setOnClickListener {
             try {
                 cursor = sqlitedb.rawQuery("SELECT * FROM teamManage WHERE t_num = ${itemList.get(position).t_num} AND m_id = '${itemList.get(position).m_id}';", null)
