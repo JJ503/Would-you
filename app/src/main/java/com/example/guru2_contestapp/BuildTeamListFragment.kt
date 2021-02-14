@@ -76,7 +76,6 @@ class BuildTeamListFragment : Fragment() {
                 var t_num: Int = -1
 
                 lateinit var cursor3: Cursor
-6786
                 if (cursor1.getCount() != 0) {
                     while (cursor1.moveToNext()) {
                         t_num = cursor1.getInt(cursor1.getColumnIndex("t_num"))

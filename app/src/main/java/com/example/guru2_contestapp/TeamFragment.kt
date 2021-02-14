@@ -188,7 +188,6 @@ class TeamFragment : Fragment() {
         }
 
         // 당겨서 새로고침
-        /*
         swipeRefreshLayout=v_team.findViewById(R.id.WswipeRefresh)
         swipeRefreshLayout.setOnRefreshListener {
             val teamListAdapter= activity?.let { TeamListViewAdapter(teamListArray) }
@@ -203,7 +202,7 @@ class TeamFragment : Fragment() {
             ft.commit()
             swipeRefreshLayout.isRefreshing=false
         }
-*/
+
         // 팀 추가 버튼(FloatingActionButton)을 누르면 팀 생성페이지로 이동
         addTeamFAb.setOnClickListener {
             val intent= Intent(activity, BuildTeamActivity::class.java)
