@@ -16,6 +16,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.Exception
@@ -49,6 +50,7 @@ class ContestDetailActivity : AppCompatActivity() {
     lateinit var str_section: String
     lateinit var str_detail: String
     lateinit var str_address: String
+    var c_num=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +82,7 @@ class ContestDetailActivity : AppCompatActivity() {
         // 팀 목록에서 팀을 선택하면 그 팀이 참가하는 공모전 번호가 intent로 넘어온다.
         // 그 값으로 DB에서 공모전 이름, 주최기관 등 자세한 정보를 가져온다.
         val intent=intent
-        val c_num=intent.getIntExtra("intent_c_num", 0)
+        c_num=intent.getIntExtra("intent_c_num", 0)
 
         dbManager = DBManager(this, "ContestAppDB", null, 1)
         sqlitedb = dbManager.readableDatabase
@@ -107,7 +109,6 @@ class ContestDetailActivity : AppCompatActivity() {
 
                 // 해당 공모전에 대한 신청 가능한 팀 추천
                 cursor = sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = ${c_num} ORDER BY random();", null)
-                Log.d("=== cursor ===", c_num.toString())
 
                 if (cursor.getCount() > 0) {
                     while (cursor.moveToNext()) {
@@ -249,7 +250,30 @@ class ContestDetailActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        this.recreate()
+        var select_num=0
+        // 팀 추가 버튼으로 팀을 생성하고 다시 돌아왔을 때, 추가한 팀에 대한 정보가 바로 리스트에 적용되도록
+        // DB에 있는 레코드 수와 현재 리스트 Item 수를 비교해 레코드 수가 많으면 새로고침 하도록 한다.
+        dbManager= DBManager(this, "ContestAppDB", null, 1)
+        sqlitedb=dbManager.readableDatabase
+        val cursor: Cursor
+        try {
+            if(sqlitedb!=null){
+                cursor=sqlitedb.rawQuery("SELECT * FROM team WHERE c_num = '"+c_num+"';", null)
+                select_num=cursor.count
+                cursor.close()
+            }
+        } catch(e: Exception){
+            Log.e("Error", e.message.toString())
+        } finally{
+            sqlitedb.close()
+            dbManager.close()
+        }
+
+        Log.i("adatper",contestRecyclerList.adapter?.itemCount.toString() )
+        Log.i("select",select_num.toString() )
+        if(((contestRecyclerList.adapter?.itemCount)?.plus(1))!! <= select_num){
+            this.recreate()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
